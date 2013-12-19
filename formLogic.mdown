@@ -1,0 +1,23 @@
+## logic ##
+* condition: single checked/multi checked/select(onchange)/
+	* single checked : what
+	* multi checked: what
+	* select: what
+* target: self/other one/others
+	* self: sub element
+	* other one: element/sub element
+	* others: elements
+	* form: form
+* todo: display/hide/disable/submit/selectAll/checked/filter
+	* display or hide
+	* disable
+
+## form element map ##
+{
+	'text' : {},
+	'number' : {},
+	'checkboxes': {},
+	'multipleChoice': {},
+	'dropdown' : {},
+	'matrix' : {}
+}
