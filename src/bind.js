@@ -1,16 +1,21 @@
 // bind elements
+// $.aop.after( {target: window, method: 'SomeSharePointFunction'},
 
+//   function() {
 
+//     alert('About to execute SomeSharePointFunction');
 
+//   }
 
-$.aop.after( {target: window, method: 'SomeSharePointFunction'},
+// );
 
-  function() {
+// {
+// 	'multiple_choice' : {},
+// 	'checkboxes' : {},
+// 	'matrix': {},
+// 	'dropdown' : {}
+// }
 
-    alert('About to execute SomeSharePointFunction');
-
-  }
-
-);
-
-SomeSharePointFunction();
+$("form.appnitro :input").bind('click', function() {
+	console.log(this);
+})

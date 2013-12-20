@@ -1,7 +1,7 @@
 ## todo List ##
 * create the rule format(formLogic.mdown)
 * build add rule page
-    - create mouse over function(show/hide rule panel)
+	- init form input widgets(multiple_choice/checkboxes/matrix/dropdown)
     - create rule panel
         + question to question
         + self choice to choice

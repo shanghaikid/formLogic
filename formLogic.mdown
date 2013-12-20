@@ -12,6 +12,7 @@
 	* display or hide
 	* disable
 
+<del>
 ## form element map ##
 {
 	'multiple_choice' : {},
@@ -19,3 +20,27 @@
 	'matrix': {},
 	'dropdown' : {}
 }
+</del>
+
+## pass ##
+http://cbr2.kgyun.org/
+79103187@qq.com
+machform
+
+mysql:
+http://mysql.kgyun.org/
+ID:cbr
+PW:yb3jfMfAC4uZpScw
+
+
+FTP:
+IP:42.121.137.13
+ID:cbr
+PW:yb3jfMfAC4uZpScw
+
+remote
+IP：42.121.137.13
+ID：administrator
+PW：330084e5
+
+ref:http://www.diaoyanbao.com/ 
