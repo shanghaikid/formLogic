@@ -14,10 +14,8 @@
 
 ## form element map ##
 {
-	'text' : {},
-	'number' : {},
-	'checkboxes': {},
-	'multipleChoice': {},
-	'dropdown' : {},
-	'matrix' : {}
+	'multiple_choice' : {},
+	'checkboxes' : {},
+	'matrix': {},
+	'dropdown' : {}
 }
