@@ -3,12 +3,12 @@
 * build add rule page
     - create mouse over function(show/hide rule panel)
     - create rule panel
-        . question to question
-        . self choice to choice
+        + question to question
+        + self choice to choice
     - save the rule
-        . create mysql field
-        . php update/delete/row handler(ajax)
+        + create mysql field
+        + php update/delete/row handler(ajax)
 
 * parse rule function for every single form
-    ** parse to create panel
-    ** parse to execute form
+    - parse to create panel
+    - parse to execute form
