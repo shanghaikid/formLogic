@@ -7,16 +7,14 @@ define([
 		'dojo/query',
 		'dojo/aspect',
 		'dojo/dom-class',
+		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass){
+function(declare, lang, array, query, aspect, domClass, _BaseClass){
 
-return declare(null, {
+return declare([_BaseClass], {
 
-	// widget dom node ref
-	domNode: null,
-
-	// widget description	
+	// widget description
 	description: '',
 
 	// id
@@ -29,11 +27,7 @@ return declare(null, {
 
 	originItems: null,
 
-	constructor: function(kwArgs) {
-		// mixin arguments object with this
-		lang.mixin(this, kwArgs);
-
-		this.initDomNode();
+	constructor: function() {
 
 		// init items;
 		this.items = [];
@@ -48,13 +42,6 @@ return declare(null, {
 
 	_getDomNode: function(el) {
 		return query(el)[0];
-	},
-
-	initDomNode: function() {
-		// init domNode
-		this.domNode = this._getDomNode(this.el);
-		// element Id
-		this.eId = query(this.domNode)[0].id;
 	},
 
 	initWidget: function() {
