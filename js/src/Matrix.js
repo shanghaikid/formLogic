@@ -17,29 +17,20 @@ function(declare, lang, array, query, domClass, _FormWidgetBase, Checkboxes, Mul
 return declare('Matrix', [_FormWidgetBase], {
 
 
-	items: null,
-
 	valueLabels: null,
 
 	caption: '',
 
 	_type: '',
 
-	constructor: function() {
-		this.initWidget();
-	},
 
 	initWidget: function() {
-		//this.inherited(arguments);
-
 		// set caption
 		this.caption = this._getCaption();
 		// set type
 		this._type = this._getType();
 		// set Items
 		this._initMatrixItmes();
-		console.log('item', this.items);
-
 
 	},
 
@@ -73,9 +64,13 @@ return declare('Matrix', [_FormWidgetBase], {
 				labels: this.valueLabels,
 				el: item
 			};
-			this.items.push(new lang.getObject(this._type)(params));
+			var _item = new lang.getObject(this._type)(params);
+			this.items.push(_item);
 		}, this);
 	},
+
+	// no origin needed for matrix
+	saveOrigin: function(){},
 
 	_getValuesLabels: function(anserVauleLine) {
 		var valueLabels = query('th', anserVauleLine);
@@ -94,6 +89,20 @@ return declare('Matrix', [_FormWidgetBase], {
 	// uncheck every question
 	uncheck: function(id) {
 		this.items[id].uncheckAll();
+	},
+
+	reset: function(id, item) {
+		if (id === undefined) {
+			this.resetAll();
+			return;
+		}
+		// array.map(this.items, callback) second argument is the index of this.items
+		var mId = typeof item === 'number' ? item : id;
+		this.items[mId].resetAll();
+	},
+
+	resetAll: function() {
+		array.map(this.items, this.reset, this);
 	}
 
 
