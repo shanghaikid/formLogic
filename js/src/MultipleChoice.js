@@ -13,17 +13,7 @@ function(declare, array, query, domClass, _FormWidgetBase){
 
 return declare('MultipleChoice', [_FormWidgetBase], {
 
-	elementClass: '.element.radio',
-
-	items: null,
-
-	constructor: function() {
-		this.initWidget();
-	},
-
-	initWidget: function() {
-		this.inherited(arguments);
-	}
+	elementClass: '.element.radio'
 
 
 

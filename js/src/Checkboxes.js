@@ -15,17 +15,6 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	elementClass: '.element.checkbox',
 
-	items: null,
-
-	constructor: function() {
-		this.initWidget();
-	},
-
-	initWidget: function() {
-		this.inherited(arguments);
-
-	},
-
 	mutex: function(id) {
 		var item = this._getItem(id);
 		this.uncheckAll();

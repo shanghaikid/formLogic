@@ -5,10 +5,11 @@ define([
 		'dojo/_base/lang',
 		'dojo/_base/array',
 		'dojo/query',
+		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, domClass){
+function(declare, lang, array, query, aspect, domClass){
 
 return declare(null, {
 
@@ -31,11 +32,20 @@ return declare(null, {
 	constructor: function(kwArgs) {
 		// mixin arguments object with this
 		lang.mixin(this, kwArgs);
-		// init domNode
-		this.domNode = this._getDomNode(this.el);
-		// common init
+
+		this.initDomNode();
+		// init items;
+		this.items = [];
+		this.initWidget();
+		this.saveOrigin();
+		//console.log('item', this.items);
 		this.id = this._getId();
-		//this.initWidget(); //call initWidget in widget class's constructor
+
+	},
+
+	saveOrigin: function() {
+		console.log('saveOrigin', this.items);
+		this.originItems = lang.clone(this.items);
 	},
 
 	_getDomNode: function(el) {
@@ -46,9 +56,12 @@ return declare(null, {
 		return query(this.domNode)[0].id;
 	},
 
+	initDomNode: function() {
+		// init domNode
+		this.domNode = this._getDomNode(this.el);
+	},
+
 	initWidget: function() {
-		// init items;
-		this.items = [];
 
 		console.log('query', this.elementClass);
 		// get items
@@ -71,18 +84,16 @@ return declare(null, {
 					mutex: false,
 					checked: checked,
 					id: i
-
 				}
 			);
 
 		}, this);
-		this.originItems = lang.clone(this.items);
 	},
 
 	// todo: needs refine
 	reset: function(id) {
 		if (id === undefined) {
-			this._resetAll();
+			this.resetAll();
 			return;
 		}
 		var oitem = this._getOriginItem(id),
@@ -97,7 +108,7 @@ return declare(null, {
 		
 	},
 
-	_resetAll: function() {
+	resetAll: function() {
 		array.map(this.items, this.reset, this);
 	},
 
@@ -115,29 +126,30 @@ return declare(null, {
 
 	show: function(id) {
 		if (id === undefined) {
-			this._showAll();
+			this.showAll();
 			return;
 		}
 		var item = this._getItem(id);
 		domClass.remove(item.domNode, 'hidden');
+		item.show = true;
 	},
 
-	_showAll: function() {
+	showAll: function() {
 		array.map(this.items, this.show, this);
 	},
 
-	_hideAll: function() {
+	hideAll: function() {
 		array.map(this.items, this.hide, this);
 	},
 
 	hide: function(id) {
 		if (id === undefined) {
-			this._hideAll();
+			this.hideAll();
 			return;
 		}
 		var item = this._getItem(id);
 		domClass.add(item.domNode, 'hidden');
-		item.disabled = true;
+		item.show = false;
 	},
 
 	enable: function(id) {

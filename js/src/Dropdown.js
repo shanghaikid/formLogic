@@ -20,16 +20,8 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	selector: null,
 
-	constructor: function() {
-		this.initWidget();
-	},
-
 	initWidget: function() {
-		//this.inherited(arguments);
 		this._initDropdown();
-		console.log('item', this.items);
-
-
 	},
 
 	_initDropdown: function() {
@@ -43,6 +35,10 @@ return declare('Dropdown', [_FormWidgetBase], {
 				label: item.innerText
 			});
 		}, this);
+	},
+
+	remove: function() {
+
 	}
 
 
