@@ -18,6 +18,8 @@ return declare('Matrix', [_FormWidgetBase], {
 
 	items: null,
 
+	valueLabels: null,
+
 	caption: '',
 
 	_type: '',
@@ -34,7 +36,6 @@ return declare('Matrix', [_FormWidgetBase], {
 		// set type
 		this._type = this._getType();
 		// set Items
-		this.items = [];
 		this._getMatrixItmes();
 		console.log('item', this.items);
 
@@ -52,8 +53,10 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	_getMatrixItmes: function() {
+		this.items = [];
 		var items = query('tr', this.domNode);
-		items.shift();
+		var anserVauleLine = items.shift();
+		this._getValues(anserVauleLine);
 		array.forEach(items, function(item) {
 			var question = query('td.first_col', item)[0].innerText;
 			this.items.push(
@@ -62,6 +65,15 @@ return declare('Matrix', [_FormWidgetBase], {
 					question: question
 				}
 			);
+		}, this);
+	},
+
+	_getValues: function(anserVauleLine) {
+		var valueLabels = query('th', anserVauleLine);
+		valueLabels.shift();
+		this.valueLabels = [];
+		array.forEach(valueLabels, function(valueLabel) {
+			this.valueLabels.push(valueLabel.innerText);
 		}, this);
 	}
 
