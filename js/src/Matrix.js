@@ -101,8 +101,42 @@ return declare('Matrix', [_FormWidgetBase], {
 		this.items[mId].resetAll();
 	},
 
-	resetAll: function() {
-		array.map(this.items, this.reset, this);
+	disable: function(id, item) {
+		if (id === undefined) {
+			this.disableAll();
+			return;
+		}
+		// array.map(this.items, callback) second argument is the index of this.items
+		var mId = typeof item === 'number' ? item : id;
+		this.items[mId].disableAll();
+	},
+
+	disableCol: function(cId) {
+		if (cId === undefined) return;
+		array.forEach(this.items, function(item, i){
+			item.disable(cId);
+		}, this);
+	},
+
+	enableCol: function(cId) {
+		if (cId === undefined) return;
+		array.forEach(this.items, function(item, i){
+			item.enable(cId);
+		}, this);
+	},
+
+	checkCol: function(cId) {
+		if (cId === undefined) return;
+		array.forEach(this.items, function(item, i){
+			item.check(cId);
+		}, this);
+	},
+
+	uncheckCol: function(cId) {
+		if (cId === undefined) return;
+		array.forEach(this.items, function(item, i){
+			item.uncheck(cId);
+		}, this);
 	}
 
 
