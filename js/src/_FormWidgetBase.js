@@ -30,11 +30,13 @@ return declare(null, {
 
 	constructor: function(el) {
 		console.log('_FormWidgetBase start init');
-		this.domNode = this.getDomNode(el);
+		this.domNode = this._getDomNode(el);
+		// common init
+		this.id = this._getId();
 		//this.initWidget(); //call initWidget in widget class's constructor
 	},
 
-	getDomNode: function(el) {
+	_getDomNode: function(el) {
 		return query(el)[0];
 	},
 
@@ -43,8 +45,7 @@ return declare(null, {
 	},
 
 	initWidget: function() {
-		// common init
-		this.id = this._getId();
+		
 		// get items
 		var items = query(this.elementClass, this.domNode);
 		array.forEach(items, function(item, i) {
