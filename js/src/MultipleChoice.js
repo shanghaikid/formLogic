@@ -17,8 +17,5 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 
 
 
-
-
-
 });
 });
