@@ -28,13 +28,17 @@ return declare(null, {
 
 	originItems: null,
 
-	constructor: function(el) {
-		console.log('_FormWidgetBase start init');
-		this.domNode = this.getDomNode(el);
+	constructor: function(kwArgs) {
+		// mixin arguments object with this
+		lang.mixin(this, kwArgs);
+		// init domNode
+		this.domNode = this._getDomNode(this.el);
+		// common init
+		this.id = this._getId();
 		//this.initWidget(); //call initWidget in widget class's constructor
 	},
 
-	getDomNode: function(el) {
+	_getDomNode: function(el) {
 		return query(el)[0];
 	},
 
@@ -43,13 +47,15 @@ return declare(null, {
 	},
 
 	initWidget: function() {
-		// common init
-		this.id = this._getId();
+		// init items;
+		this.items = [];
+
+		console.log('query', this.elementClass);
 		// get items
 		var items = query(this.elementClass, this.domNode);
 		array.forEach(items, function(item, i) {
 			var q = query(item),
-				label = q.next()[0].innerHTML,
+				label = this.labels && this.labels[i] || q.next()[0].innerHTML,
 				v = item.value,
 				disabled = item.disabled,
 				checked = item.checked,
@@ -136,7 +142,7 @@ return declare(null, {
 
 	enable: function(id) {
 		if (id === undefined) {
-			this._enableAll();
+			this.enableAll();
 			return;
 		}
 		var item = this._getItem(id);
@@ -147,7 +153,7 @@ return declare(null, {
 
 	disable: function(id) {
 		if (id === undefined) {
-			this._disableAll();
+			this.disableAll();
 			return;
 		}
 		var item = this._getItem(id);
@@ -156,11 +162,11 @@ return declare(null, {
 		item.disabled = true;
 	},
 
-	_enableAll: function() {
+	enableAll: function() {
 		array.map(this.items, this.enable, this);
 	},
 
-	_disableAll: function() {
+	disableAll: function() {
 		array.map(this.items, this.disable, this);
 	},
 
@@ -172,15 +178,16 @@ return declare(null, {
 	},
 
 	uncheck: function(id) {
+		if (id === undefined) return;
 		var item = this._getItem(id);
 		item.input.checked = false;
 	},
 
-	_checkAll: function() {
+	checkAll: function() {
 		array.map(this.items, this.check, this);
 	},
 
-	_uncheckAll: function() {
+	uncheckAll: function() {
 		array.map(this.items, this.uncheck, this);
 	}
 
