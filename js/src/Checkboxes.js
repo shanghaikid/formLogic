@@ -13,10 +13,9 @@ function(declare, array, query, domClass, _FormWidgetBase){
 
 return declare('Checkboxes', [_FormWidgetBase], {
 
-
 	elementClass: '.element.checkbox',
 
-	items: [],
+	items: null,
 
 	constructor: function() {
 		this.initWidget();
@@ -24,7 +23,6 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	initWidget: function() {
 		this.inherited(arguments);
-		console.log(this.items);
 
 	},
 

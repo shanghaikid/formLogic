@@ -28,9 +28,11 @@ return declare(null, {
 
 	originItems: null,
 
-	constructor: function(el) {
-		console.log('_FormWidgetBase start init');
-		this.domNode = this._getDomNode(el);
+	constructor: function(kwArgs) {
+		// mixin arguments object with this
+		lang.mixin(this, kwArgs);
+		// init domNode
+		this.domNode = this._getDomNode(this.el);
 		// common init
 		this.id = this._getId();
 		//this.initWidget(); //call initWidget in widget class's constructor
@@ -45,12 +47,15 @@ return declare(null, {
 	},
 
 	initWidget: function() {
-		
+		// init items;
+		this.items = [];
+
+		console.log('query', this.elementClass);
 		// get items
 		var items = query(this.elementClass, this.domNode);
 		array.forEach(items, function(item, i) {
 			var q = query(item),
-				label = q.next()[0].innerHTML,
+				label = this.labels && this.labels[i] || q.next()[0].innerHTML,
 				v = item.value,
 				disabled = item.disabled,
 				checked = item.checked,
@@ -173,6 +178,7 @@ return declare(null, {
 	},
 
 	uncheck: function(id) {
+		if (id === undefined) return;
 		var item = this._getItem(id);
 		item.input.checked = false;
 	},

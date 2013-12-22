@@ -15,9 +15,7 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 
 	elementClass: '.element.radio',
 
-	id: '',
-
-	items: [],
+	items: null,
 
 	constructor: function() {
 		this.initWidget();
@@ -25,8 +23,6 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 
 	initWidget: function() {
 		this.inherited(arguments);
-		console.log(this.items);
-
 	}
 
 

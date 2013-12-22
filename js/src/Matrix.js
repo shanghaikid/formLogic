@@ -2,19 +2,20 @@
 // 
 define([
 		'dojo/_base/declare',
+		'dojo/_base/lang',
 		'dojo/_base/array',
 		'dojo/query',
 		'dojo/dom-class',
 		'src/_FormWidgetBase',
+		'src/Checkboxes',
+		'src/MultipleChoice',
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, array, query, domClass, _FormWidgetBase){
+function(declare, lang, array, query, domClass, _FormWidgetBase, Checkboxes, MultipleChoice){
 
 return declare('Matrix', [_FormWidgetBase], {
 
-
-	elementClass: '.element.checkbox',
 
 	items: null,
 
@@ -47,28 +48,36 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	_getType: function() {
-		var single = query('input[type=radio]', this.domNode).length > 0 ? 'single' : undefined,
-			multi = query('input[type=checkbox]', this.domNode).length > 0 ? 'multi' : undefined;
+		var single = query('input[type=radio]', this.domNode).length > 0 ? 'MultipleChoice' : undefined,
+			multi = query('input[type=checkbox]', this.domNode).length > 0 ? 'Checkboxes' : undefined;
 		return single || multi;
+	},
+
+	_params: {
+		'MultipleChoice': 'input[type=radio]',
+		'Checkboxes': 'input[type=checkbox]'
 	},
 
 	_getMatrixItmes: function() {
 		this.items = [];
 		var items = query('tr', this.domNode);
-		var anserVauleLine = items.shift();
-		this._getValues(anserVauleLine);
+		this._getValuesLabels(items.shift());
+
+
+		// get Items
 		array.forEach(items, function(item) {
 			var question = query('td.first_col', item)[0].innerText;
-			this.items.push(
-				{	
-					domNode: item,
-					question: question
-				}
-			);
+			//set param
+			var params = {
+				elementClass: this._params[this._type],
+				labels: this.valueLabels,
+				el: item
+			};
+			this.items.push(new lang.getObject(this._type)(params));
 		}, this);
 	},
 
-	_getValues: function(anserVauleLine) {
+	_getValuesLabels: function(anserVauleLine) {
 		var valueLabels = query('th', anserVauleLine);
 		valueLabels.shift();
 		this.valueLabels = [];
