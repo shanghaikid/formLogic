@@ -18,6 +18,8 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	items: null,
 
+	selector: null,
+
 	constructor: function() {
 		this.initWidget();
 	},
@@ -30,8 +32,17 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	},
 
-	_initOptions: function() {
-
+	_initDropdown: function() {
+		this.selector = query(this.elementClass, this.domNode)[0];
+		this.items = [];
+		array.forEach(this.selector.options, function(item, i){
+			this.items.push({
+				domNode: item,
+				id: i,
+				value: item.value,
+				label: item.innerText
+			});
+		}, this);
 	}
 
 
