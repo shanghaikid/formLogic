@@ -25,8 +25,6 @@ return declare('Matrix', [_FormWidgetBase], {
 
 
 	initWidget: function() {
-		//this.inherited(arguments);
-		console.log('this.el', this.el);
 		// set caption
 		this.caption = this._getCaption();
 		// set type

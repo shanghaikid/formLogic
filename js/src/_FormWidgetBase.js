@@ -20,7 +20,7 @@ return declare(null, {
 	description: '',
 
 	// id
-	id: '',
+	eId: '',
 
 	elementClass: '',
 
@@ -34,17 +34,15 @@ return declare(null, {
 		lang.mixin(this, kwArgs);
 
 		this.initDomNode();
+
 		// init items;
 		this.items = [];
 		this.initWidget();
 		this.saveOrigin();
-		//console.log('item', this.items);
-		this.id = this._getId();
 
 	},
 
 	saveOrigin: function() {
-		console.log('saveOrigin', this.items);
 		this.originItems = lang.clone(this.items);
 	},
 
@@ -52,13 +50,11 @@ return declare(null, {
 		return query(el)[0];
 	},
 
-	_getId: function() {
-		return query(this.domNode)[0].id;
-	},
-
 	initDomNode: function() {
 		// init domNode
 		this.domNode = this._getDomNode(this.el);
+		// element Id
+		this.eId = query(this.domNode)[0].id;
 	},
 
 	initWidget: function() {
