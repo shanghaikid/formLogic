@@ -380,11 +380,12 @@
 </script>
 <script type="text/javascript" src="./js/lib/dojo/dojo.js"></script>
 <script>
-require(["src/MultipleChoice", "src/Checkboxes", "src/Matrix"], function(MultipleChoice, Checkboxes, Matrix){
+require(["src/MultipleChoice", "src/Checkboxes", "src/Matrix", "src/Dropdown"], function(MultipleChoice, Checkboxes, Matrix, Dropdown){
 	a = new MultipleChoice({el: document.getElementById('li_1')});
 	b = new Checkboxes({el: document.getElementById('li_2')});
 	c = new Matrix({el: document.getElementById('li_6')});
 	d = new Matrix({el: document.getElementById('li_12')});
+	e = new Dropdown({el: document.getElementById('li_20')});
 	//a.disable(1);
 	//a.hide(2);
 
