@@ -37,7 +37,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		// set type
 		this._type = this._getType();
 		// set Items
-		this._getMatrixItmes();
+		this._initMatrixItmes();
 		console.log('item', this.items);
 
 
@@ -58,7 +58,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		'Checkboxes': 'input[type=checkbox]'
 	},
 
-	_getMatrixItmes: function() {
+	_initMatrixItmes: function() {
 		this.items = [];
 		var items = query('tr', this.domNode);
 		this._getValuesLabels(items.shift());
@@ -84,8 +84,17 @@ return declare('Matrix', [_FormWidgetBase], {
 		array.forEach(valueLabels, function(valueLabel) {
 			this.valueLabels.push(valueLabel.innerText);
 		}, this);
-	}
+	},
 
+	// check every question
+	check: function(id) {
+		this.items[id].checkAll();
+	},
+
+	// uncheck every question
+	uncheck: function(id) {
+		this.items[id].uncheckAll();
+	}
 
 
 

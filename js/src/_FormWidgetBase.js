@@ -142,7 +142,7 @@ return declare(null, {
 
 	enable: function(id) {
 		if (id === undefined) {
-			this._enableAll();
+			this.enableAll();
 			return;
 		}
 		var item = this._getItem(id);
@@ -153,7 +153,7 @@ return declare(null, {
 
 	disable: function(id) {
 		if (id === undefined) {
-			this._disableAll();
+			this.disableAll();
 			return;
 		}
 		var item = this._getItem(id);
@@ -162,11 +162,11 @@ return declare(null, {
 		item.disabled = true;
 	},
 
-	_enableAll: function() {
+	enableAll: function() {
 		array.map(this.items, this.enable, this);
 	},
 
-	_disableAll: function() {
+	disableAll: function() {
 		array.map(this.items, this.disable, this);
 	},
 
@@ -183,11 +183,11 @@ return declare(null, {
 		item.input.checked = false;
 	},
 
-	_checkAll: function() {
+	checkAll: function() {
 		array.map(this.items, this.check, this);
 	},
 
-	_uncheckAll: function() {
+	uncheckAll: function() {
 		array.map(this.items, this.uncheck, this);
 	}
 

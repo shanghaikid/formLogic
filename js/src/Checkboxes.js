@@ -28,8 +28,8 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	mutex: function(id) {
 		var item = this._getItem(id);
-		this._uncheckAll();
-		this._disableAll();
+		this.uncheckAll();
+		this.disableAll();
 		this.enable(item);
 		this.check(item);
 	}
