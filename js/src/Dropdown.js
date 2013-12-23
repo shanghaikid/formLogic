@@ -4,14 +4,14 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/lang',
 		'dojo/_base/array',
+		'dojo/on',
 		'dojo/query',
-		'dojo/dom-class',
 		'dojo/dom-attr',
 		'src/_FormWidgetBase',
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, lang, array, query, domClass, domAttr, _FormWidgetBase){
+function(declare, lang, array, on, query, domAttr, _FormWidgetBase){
 
 return declare('Dropdown', [_FormWidgetBase], {
 
@@ -23,6 +23,14 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	initWidget: function() {
 		this._initDropdown();
+	},
+
+	_initEvent: function() {
+		on(this.domNode, "change", lang.hitch(this, "eventhandler"));
+	},
+
+	eventhandler: function(e){
+		this.inherited(arguments);
 	},
 
 	_initDropdown: function() {

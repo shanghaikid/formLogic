@@ -35,6 +35,10 @@ return declare('Matrix', [_FormWidgetBase], {
 
 	},
 
+	eventhandler: function(e){
+		this.inherited(arguments);
+	},
+
 	_getCaption: function() {
 		return query('caption', this.domNode)[0].innerText;
 	},

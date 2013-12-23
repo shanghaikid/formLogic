@@ -8,10 +8,11 @@ define([
 		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/on',
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, on, _BaseClass){
 
 return declare([_BaseClass], {
 
@@ -31,6 +32,8 @@ return declare([_BaseClass], {
 	//widget Rule
 	rule: null,
 
+	//
+
 	constructor: function() {
 
 		// init items;
@@ -38,7 +41,15 @@ return declare([_BaseClass], {
 		this.initWidget();
 		this.saveOrigin();
 		this.initWidgetRule();
+		this._initEvent();
 
+	},
+
+	_initEvent: function() {},
+
+	eventhandler: function(e){
+
+		console.log('eventhandler', e);
 	},
 
 	saveOrigin: function() {
@@ -76,7 +87,6 @@ return declare([_BaseClass], {
 					rule :rule
 				}
 			);
-
 		}, this);
 	},
 
