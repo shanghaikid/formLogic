@@ -12,10 +12,11 @@ define([
 		'src/Checkboxes',
 		'src/Matrix',
 		'src/Dropdown',
+		'src/Reg',
 		'dojo/NodeList-traverse'
 		], 
 function(declare, lang, array, query, aspect, domClass,
-		_BaseClass, MultipleChoice, Checkboxes, Matrix, Dropdown){
+		_BaseClass, MultipleChoice, Checkboxes, Matrix, Dropdown, Reg){
 
 return declare([_BaseClass], {
 
