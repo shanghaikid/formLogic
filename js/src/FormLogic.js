@@ -7,6 +7,7 @@ define([
 		'dojo/query',
 		'dojo/aspect',
 		'dojo/dom-class',
+
 		'src/_BaseClass',
 		'src/MultipleChoice',
 		'src/Checkboxes',
@@ -22,27 +23,13 @@ return declare([_BaseClass], {
 
 	config: {
 		query: ['li.checkboxes', 'li.matrix', 'li.multiple_choice', 'li.dropdown'],
-		savedIn: ['checkboxes', 'matrixes', 'multipleChoices', 'dropdowns'],
 		widgetClass: [Checkboxes, Matrix, MultipleChoice, Dropdown]
 
 	},
 
-	checkboxes: null,
-
-	matrixes: null,
-
-	multipleChoices: null,
-
-	dropdowns: null,
-
 	constructor: function() {
-
-		// init a
-		this.checkboxes = [];
-		this.matrixes = [];
-		this.multipleChoices = [];
-		this.dropdowns = [];
-
+		formLogic = this;
+		formLogic.reg = Reg;
 		// get elments to init widgets
 		this.initFormWidget();
 		// connect widgets
@@ -54,7 +41,7 @@ return declare([_BaseClass], {
 		array.forEach(this.config.query, function(q, i) {
 			var formInputs = query(q, this.domNode);
 			array.forEach(formInputs, function(formInput) {
-				this[this.config.savedIn[i]].push( new this.config.widgetClass[i]({el: formInput}) );
+				Reg.add(new this.config.widgetClass[i]({el: formInput}));
 			}, this);
 		}, this);
 		console.log('initFormWidget');

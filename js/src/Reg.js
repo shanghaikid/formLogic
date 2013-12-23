@@ -8,20 +8,22 @@ define([
 		'dojo/aspect',
 		'src/_BaseClass'
 		], 
-function(declare, lang, array, query, aspect, domClass,
+function(declare, lang, array, query, aspect,
 		_BaseClass){
 
-return declare([_BaseClass], {
+return {
 
+	_w: {},
 
-	constructor: function() {
+	//add widget,
 
-	 
+	add: function(widget) {
+		this._w[widget.eId] = widget;
+	},
+
+	byId: function(id) {
+		return this._w[id] || null;
 	}
 
-	 
-
-
-
-});
+};
 });
