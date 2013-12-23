@@ -28,13 +28,13 @@ return declare([_BaseClass], {
 
 	},
 
-	checkboxes: [],
+	checkboxes: null,
 
-	matrixes: [],
+	matrixes: null,
 
-	multipleChoices: [],
+	multipleChoices: null,
 
-	dropdowns: [],
+	dropdowns: null,
 
 	constructor: function() {
 
