@@ -19,8 +19,6 @@ function(declare, lang, array, query, aspect, domClass,
 
 return declare([_BaseClass], {
 
-
-
 	config: {
 		query: ['li.checkboxes', 'li.matrix', 'li.multiple_choice', 'li.dropdown'],
 		savedIn: ['checkboxes', 'matrixes', 'multipleChoices', 'dropdowns'],
@@ -46,8 +44,6 @@ return declare([_BaseClass], {
 
 		// get elments to init widgets
 		this.initFormWidget();
-		// parse widgets rules
-		this.parseWidgetRule();
 		// connect widgets
 		this.connectWidgets();
 
@@ -61,10 +57,6 @@ return declare([_BaseClass], {
 			}, this);
 		}, this);
 		console.log('initFormWidget');
-	},
-
-	parseWidgetRule: function() {
-		console.log('parseWidgetRule');
 	},
 
 	connectWidgets: function() {
