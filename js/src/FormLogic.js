@@ -19,7 +19,30 @@ function(declare, lang, array, query, aspect, domClass,
 
 return declare([_BaseClass], {
 
+
+
+	config: {
+		query: ['li.checkboxes', 'li.matrix', 'li.multiple_choice', 'li.dropdown'],
+		savedIn: ['checkboxes', 'matrixes', 'multipleChoices', 'dropdowns'],
+		widgetClass: [Checkboxes, Matrix, MultipleChoice, Dropdown]
+
+	},
+
+	checkboxes: [],
+
+	matrixes: [],
+
+	multipleChoices: [],
+
+	dropdowns: [],
+
 	constructor: function() {
+
+		// init a
+		this.checkboxes = [];
+		this.matrixes = [];
+		this.multipleChoices = [];
+		this.dropdowns = [];
 
 		// get elments to init widgets
 		this.initFormWidget();
@@ -31,6 +54,12 @@ return declare([_BaseClass], {
 	},
 
 	initFormWidget: function() {
+		array.forEach(this.config.query, function(q, i) {
+			var formInputs = query(q, this.domNode);
+			array.forEach(formInputs, function(formInput) {
+				this[this.config.savedIn[i]].push( new this.config.widgetClass[i]({el: formInput}) );
+			}, this);
+		}, this);
 		console.log('initFormWidget');
 	},
 
