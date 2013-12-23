@@ -34,10 +34,10 @@
 			
 			
 			
-					<li id="li_1"  class="multiple_choice sdfsf">
+					<li id="li_1"  class="multiple_choice sdfsf" rule="{target:'2', action:'show'}">
 		<label class="description">1、单选题 （只能选择1个答案） </label>
 		<div>
-			<span><input id="element_1_4"  name="element_1" class="element radio" type="radio" value="4"  />
+			<span><input id="element_1_4"  name="element_1" rule="{target:'3', action:'disable'}" class="element radio" type="radio" value="4"  />
 <label class="choice" for="element_1_4">上海</label>
 </span>
 <span><input id="element_1_5"  name="element_1" class="element radio" type="radio" value="5"  />
@@ -122,7 +122,7 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<tr class="alt" id="mr_6">
+			    	<tr class="alt" id="mr_6" rule="{target:4, action:'hide'}">
 			        	<td class="first_col">First Question</td>
 			            <td><input id="element_6_1" name="element_6" type="radio" value="1"  /></td>
 <td><input id="element_6_2" name="element_6" type="radio" value="2"  /></td>

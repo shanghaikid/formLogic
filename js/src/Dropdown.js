@@ -6,11 +6,12 @@ define([
 		'dojo/_base/array',
 		'dojo/query',
 		'dojo/dom-class',
+		'dojo/dom-attr',
 		'src/_FormWidgetBase',
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, lang, array, query, domClass, _FormWidgetBase){
+function(declare, lang, array, query, domClass, domAttr, _FormWidgetBase){
 
 return declare('Dropdown', [_FormWidgetBase], {
 
@@ -32,7 +33,8 @@ return declare('Dropdown', [_FormWidgetBase], {
 				domNode: item,
 				id: i,
 				value: item.value,
-				label: item.innerText
+				label: item.innerText,
+				rule: domAttr.get(item, 'rule')
 			});
 		}, this);
 	},

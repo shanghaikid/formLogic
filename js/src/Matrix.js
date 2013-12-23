@@ -6,13 +6,14 @@ define([
 		'dojo/_base/array',
 		'dojo/query',
 		'dojo/dom-class',
+		'dojo/dom-attr',
 		'src/_FormWidgetBase',
 		'src/Checkboxes',
 		'src/MultipleChoice',
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, lang, array, query, domClass, _FormWidgetBase, Checkboxes, MultipleChoice){
+function(declare, lang, array, query, domClass, domAttr, _FormWidgetBase, Checkboxes, MultipleChoice){
 
 return declare('Matrix', [_FormWidgetBase], {
 
@@ -62,7 +63,8 @@ return declare('Matrix', [_FormWidgetBase], {
 			var params = {
 				elementClass: this._params[this._type],
 				labels: this.valueLabels,
-				el: item
+				el: item,
+				rule: domAttr.get(item, 'rule') || undefined
 			};
 			var _item = new lang.getObject(this._type)(params);
 			this.items.push(_item);
