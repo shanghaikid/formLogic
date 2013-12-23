@@ -7,10 +7,11 @@ define([
 		'dojo/query',
 		'dojo/aspect',
 		'dojo/dom-class',
+		'dojo/dom-attr',
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, _BaseClass){
 
 return declare([_BaseClass], {
 
@@ -27,12 +28,16 @@ return declare([_BaseClass], {
 
 	originItems: null,
 
+	//widget Rule
+	rule: null,
+
 	constructor: function() {
 
 		// init items;
 		this.items = [];
 		this.initWidget();
 		this.saveOrigin();
+		this.initWidgetRule();
 
 	},
 
@@ -55,6 +60,7 @@ return declare([_BaseClass], {
 				v = item.value,
 				disabled = item.disabled,
 				checked = item.checked,
+				rule = domAttr.get(item, 'rule') || undefined;
 				parent = q.parent()[0];
 			this.items.push(
 				{
@@ -66,11 +72,16 @@ return declare([_BaseClass], {
 					disabled: disabled,
 					mutex: false,
 					checked: checked,
-					id: i
+					id: i,
+					rule :rule
 				}
 			);
 
 		}, this);
+	},
+
+	initWidgetRule: function(){
+		this.rule = domAttr.get(this.domNode, 'rule') || undefined;
 	},
 
 	// todo: needs refine
