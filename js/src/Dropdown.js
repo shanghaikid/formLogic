@@ -1,4 +1,4 @@
-// Checkboxes
+// Dropdown.js
 // 
 define([
 		'dojo/_base/declare',
@@ -7,11 +7,13 @@ define([
 		'dojo/on',
 		'dojo/query',
 		'dojo/dom-attr',
+		'dojo/dom-construct',
 		'src/_FormWidgetBase',
-		'dojo/NodeList-traverse'
+		'dojo/NodeList-traverse',
+		'dojo/NodeList-manipulate'
 		], 
 
-function(declare, lang, array, on, query, domAttr, _FormWidgetBase){
+function(declare, lang, array, on, query, domAttr, domConstruct, _FormWidgetBase){
 
 return declare('Dropdown', [_FormWidgetBase], {
 
@@ -28,6 +30,32 @@ return declare('Dropdown', [_FormWidgetBase], {
 	_initEvent: function() {
 		on(this.domNode, "change", lang.hitch(this, "eventhandler"));
 	},
+
+	saveOrigin: function() {
+		this.originItems = query(this.selector).clone()[0];
+	},
+
+	reset: function(id) {
+		var filteredItem = this._getFilterdItem(id);
+		if (filteredItem === undefined) return;
+		var first = query(this.items[id - 1].domNode)[0];
+		query(filteredItem.domNode).insertAfter(first);
+		this.items[id] = filteredItem;
+		this.items[id].domNode.innerHTML = this.items[id].label;
+
+	},
+
+	_getFilterdItem: function(id){
+		var filteredItem = array.filter(this._filtered, function(item ,i){
+			if (item.id == id ) {
+				var c = lang.clone(item);
+				this._filtered.splice(i, 1);
+				return c;
+			}
+		}, this);
+		return filteredItem[0];
+	},
+
 
 	eventhandler: function(e){
 		this.inherited(arguments);
@@ -47,9 +75,19 @@ return declare('Dropdown', [_FormWidgetBase], {
 		}, this);
 	},
 
-	remove: function() {
+	remove: function(id) {
+		var c = this.items.splice(id, 1);
+		this._filtered.push(c[0]);
+	},
 
+	_filtered: [],
+
+	filter: function(id) {
+		if (id <= 0) return;
+		domConstruct.destroy(this.items[id].domNode);
+		this.remove(id);
 	}
+
 
 
 
