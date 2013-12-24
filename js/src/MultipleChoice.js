@@ -27,12 +27,8 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 	eventhandler: function(e){
 		var t = this._updateStatus(e.target);
 		console.log(this.rule);
-		var c = this.stringfy(this.rule);
-		console.log(c);
-		console.log(this.parseRule(c));
+
 	}
-
-
 
 });
 });
