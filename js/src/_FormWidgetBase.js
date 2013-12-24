@@ -9,12 +9,13 @@ define([
 		'dojo/dom-class',
 		'dojo/dom-attr',
 		'dojo/on',
+		'src/_Rule',
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, on, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, on, _Rule, _BaseClass){
 
-return declare([_BaseClass], {
+return declare([_BaseClass, _Rule], {
 
 	// widget description
 	description: '',
@@ -48,8 +49,20 @@ return declare([_BaseClass], {
 	_initEvent: function() {},
 
 	eventhandler: function(e){
+	},
 
-		console.log('eventhandler', e);
+	_updateStatus: function(item) {
+		var savedItem =  this._byId(item.id);
+		savedItem.checked = item.checked;
+		savedItem.disabled = item.disabled;
+		return savedItem; 
+	},
+
+	_byId: function(id) {
+		var item = array.filter(this.items, function(item) {
+			return item.eId == id;
+		});
+		return item[0];
 	},
 
 	saveOrigin: function() {
@@ -71,7 +84,8 @@ return declare([_BaseClass], {
 				v = item.value,
 				disabled = item.disabled,
 				checked = item.checked,
-				rule = domAttr.get(item, 'rule') || undefined;
+				eId = item.id,
+				rule = this.parseRule( domAttr.get(item, 'rule') || null );
 				parent = q.parent()[0];
 			this.items.push(
 				{
@@ -84,6 +98,7 @@ return declare([_BaseClass], {
 					mutex: false,
 					checked: checked,
 					id: i,
+					eId: eId,
 					rule :rule
 				}
 			);
@@ -91,7 +106,7 @@ return declare([_BaseClass], {
 	},
 
 	initWidgetRule: function(){
-		this.rule = domAttr.get(this.domNode, 'rule') || undefined;
+		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
 	},
 
 	// todo: needs refine
