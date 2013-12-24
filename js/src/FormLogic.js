@@ -14,12 +14,13 @@ define([
 		'src/Matrix',
 		'src/Dropdown',
 		'src/Reg',
+		'src/_Rule',
 		'dojo/NodeList-traverse'
 		], 
 function(declare, lang, array, query, aspect, domClass,
-		_BaseClass, MultipleChoice, Checkboxes, Matrix, Dropdown, Reg){
+		_BaseClass, MultipleChoice, Checkboxes, Matrix, Dropdown, Reg, _Rule){
 
-return declare([_BaseClass], {
+return declare([_BaseClass, _Rule], {
 
 	config: {
 		query: ['li.checkboxes', 'li.matrix', 'li.multiple_choice', 'li.dropdown'],
@@ -30,6 +31,7 @@ return declare([_BaseClass], {
 	constructor: function() {
 		formLogic = this;
 		formLogic.reg = Reg;
+		formLogic._Rule = _Rule;
 		// get elments to init widgets
 		this.initFormWidget();
 		// connect widgets
