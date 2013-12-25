@@ -14,7 +14,7 @@ function(declare, array, lang, dom, on, _FormWidgetBase, Reg){
 
 return declare('MultipleChoice', [_FormWidgetBase], {
 
-//{target:'li_4', status: 'checked', action:'check', param:'all'}
+//{target:'li_4', status: 'checked', compare:'', action:'check', param:'all'}
 
 	elementClass: '.element.radio',
 
@@ -26,13 +26,7 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 	},
 
 	eventhandler: function(e){
-		// current target
-		var t = this._updateStatus(e.target);
-		// widget rule target
-		var widgetTargetItem = this._getTarget(this.rule);
-		var optionTargetItem = this._getTarget(t.rule);
-		this._verify(this.rule);
-		console.log(widgetTargetItem, optionTargetItem);
+		this.inherited(arguments);
 	}
 
 });

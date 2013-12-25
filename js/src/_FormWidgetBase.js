@@ -35,7 +35,7 @@ return declare([_BaseClass, _Rule], {
 	//widget Rule
 	rule: null,
 
-	//
+	actionMap: null,
 
 	constructor: function() {
 
@@ -45,6 +45,14 @@ return declare([_BaseClass, _Rule], {
 		this.saveOrigin();
 		this.initWidgetRule();
 		this._initEvent();
+		this.initActionMap();
+	},
+
+	initActionMap: function(){
+		this.actionMap = {};
+		array.forEach(['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable', 'filter'], function(action){
+			this.actionMap[action] = this[action];
+		}, this);
 
 	},
 
@@ -53,16 +61,15 @@ return declare([_BaseClass, _Rule], {
 //{target:'li_4', status: 'checked', action:'check', param:'all'}
 
 	_getTarget: function(rule){
+		if (rule === null) return rule;
 		return rule.target === 'self' ? this : Reg.byId(rule.target);
 	},
 
-	_verify: function(rule) {
-		var require = rule.status;
-		console.log(require);
-	},
-
-
 	eventhandler: function(e){
+		// current target
+		var t = this._updateStatus(e.target);
+		console.log('target is', t);
+		if (t.rule) this.execute(t.rule);
 	},
 
 	_updateStatus: function(item) {
@@ -216,7 +223,11 @@ return declare([_BaseClass, _Rule], {
 	},
 
 	check: function(id) {
-		if (id === undefined) return;
+		console.log('check', id);
+		if (id === undefined) {
+			this.checkAll();
+			return;
+		}
 		var item = this._getItem(id);
 		if (item.disabled) return;
 		item.input.checked = true;

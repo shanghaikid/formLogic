@@ -53,6 +53,23 @@ return declare(null, {
 				f.call(scope, obj[key], key);
 			}
 		}
+	},
+
+	a: function(){console.log('none action executed');},
+
+	execute: function(rule) {
+		var status = rule.status || null;
+		var verified = this._verify(status);
+
+		if (!verified) return;
+		var p = rule.param === null || rule.param === 'all' ? undefined : rule.param;
+		var a = this.actionMap[rule.action] || this.a;
+		var target = this._getTarget(rule);
+		a.apply(target, [p]);
+	},
+
+	_verify: function() {
+		return true;
 	}
 
 
