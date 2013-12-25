@@ -8,12 +8,14 @@ define([
 		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/dom',
 		'dojo/on',
 		'src/_Rule',
+		'src/Reg',
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, on, _Rule, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, dom, on, _Rule, Reg, _BaseClass){
 
 return declare([_BaseClass, _Rule], {
 
@@ -47,6 +49,18 @@ return declare([_BaseClass, _Rule], {
 	},
 
 	_initEvent: function() {},
+
+//{target:'li_4', status: 'checked', action:'check', param:'all'}
+
+	_getTarget: function(rule){
+		return rule.target === 'self' ? this : Reg.byId(rule.target);
+	},
+
+	_verify: function(rule) {
+		var require = rule.status;
+		console.log(require);
+	},
+
 
 	eventhandler: function(e){
 	},

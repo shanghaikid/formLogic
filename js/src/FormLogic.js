@@ -30,7 +30,6 @@ return declare([_BaseClass, _Rule], {
 
 	constructor: function() {
 		formLogic = this;
-		formLogic.reg = Reg;
 		formLogic._Rule = _Rule;
 		// get elments to init widgets
 		this.initFormWidget();

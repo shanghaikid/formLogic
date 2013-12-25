@@ -4,12 +4,13 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/array',
 		'dojo/_base/lang',
+		'dojo/dom',
 		'dojo/on',
-		'dojo/json',
-		'src/_FormWidgetBase'
+		'src/_FormWidgetBase',
+		'src/Reg'
 		], 
 
-function(declare, array, lang, on, json, _FormWidgetBase){
+function(declare, array, lang, dom, on, _FormWidgetBase, Reg){
 
 return declare('MultipleChoice', [_FormWidgetBase], {
 
@@ -25,9 +26,13 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 	},
 
 	eventhandler: function(e){
+		// current target
 		var t = this._updateStatus(e.target);
-		console.log(this.rule);
-
+		// widget rule target
+		var widgetTargetItem = this._getTarget(this.rule);
+		var optionTargetItem = this._getTarget(t.rule);
+		this._verify(this.rule);
+		console.log(widgetTargetItem, optionTargetItem);
 	}
 
 });
