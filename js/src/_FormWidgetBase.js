@@ -8,12 +8,14 @@ define([
 		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/dom',
 		'dojo/on',
 		'src/_Rule',
+		'src/Reg',
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, on, _Rule, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, dom, on, _Rule, Reg, _BaseClass){
 
 return declare([_BaseClass, _Rule], {
 
@@ -33,7 +35,7 @@ return declare([_BaseClass, _Rule], {
 	//widget Rule
 	rule: null,
 
-	//
+	actionMap: null,
 
 	constructor: function() {
 
@@ -41,18 +43,40 @@ return declare([_BaseClass, _Rule], {
 		this.items = [];
 		this.initWidget();
 		this.saveOrigin();
+		this.initActionMap();
+
 		this.initWidgetRule();
 		this._initEvent();
+	},
+
+	initActionMap: function(){
+		this.actionMap = {};
+		array.forEach(['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable', 'filter'], function(action){
+			this.actionMap[action] = this[action];
+		}, this);
 
 	},
 
 	_initEvent: function() {},
 
+//{target:'li_4', status: 'checked', action:'check', param:'all'}
+
+	_getTarget: function(rule){
+		if (rule === null) return rule;
+		return rule.target === 'self' ? this : Reg.byId(rule.target);
+	},
+
 	eventhandler: function(e){
+		// current target
+		var t = this._updateStatus(e.target);
+		if (!t) return;
+		//console.log('target is', e,t);
+		if (t.rule) this.execute(t.rule, e);
 	},
 
 	_updateStatus: function(item) {
 		var savedItem =  this._byId(item.id);
+		if (!savedItem) return undefined;
 		savedItem.checked = item.checked;
 		savedItem.disabled = item.disabled;
 		return savedItem; 
@@ -75,7 +99,7 @@ return declare([_BaseClass, _Rule], {
 
 	initWidget: function() {
 
-		console.log('query', this.elementClass);
+		//console.log('query', this.elementClass);
 		// get items
 		var items = query(this.elementClass, this.domNode);
 		array.forEach(items, function(item, i) {
@@ -107,6 +131,8 @@ return declare([_BaseClass, _Rule], {
 
 	initWidgetRule: function(){
 		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
+		if(this.rule) this.execute(this.rule, undefined, true);
+
 	},
 
 	// todo: needs refine
@@ -121,22 +147,27 @@ return declare([_BaseClass, _Rule], {
 			disabled = oitem.disabled,
 			checked = oitem.checked;
 
-		show ? this.show(item) : this.hide(item);
-		disabled ? this.disable(item) : this.enable(item);
-		checked ? this.check(item) : this.uncheck(item);
-		
+		if (show) this.show(item); 
+			else this.hide(item);
+		if (disabled) this.disable(item);
+			else this.enable(item);
+		if (checked) this.check(item);
+			else this.uncheck(item);
+
 	},
 
 	resetAll: function() {
 		array.map(this.items, this.reset, this);
 	},
 
-	get: function(id, attr) {
-		return attr && this.items[id][attr] ? this.items[id][attr] : this.items[id];
+	_getItemStatus: function(item) {
+		return item[this.defaultStatusKey];
 	},
 
 	_getItem: function(id) {
-		return typeof id === 'number' ? this.items[id] : id;
+		if (typeof id === 'object') return id;
+		if (typeof id === 'string') return this.items[id*1];
+		if (typeof id === 'number') return this.items[id];
 	},
 
 	_getOriginItem: function(id) {
@@ -202,7 +233,10 @@ return declare([_BaseClass, _Rule], {
 	},
 
 	check: function(id) {
-		if (id === undefined) return;
+		if (id === undefined) {
+			this.checkAll();
+			return;
+		}
 		var item = this._getItem(id);
 		if (item.disabled) return;
 		item.input.checked = true;

@@ -53,6 +53,35 @@ return declare(null, {
 				f.call(scope, obj[key], key);
 			}
 		}
+	},
+
+	a: function(){console.log('none action executed');},
+
+	undoAction: function(){
+		console.log('let us undo');
+	},
+
+	execute: function(rule, e, force) {
+		var status = rule.status || null;
+		var target = this._getTarget(rule);
+		var verified = force || this._verify(rule, e);
+
+		if (!verified) {
+			this.undoAction();
+			return;
+		}
+		var p = rule.param === null || rule.param === 'all' ? undefined : rule.param;
+		var a = target.actionMap[rule.action] || this.a;
+
+		//console.log('target obj is', target);
+		a.apply(target, [p]);
+	},
+
+	_verify: function(rule, e) {
+		var s = rule.condition || this.defaultStatusValue;
+		var itemStatus = this._getItemStatus(e.target);
+		console.log('s,itemStatus', s, itemStatus);
+		return s == itemStatus;
 	}
 
 

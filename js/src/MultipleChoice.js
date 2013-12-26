@@ -4,16 +4,17 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/array',
 		'dojo/_base/lang',
+		'dojo/dom',
 		'dojo/on',
-		'dojo/json',
-		'src/_FormWidgetBase'
+		'src/_FormWidgetBase',
+		'src/Reg'
 		], 
 
-function(declare, array, lang, on, json, _FormWidgetBase){
+function(declare, array, lang, dom, on, _FormWidgetBase, Reg){
 
 return declare('MultipleChoice', [_FormWidgetBase], {
 
-//{target:'li_4', status: 'checked', action:'check', param:'all'}
+//{target:'li_4', status: 'checked', compare:'', action:'check', param:'all'}
 
 	elementClass: '.element.radio',
 
@@ -24,10 +25,16 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 
 	},
 
-	eventhandler: function(e){
-		var t = this._updateStatus(e.target);
-		console.log(this.rule);
+	initActionMap: function(){
+		this.inherited(arguments);
+	},
 
+	defaultStatusKey: 'checked',
+
+	defaultStatusValue: true,
+
+	eventhandler: function(e){
+		this.inherited(arguments);
 	}
 
 });

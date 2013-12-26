@@ -21,16 +21,29 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	},
 
+	defaultStatusKey: 'checked',
+
+	defaultStatusValue: true,
+
+	initActionMap: function(){
+		this.inherited(arguments);
+		this.actionMap.mutex = this.mutex;
+	},
+
 	eventhandler: function(e){
 		this.inherited(arguments);
 	},
 
 	mutex: function(id) {
 		var item = this._getItem(id);
-		this.uncheckAll();
-		this.disableAll();
+		this.reset();
+		this.disable();
 		this.enable(item);
 		this.check(item);
+	},
+
+	undoAction: function() {
+		this.reset();
 	}
 
 
