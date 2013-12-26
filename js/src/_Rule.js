@@ -57,19 +57,31 @@ return declare(null, {
 
 	a: function(){console.log('none action executed');},
 
-	execute: function(rule) {
-		var status = rule.status || null;
-		var verified = this._verify(status);
+	undoAction: function(){
+		console.log('let us undo');
+	},
 
-		if (!verified) return;
+	execute: function(rule, e) {
+		var status = rule.status || null;
+		var target = this._getTarget(rule);
+		var verified = this._verify(rule, e);
+
+		if (!verified) {
+			this.undoAction();
+			return;
+		}
 		var p = rule.param === null || rule.param === 'all' ? undefined : rule.param;
 		var a = this.actionMap[rule.action] || this.a;
-		var target = this._getTarget(rule);
+
+		console.log('target obj is', target);
 		a.apply(target, [p]);
 	},
 
-	_verify: function() {
-		return true;
+	_verify: function(rule, e) {
+		var s = rule.condition || this.defaultStatusValue;
+		var itemStatus = this._getItemStatus(e.target);
+		console.log('s,itemStatus', s, itemStatus);
+		return s == itemStatus;
 	}
 
 

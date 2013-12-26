@@ -68,12 +68,14 @@ return declare([_BaseClass, _Rule], {
 	eventhandler: function(e){
 		// current target
 		var t = this._updateStatus(e.target);
-		console.log('target is', t);
-		if (t.rule) this.execute(t.rule);
+		if (!t) return;
+		console.log('target is', e,t);
+		if (t.rule) this.execute(t.rule, e);
 	},
 
 	_updateStatus: function(item) {
 		var savedItem =  this._byId(item.id);
+		if (!savedItem) return undefined;
 		savedItem.checked = item.checked;
 		savedItem.disabled = item.disabled;
 		return savedItem; 
@@ -96,7 +98,7 @@ return declare([_BaseClass, _Rule], {
 
 	initWidget: function() {
 
-		console.log('query', this.elementClass);
+		//console.log('query', this.elementClass);
 		// get items
 		var items = query(this.elementClass, this.domNode);
 		array.forEach(items, function(item, i) {
@@ -142,22 +144,27 @@ return declare([_BaseClass, _Rule], {
 			disabled = oitem.disabled,
 			checked = oitem.checked;
 
-		show ? this.show(item) : this.hide(item);
-		disabled ? this.disable(item) : this.enable(item);
-		checked ? this.check(item) : this.uncheck(item);
-		
+		if (show) this.show(item); 
+			else this.hide(item);
+		if (disabled) this.disable(item);
+			else this.enable(item);
+		if (checked) this.check(item);
+			else this.uncheck(item);
+
 	},
 
 	resetAll: function() {
 		array.map(this.items, this.reset, this);
 	},
 
-	get: function(id, attr) {
-		return attr && this.items[id][attr] ? this.items[id][attr] : this.items[id];
+	_getItemStatus: function(item) {
+		return item[this.defaultStatusKey];
 	},
 
 	_getItem: function(id) {
-		return typeof id === 'number' ? this.items[id] : id;
+		if (typeof id === 'object') return id;
+		if (typeof id === 'string') return this.items[id*1];
+		if (typeof id === 'number') return this.items[id];
 	},
 
 	_getOriginItem: function(id) {
@@ -223,7 +230,6 @@ return declare([_BaseClass, _Rule], {
 	},
 
 	check: function(id) {
-		console.log('check', id);
 		if (id === undefined) {
 			this.checkAll();
 			return;

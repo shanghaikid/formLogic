@@ -25,6 +25,14 @@ return declare('MultipleChoice', [_FormWidgetBase], {
 
 	},
 
+	initActionMap: function(){
+		this.inherited(arguments);
+	},
+
+	defaultStatusKey: 'checked',
+
+	defaultStatusValue: true,
+
 	eventhandler: function(e){
 		this.inherited(arguments);
 	}
