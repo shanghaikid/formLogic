@@ -34,8 +34,6 @@ return declare([_BaseClass, _Rule], {
 		formLogic.Reg = Reg;
 		// get elments to init widgets
 		this.initFormWidget();
-		// connect widgets
-		this.connectWidgets();
 
 	},
 
@@ -46,11 +44,7 @@ return declare([_BaseClass, _Rule], {
 				Reg.add(new this.config.widgetClass[i]({el: formInput}));
 			}, this);
 		}, this);
-		console.log('initFormWidget');
-	},
-
-	connectWidgets: function() {
-		console.log('connectWidgets');
+		//console.log('initFormWidget');
 	}
 
 

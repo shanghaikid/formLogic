@@ -138,12 +138,44 @@ return declare('Matrix', [_FormWidgetBase], {
 		}, this);
 	},
 
+	mutexCol: function(cId) {
+		if (cId === undefined) return;
+		this.disable();
+		this.enableCol(cId);
+		this.checkCol(cId);
+	},
+
+	mutexOption: function(rule) {
+		console.log('mutexOption', rule);
+	},
+
 	uncheckCol: function(cId) {
 		if (cId === undefined) return;
 		array.forEach(this.items, function(item, i){
 			item.uncheck(cId);
 		}, this);
-	}
+	},
+
+	contain: function(rule) {
+		console.log('contain', rule);
+	},
+
+	compare: function(rule) {
+		console.log('compare', rule);
+	},
+
+	initActionMap: function(){
+		this.actionMap = {};
+		this.actionMap.checkCol = this.checkCol;
+		this.actionMap.uncheckCol = this.uncheckCol;
+		this.actionMap.disableCol = this.disableCol;
+		this.actionMap.enableCol = this.enableCol;
+		this.actionMap.mutexCol = this.mutexCol;
+		this.actionMap.contain = this.contain;
+		this.actionMap.mutexOption = this.mutexOption;
+		this.actionMap.compare = this.compare;
+
+	},
 
 
 

@@ -34,7 +34,7 @@
 			
 			
 			
-					<li id="li_1"  class="multiple_choice sdfsf" rule="{target:li_4, status:checked, action:check, param:all}">
+					<li id="li_1"  class="multiple_choice sdfsf" >
 		<label class="description">1、单选题 （只能选择1个答案） </label>
 		<div>
 			<span><input id="element_1_4"  name="element_1" rule="{target:self, action:disable}" class="element radio" type="radio" value="4"  />
@@ -100,10 +100,10 @@
 		</li>		<li id="li_5"  class="multiple_choice">
 		<label class="description">5、题目之间跳问 （如果A选择1,询问B题，如果A选择2，询问C题） </label>
 		<div>
-			<span><input id="element_5_1"  name="element_5" class="element radio" type="radio" value="1"  />
+			<span><input id="element_5_1"  name="element_5" rule="{target:li_6, action:mutexCol, param:0}" class="element radio" type="radio" value="1"  />
 <label class="choice" for="element_5_1">拥有者 1</label>
 </span>
-<span><input id="element_5_2"  name="element_5" class="element radio" type="radio" value="2"  />
+<span><input id="element_5_2"  name="element_5" rule="{target:li_6, action:mutexCol, param:1}" class="element radio" type="radio" value="2"  />
 <label class="choice" for="element_5_2">非拥有者 2</label>
 </span>
 
@@ -122,7 +122,7 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<tr class="alt" id="mr_6" rule="{target:4, action:hide}">
+			    	<tr class="alt" id="mr_6">
 			        	<td class="first_col">First Question</td>
 			            <td><input id="element_6_1" name="element_6" type="radio" value="1"  /></td>
 <td><input id="element_6_2" name="element_6" type="radio" value="2"  /></td>
@@ -138,7 +138,7 @@
 			    </tbody>
 			</table>
 		
-		</li>		<li id="li_10" class="matrix">
+		</li>		<li id="li_10" class="matrix" rule="{target:self, action:compare, param:4>3>2>1}">
 			<table>
 				<caption>
 					7、题目之间大于小于关系（A题要大于或者等于B题） 
@@ -204,7 +204,7 @@
 </span>
 
 		</div> 
-		</li>		<li id="li_12" class="matrix">
+		</li>		<li id="li_12" class="matrix" rule="{target:self, action:contain, param:1>0}">
 			<table>
 				<caption>
 					8、题目之间的包含关系（第一考虑购买的品牌一定是在所有考虑购买的品牌里面） 
@@ -268,7 +268,7 @@
 </span>
 
 		</div> 
-		</li>		<li id="li_16" class="matrix">
+		</li>		<li id="li_16" class="matrix" rule="{target:self, action:mutexOption}">
 			<table>
 				<caption>
 					9、题目之间的互斥关系（第一考虑的和第二考虑的不能相同） 

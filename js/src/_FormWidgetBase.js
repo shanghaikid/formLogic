@@ -43,9 +43,10 @@ return declare([_BaseClass, _Rule], {
 		this.items = [];
 		this.initWidget();
 		this.saveOrigin();
+		this.initActionMap();
+
 		this.initWidgetRule();
 		this._initEvent();
-		this.initActionMap();
 	},
 
 	initActionMap: function(){
@@ -69,7 +70,7 @@ return declare([_BaseClass, _Rule], {
 		// current target
 		var t = this._updateStatus(e.target);
 		if (!t) return;
-		console.log('target is', e,t);
+		//console.log('target is', e,t);
 		if (t.rule) this.execute(t.rule, e);
 	},
 
@@ -130,6 +131,8 @@ return declare([_BaseClass, _Rule], {
 
 	initWidgetRule: function(){
 		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
+		if(this.rule) this.execute(this.rule, undefined, true);
+
 	},
 
 	// todo: needs refine

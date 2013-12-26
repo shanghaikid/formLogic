@@ -61,19 +61,19 @@ return declare(null, {
 		console.log('let us undo');
 	},
 
-	execute: function(rule, e) {
+	execute: function(rule, e, force) {
 		var status = rule.status || null;
 		var target = this._getTarget(rule);
-		var verified = this._verify(rule, e);
+		var verified = force || this._verify(rule, e);
 
 		if (!verified) {
 			this.undoAction();
 			return;
 		}
 		var p = rule.param === null || rule.param === 'all' ? undefined : rule.param;
-		var a = this.actionMap[rule.action] || this.a;
+		var a = target.actionMap[rule.action] || this.a;
 
-		console.log('target obj is', target);
+		//console.log('target obj is', target);
 		a.apply(target, [p]);
 	},
 
