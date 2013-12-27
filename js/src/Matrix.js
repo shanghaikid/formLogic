@@ -204,10 +204,6 @@ return declare('Matrix', [_FormWidgetBase], {
 
 		this.enableCol(smallest);
 
-		function getNextChildItem(id){
-			return id * 1 + 1;
-		}
-
 		console.log('contain', rule);
 	},
 
