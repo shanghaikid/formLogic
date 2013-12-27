@@ -5,6 +5,7 @@ define([
 		'dojo/_base/lang',
 		'dojo/_base/array',
 		'dojo/query',
+		'dojo/on',
 		'dojo/dom-class',
 		'dojo/dom-attr',
 		'src/_FormWidgetBase',
@@ -13,7 +14,7 @@ define([
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, lang, array, query, domClass, domAttr, _FormWidgetBase, Checkboxes, MultipleChoice){
+function(declare, lang, array, query, on, domClass, domAttr, _FormWidgetBase, Checkboxes, MultipleChoice){
 
 return declare('Matrix', [_FormWidgetBase], {
 
@@ -146,7 +147,7 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	mutexOption: function(rule) {
-		console.log('mutexOption', rule);
+		//console.log('mutexOption', rule);
 	},
 
 	uncheckCol: function(cId) {
@@ -157,6 +158,56 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	contain: function(rule) {
+		//1>0
+		var cols = rule.split('>'),
+			len = cols.length,
+			smallest = cols[len - 1]*1,
+			biggest = cols[0]*1;
+
+		array.forEach(cols, function(col, i){
+			var colId = col*1;
+			// disable all col checkboxes
+			this.disableCol(colId);
+			// if current col is the first col, 
+			if (colId < biggest) {
+
+				array.forEach(this.items, function(item, i){
+					var nextColId = colId + 1,
+						nextItem = item.items[nextColId],
+						thisItem = item.items[colId];
+					// if exist next Col, bind the click event
+					if (nextItem) {
+						on(item.items[colId].input, 'click', function(e){
+
+								array.forEach(cols, function(col, i){
+									var _colId = col*1;
+									// if this input is checked, when click it, means uncheck it, reset and disable all other cols which bigger than this col
+									if (thisItem.checked) {
+										if ( _colId > colId) {
+											item.reset(_colId)
+											item.disable(_colId); 
+										}
+									// if this input is unchecked, check it. reset all other cols
+									} else {
+										if ( _colId >= nextColId) {
+											item.reset(_colId); 
+										}
+									}
+								}, this);
+
+
+						});
+					}
+				}, this);
+			}
+		}, this);
+
+		this.enableCol(smallest);
+
+		function getNextChildItem(id){
+			return id * 1 + 1;
+		}
+
 		console.log('contain', rule);
 	},
 
