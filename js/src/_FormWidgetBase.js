@@ -254,6 +254,16 @@ return declare([_BaseClass, _Rule], {
 
 	uncheckAll: function() {
 		array.map(this.items, this.uncheck, this);
+	},
+
+	enableItems: function(number) {
+		// enable how many inputs(number)
+		if (typeof number !== 'number' && number < 0) return;
+		this.reset();
+		this.disable();
+		for (var i = 0; i < number; i++) {
+			this.enable(i);
+		}
 	}
 
 

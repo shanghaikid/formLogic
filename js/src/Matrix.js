@@ -156,7 +156,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		//this.checkCol(cId);
 	},
 
-	mutexOption: function(rule) {
+	mutexOption: function() {
 		// loop every col
 		array.forEach(this.colIds, function(colId){
 			// loop every items(row)
@@ -195,26 +195,26 @@ return declare('Matrix', [_FormWidgetBase], {
 			// if current col is the first col, 
 			if (colId < biggest) {
 
-				array.forEach(this.items, function(item){
+				array.forEach(this.items, function(row){
 					var nextColId = colId + 1,
-						nextItem = item.items[nextColId],
-						thisItem = item.items[colId];
+						nextItem = row.items[nextColId],
+						thisItem = row.items[colId];
 					// if exist next Col, bind the click event
 					if (nextItem) {
-						on(item.items[colId].input, 'click', function(e){
+						on(row.items[colId].input, 'click', function(e){
 
 								array.forEach(cols, function(col){
 									var _colId = col*1;
 									// if this input is checked, when click it, means uncheck it, reset and disable all other cols which bigger than this col
 									if (thisItem.checked) {
 										if ( _colId > colId) {
-											item.reset(_colId);
-											item.disable(_colId); 
+											row.reset(_colId);
+											row.disable(_colId); 
 										}
 									// if this input is unchecked, check it. reset all other cols
 									} else {
 										if ( _colId >= nextColId) {
-											item.reset(_colId); 
+											row.reset(_colId); 
 										}
 									}
 								}, this);
@@ -232,6 +232,27 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	compare: function(rule) {
+		// rows
+		var rows = this.items;
+		// loop each row
+		array.forEach(rows, function(row, i) {
+			// get next row
+			var nextRow = this.items[i+1];
+			// if exist next row
+			if (nextRow) {
+				// loop current row items
+				array.forEach(row.items, function(input, colId) {
+					// if click current input, 
+					on(input.input, 'click', function(e) {
+						// get current colId, calculate number of Item should be enable for the next row
+						var numberOfEnable = colId + 1;
+						// enable the next row for the given numbers of items
+						nextRow.enableItems(numberOfEnable);
+					});
+
+				}, this);
+			}
+		}, this);
 		//console.log('compare', rule);
 	},
 
