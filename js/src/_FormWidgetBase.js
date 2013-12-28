@@ -131,7 +131,7 @@ return declare([_BaseClass, _Rule], {
 
 	initWidgetRule: function(){
 		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
-		if(this.rule) this.execute(this.rule, undefined, true);
+		if (this.rule) this.execute(this.rule, undefined, true);
 
 	},
 

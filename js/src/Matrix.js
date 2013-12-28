@@ -33,6 +33,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		this._type = this._getType();
 		// set Items
 		this._initMatrixItmes();
+		this._initColIds();
 
 	},
 
@@ -74,6 +75,13 @@ return declare('Matrix', [_FormWidgetBase], {
 			var _item = new lang.getObject(this._type)(params);
 			this.items.push(_item);
 		}, this);
+	},
+
+	_initColIds: function() {
+		this.colIds = [];
+		for (var i = 0; i< this.valueLabels.length; i++) {
+			this.colIds.push(i);
+		}
 	},
 
 	// no origin needed for matrix
@@ -147,7 +155,21 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	mutexOption: function(rule) {
-		//console.log('mutexOption', rule);
+		// loop every col
+		array.forEach(this.colIds, function(colId){
+			// loop every items(row)
+			array.forEach(this.items, function(item){
+				// the current input
+				var thisItem = item.items[colId];
+				// when click the input,
+				on(thisItem.input, 'click', lang.hitch(this, function(e){
+					// uncheck this col
+					this.uncheckCol(colId);
+					// check the current item
+					item.check(thisItem);
+				}));
+			}, this);
+		}, this);
 	},
 
 	uncheckCol: function(cId) {
@@ -171,7 +193,7 @@ return declare('Matrix', [_FormWidgetBase], {
 			// if current col is the first col, 
 			if (colId < biggest) {
 
-				array.forEach(this.items, function(item, i){
+				array.forEach(this.items, function(item){
 					var nextColId = colId + 1,
 						nextItem = item.items[nextColId],
 						thisItem = item.items[colId];
@@ -179,12 +201,12 @@ return declare('Matrix', [_FormWidgetBase], {
 					if (nextItem) {
 						on(item.items[colId].input, 'click', function(e){
 
-								array.forEach(cols, function(col, i){
+								array.forEach(cols, function(col){
 									var _colId = col*1;
 									// if this input is checked, when click it, means uncheck it, reset and disable all other cols which bigger than this col
 									if (thisItem.checked) {
 										if ( _colId > colId) {
-											item.reset(_colId)
+											item.reset(_colId);
 											item.disable(_colId); 
 										}
 									// if this input is unchecked, check it. reset all other cols
@@ -204,11 +226,11 @@ return declare('Matrix', [_FormWidgetBase], {
 
 		this.enableCol(smallest);
 
-		console.log('contain', rule);
+		//console.log('contain', rule);
 	},
 
 	compare: function(rule) {
-		console.log('compare', rule);
+		//console.log('compare', rule);
 	},
 
 	initActionMap: function(){
