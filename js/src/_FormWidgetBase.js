@@ -35,37 +35,44 @@ return declare([_BaseClass, _Rule], {
 	//widget Rule
 	rule: null,
 
+	// rule action list
 	actionMap: null,
 
 	constructor: function() {
 
 		// init items;
 		this.items = [];
+		// init widget
 		this.initWidget();
+		// clone originate items
 		this.saveOrigin();
+		// initialize rule action list
 		this.initActionMap();
-
+		// parse widget rule
 		this.initWidgetRule();
+		// bind default event to inputs inside the widget
 		this._initEvent();
 	},
 
 	initActionMap: function(){
 		this.actionMap = {};
+		// default action maps. you can add yourselfs in the single widget definition
 		array.forEach(['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable', 'filter'], function(action){
 			this.actionMap[action] = this[action];
 		}, this);
 
 	},
 
+	// just an interface
 	_initEvent: function() {},
 
-//{target:'li_4', status: 'checked', action:'check', param:'all'}
-
+	// get rule target object
 	_getTarget: function(rule){
 		if (rule === null) return rule;
 		return rule.target === 'self' ? this : Reg.byId(rule.target);
 	},
 
+	// default event handler for inputs inside the widget
 	eventhandler: function(e){
 		// current target
 		var t = this._updateStatus(e.target);
@@ -74,6 +81,7 @@ return declare([_BaseClass, _Rule], {
 		if (t.rule) this.execute(t.rule, e);
 	},
 
+	// when event happened, update item's status, return the item.
 	_updateStatus: function(item) {
 		var savedItem =  this._byId(item.id);
 		if (!savedItem) return undefined;
@@ -82,6 +90,7 @@ return declare([_BaseClass, _Rule], {
 		return savedItem; 
 	},
 
+	// find the item object by dom id
 	_byId: function(id) {
 		var item = array.filter(this.items, function(item) {
 			return item.eId == id;
@@ -89,14 +98,17 @@ return declare([_BaseClass, _Rule], {
 		return item[0];
 	},
 
+	// clone origin items
 	saveOrigin: function() {
 		this.originItems = lang.clone(this.items);
 	},
 
+	// return widget domNode
 	_getDomNode: function(el) {
 		return query(el)[0];
 	},
 
+	// initialize widget
 	initWidget: function() {
 
 		//console.log('query', this.elementClass);
@@ -129,11 +141,14 @@ return declare([_BaseClass, _Rule], {
 		}, this);
 	},
 
+	// parse widget rule, not item rule
 	initWidgetRule: function(){
 		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
 		if (this.rule) this.execute(this.rule, undefined, true);
 
 	},
+
+	// Useful method for each widgets
 
 	// todo: needs refine
 	reset: function(id) {

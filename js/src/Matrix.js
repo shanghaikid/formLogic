@@ -77,6 +77,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		}, this);
 	},
 
+	// save the colIds
 	_initColIds: function() {
 		this.colIds = [];
 		for (var i = 0; i< this.valueLabels.length; i++) {
@@ -156,6 +157,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		//this.checkCol(cId);
 	},
 
+	// one col can only be checked once
 	mutexOption: function() {
 		// loop every col
 		array.forEach(this.colIds, function(colId){
@@ -181,6 +183,8 @@ return declare('Matrix', [_FormWidgetBase], {
 		}, this);
 	},
 
+	// col relationship can be 0>1>2
+	// otherwise, disable the col
 	contain: function(rule) {
 		//1>0
 		var cols = rule.split('>'),
@@ -219,7 +223,6 @@ return declare('Matrix', [_FormWidgetBase], {
 									}
 								}, this);
 
-
 						});
 					}
 				}, this);
@@ -231,6 +234,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		//console.log('contain', rule);
 	},
 
+	// compare the row, row a must >= row b, otherwise, disable the options
 	compare: function(rule) {
 		// rows
 		var rows = this.items;
@@ -256,6 +260,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		//console.log('compare', rule);
 	},
 
+	// Matrix action list
 	initActionMap: function(){
 		this.actionMap = {};
 		this.actionMap.checkCol = this.checkCol;
@@ -267,10 +272,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		this.actionMap.mutexOption = this.mutexOption;
 		this.actionMap.compare = this.compare;
 
-	},
-
-
-
+	}
 
 });
 });

@@ -13,6 +13,7 @@ return declare(null, {
 // {target:'li_4', status: 'checked', action:'check', param:'all'} 
 // ["target:'li_4'", " status: 'checked'", " action:'check'", " param:'all'"] 
 
+	// parse rule from the string
 	parseRule : function(rule) {
 		var result = null,
 			tmp;
@@ -28,6 +29,7 @@ return declare(null, {
 		return result;
 	},
 
+	// trim each single item
 	_parseSingleRule: function(rule){
 		var tmp = rule.split(':');
 		tmp[0] = string.trim(tmp[0]);
@@ -47,6 +49,7 @@ return declare(null, {
 		return str;
 	},
 
+	// useful funciton
 	objEach: function(obj, f, scope){
 		for(var key in obj){
 			if(obj.hasOwnProperty(key)){
@@ -55,35 +58,44 @@ return declare(null, {
 		}
 	},
 
+	// for action not in the list
 	a: function(){console.log('none action executed');},
 
+	// not implement, undo function
 	undoAction: function(){
 		console.log('let us undo');
 	},
 
+	// default execute rule function
 	execute: function(rule, e, force) {
+		// rule status
 		var status = rule.status || null;
+		// rule target
 		var target = this._getTarget(rule);
+		// rule condition
 		var verified = force || this._verify(rule, e);
 
 		if (!verified) {
 			this.undoAction();
 			return;
 		}
+		// get the rule params
 		var p = rule.param === null || rule.param === 'all' ? undefined : rule.param;
+		// get the rule actions
 		var a = target.actionMap[rule.action] || this.a;
 
 		//console.log('target obj is', target);
+		// execute the action
 		a.apply(target, [p]);
 	},
 
+	// verify the status of current item
 	_verify: function(rule, e) {
 		var s = rule.condition || this.defaultStatusValue;
 		var itemStatus = this._getItemStatus(e.target);
-		console.log('s,itemStatus', s, itemStatus);
+		//console.log('s,itemStatus', s, itemStatus);
 		return s == itemStatus;
 	}
-
 
 });
 });

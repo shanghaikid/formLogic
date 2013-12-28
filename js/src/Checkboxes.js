@@ -46,10 +46,5 @@ return declare('Checkboxes', [_FormWidgetBase], {
 		this.reset();
 	}
 
-
-
-
-
-
 });
 });
