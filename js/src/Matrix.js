@@ -151,7 +151,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		if (cId === undefined) return;
 		this.disable();
 		this.enableCol(cId);
-		this.checkCol(cId);
+		//this.checkCol(cId);
 	},
 
 	mutexOption: function(rule) {
