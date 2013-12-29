@@ -11,10 +11,11 @@ define([
 		'src/_FormWidgetBase',
 		'src/Checkboxes',
 		'src/MultipleChoice',
+		'src/Reg',
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, lang, array, query, on, domClass, domAttr, _FormWidgetBase, Checkboxes, MultipleChoice){
+function(declare, lang, array, query, on, domClass, domAttr, _FormWidgetBase, Checkboxes, MultipleChoice, Reg){
 
 return declare('Matrix', [_FormWidgetBase], {
 
@@ -74,6 +75,7 @@ return declare('Matrix', [_FormWidgetBase], {
 			};
 			var _item = new lang.getObject(this._type)(params);
 			this.items.push(_item);
+			Reg.add(_item);
 		}, this);
 	},
 
