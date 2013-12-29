@@ -209,6 +209,7 @@ return declare('Matrix', [_FormWidgetBase], {
 
 								array.forEach(cols, function(col){
 									var _colId = col*1;
+									if (thisItem.disabled) return;
 									// if this input is checked, when click it, means uncheck it, reset and disable all other cols which bigger than this col
 									if (thisItem.checked) {
 										if ( _colId > colId) {
@@ -218,7 +219,7 @@ return declare('Matrix', [_FormWidgetBase], {
 									// if this input is unchecked, check it. reset all other cols
 									} else {
 										if ( _colId >= nextColId) {
-											row.reset(_colId); 
+											row.reset(nextColId); 
 										}
 									}
 								}, this);
