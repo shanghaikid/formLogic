@@ -2,14 +2,10 @@
 // 
 define([
 		'dojo/_base/declare',
-		'dojo/_base/lang',
-		'dojo/_base/array',
-		'dojo/query',
-		'dojo/aspect',
+		'dojo/dom-construct',
 		'src/_BaseClass'
 		], 
-function(declare, lang, array, query, aspect,
-		_BaseClass){
+function(declare, domConstruct, _BaseClass){
 
 return {
 
@@ -23,6 +19,14 @@ return {
 
 	byId: function(id) {
 		return this._w[id] || null;
+	},
+
+	destroy: function(id) {
+		var item = this.byId(id);
+		if(item) {
+			domConstruct.destroy(item.domNode);
+			delete this._w[id];
+		}
 	}
 
 };

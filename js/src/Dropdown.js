@@ -9,11 +9,13 @@ define([
 		'dojo/dom-attr',
 		'dojo/dom-construct',
 		'src/_FormWidgetBase',
+		'src/Selector',
+		'src/Reg',
 		'dojo/NodeList-traverse',
 		'dojo/NodeList-manipulate'
 		], 
 
-function(declare, lang, array, on, query, domAttr, domConstruct, _FormWidgetBase){
+function(declare, lang, array, on, query, domAttr, domConstruct, _FormWidgetBase, Selector, Reg){
 
 return declare('Dropdown', [_FormWidgetBase], {
 
@@ -21,7 +23,7 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	items: null,
 
-	selector: null,
+	selectors: null,
 
 	initWidget: function() {
 		this._initDropdown();
@@ -32,60 +34,93 @@ return declare('Dropdown', [_FormWidgetBase], {
 	},
 
 	saveOrigin: function() {
-		this.originItems = query(this.selector).clone()[0];
 	},
-
-	reset: function(id) {
-		var filteredItem = this._getFilterdItem(id);
-		if (filteredItem === undefined) return;
-		var first = query(this.items[id - 1].domNode)[0];
-		query(filteredItem.domNode).insertAfter(first);
-		this.items[id] = filteredItem;
-		this.items[id].domNode.innerHTML = this.items[id].label;
-
-	},
-
-	_getFilterdItem: function(id){
-		var filteredItem = array.filter(this._filtered, function(item ,i){
-			if (item.id == id ) {
-				var c = lang.clone(item);
-				this._filtered.splice(i, 1);
-				return c;
-			}
-		}, this);
-		return filteredItem[0];
-	},
-
 
 	eventhandler: function(e){
 		this.inherited(arguments);
 	},
 
 	_initDropdown: function() {
-		this.selector = query(this.elementClass, this.domNode)[0];
+		var el = query(this.elementClass, this.domNode)[0];
+		console.log(el);
 		this.items = [];
-		array.forEach(this.selector.options, function(item, i){
-			this.items.push({
-				domNode: item,
-				id: i,
-				value: item.value,
-				label: item.innerText,
-				rule: domAttr.get(item, 'rule')
-			});
+		this.items.push( new Selector({el: el}));
+		this.originItemLength = this.items[0].items.length;
+	},
+
+	filterSelect: function() {
+		this.eventhandler = this._filterSelect;
+	},
+
+	_filterSelect: function(e) {
+		// if the selection is the first time selection, do the normal action
+		// if the selector has been operated, reset rest selectors
+		var selectedItemId = e.target.selectedIndex;
+		var selector = this._byId(e.target.id);
+		if (selector.lastSelectedItemId) {
+			this.resetOthers(selector);
+		}
+
+		selector.lastSelectedItemId = selectedItemId;
+
+		if (this.items.length  === this.originItemLength -1) return;
+
+		var newSelectorInnerHtml = selector.getFilteredOptionStr(selectedItemId);
+		var wrapper = domConstruct.create('div',null, this.domNode, 'last');
+		var select = domConstruct.create(
+				"select", 
+				{
+					innerHTML: newSelectorInnerHtml,
+					className: 'element select medium',
+					id: this.eId + '_' + (this.items.length),
+				}, 
+				wrapper, 'last');
+
+		var nextSelector = new Selector({el: select, wrapper: wrapper});
+		this.items.push(nextSelector);
+		Reg.add(nextSelector);
+
+		//console.log('selector items', selectedItemId, newSelectorInnerHtml, nextSelector);
+
+	},
+
+	resetOthers: function(selector) {
+		var sId = 0,
+			idList =[];
+		var resetList = array.filter(this.items, function(s, id) {
+			if (s == selector) {
+				sId = id;
+			}
+			if (id>sId){
+				idList.push(id);
+				return true;
+			}
+			return id > sId;
+		}, this);
+
+		console.log('resetList', this.items, resetList, idList);
+
+
+		for (var i = 0; i < idList.length; i ++){
+			this.remove(idList[i]);
+		}
+		array.map(resetList, function(s, i) {
+			if (s.wrapper) domConstruct.destroy(s.wrapper);
+			Reg.destroy(s.eId);
+
 		}, this);
 	},
 
 	remove: function(id) {
-		var c = this.items.splice(id, 1);
-		this._filtered.push(c[0]);
+		console.log('after', id);
+		this.items.splice(id, 1);
+				console.log('after', this.items);
+
 	},
 
-	_filtered: [],
-
-	filter: function(id) {
-		if (id <= 0) return;
-		domConstruct.destroy(this.items[id].domNode);
-		this.remove(id);
+	initActionMap: function(){
+		this.actionMap = {};
+		this.actionMap.filterSelect = this.filterSelect;
 	}
 
 
