@@ -55,15 +55,15 @@ return declare('Dropdown', [_FormWidgetBase], {
 	_filterSelect: function(e) {
 		// if the selection is the first time selection, do the normal action
 		// if the selector has been operated, reset rest selectors
+
 		var selectedItemId = e.target.selectedIndex;
 		var selector = this._byId(e.target.id);
-		if (selector.lastSelectedItemId) {
-			this.resetOthers(selector);
-		}
+		console.log('selectedItemId, lastSelectedItemId', selectedItemId);
 
-		selector.lastSelectedItemId = selectedItemId;
+		this.resetOthers(selector);
 
 		if (this.items.length  === this.originItemLength -1) return;
+
 
 		var newSelectorInnerHtml = selector.getFilteredOptionStr(selectedItemId);
 		var wrapper = domConstruct.create('div',null, this.domNode, 'last');
@@ -80,28 +80,23 @@ return declare('Dropdown', [_FormWidgetBase], {
 		this.items.push(nextSelector);
 		Reg.add(nextSelector);
 
-		//console.log('selector items', selectedItemId, newSelectorInnerHtml, nextSelector);
-
 	},
 
 	resetOthers: function(selector) {
-		var sId = 0,
-			idList =[];
+		var latterIdx = this.items.indexOf(selector),
+			idList = [];
 		var resetList = array.filter(this.items, function(s, id) {
-			if (s == selector) {
-				sId = id;
-			}
-			if (id>sId){
+
+			if (id > latterIdx ){
 				idList.push(id);
 				return true;
 			}
-			return id > sId;
+			return false;
 		}, this);
 
-		console.log('resetList', this.items, resetList, idList);
 
-
-		for (var i = 0; i < idList.length; i ++){
+		if (idList.length === 0) return;
+		for (var i = idList.length -1; i >=0; i --){
 			this.remove(idList[i]);
 		}
 		array.map(resetList, function(s, i) {
@@ -112,7 +107,6 @@ return declare('Dropdown', [_FormWidgetBase], {
 	},
 
 	remove: function(id) {
-		console.log('after', id);
 		this.items.splice(id, 1);
 				console.log('after', this.items);
 
