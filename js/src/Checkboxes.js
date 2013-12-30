@@ -23,16 +23,6 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	},
 
-	_addLogic: function(){
-		this.inherited(arguments);
-		array.forEach(query('label.choice', this.domNode), function(item){
-			var questionButton = domConstruct.create('div',{ innerHTML: "<button>添加选项规则</button>", class:'addRule' }, item, 'after');
-			on(questionButton, 'click', lang.hitch(this, function(e){
-				console.log('this', this);
-				e.preventDefault();
-			}));
-		}, this);
-	},
 
 	defaultStatusKey: 'checked',
 

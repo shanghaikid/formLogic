@@ -45,30 +45,43 @@ return declare([_BaseClass, _Rule], {
 		this.items = [];
 		// init widget
 		this.initWidget();
+		// clone originate items
+		this.saveOrigin();
+		// initialize rule action list
+		this.initActionMap();
+		// parse widget rule
+		this.initWidgetRule();
+		// bind default event to inputs inside the widget
+		this._initEvent();
+
 		if (this.addLogic) {
+			this.disable();
 			this._addLogic();
-		} else {
-			// clone originate items
-			this.saveOrigin();
-			// initialize rule action list
-			this.initActionMap();
-			// parse widget rule
-			this.initWidgetRule();
-			// bind default event to inputs inside the widget
-			this._initEvent();
-		}
+		} 
 
 	},
 
 	_addLogic: function() {
 		var captionNode = this._getCaption();
 		if(captionNode) {
-			var widgetLogicButton = domConstruct.create('span',{ innerHTML: "<button>添加问题规则</button>", class:'addQuestionRule' }, captionNode, 'after');
-			on(widgetLogicButton, 'click', lang.hitch(this, function(e){
-					console.log('this', this);
-				e.preventDefault();
-			}));
+			if (this.rule) {
+				this.createWidgetRemoveRuleButton(captionNode);
+			} else {
+				this.createWidgetLogicButton(captionNode); 
+			}
 		}
+		this.addItemLogic();
+	},
+
+	addItemLogic: function(){
+		array.forEach(this.items, function(item, i) {
+			var labels = query('label.choice', this.domNode);
+			if (item.rule) {
+				this.createItemRuleButton(labels[i], item);
+			} else {
+				this.createItemRemoveRuleButton(labels[i], item);
+			}
+		}, this);
 	},
 
 	initActionMap: function(){

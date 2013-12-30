@@ -47,6 +47,8 @@ return declare('Dropdown', [_FormWidgetBase], {
 		this.originItemLength = this.items[0].items.length;
 	},
 
+	addItemLogic: function(){},
+
 	filterSelect: function() {
 		this.eventhandler = this._filterSelect;
 	},
@@ -104,6 +106,7 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 		}, this);
 	},
+	disable: function(){},
 
 	remove: function(id) {
 		this.items.splice(id, 1);
