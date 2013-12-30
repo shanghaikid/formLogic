@@ -8,6 +8,7 @@ define([
 		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/dom-construct',
 		'dojo/dom',
 		'dojo/on',
 		'src/_Rule',
@@ -15,7 +16,7 @@ define([
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, dom, on, _Rule, Reg, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, domConstruct, dom, on, _Rule, Reg, _BaseClass){
 
 return declare([_BaseClass, _Rule], {
 
@@ -44,14 +45,30 @@ return declare([_BaseClass, _Rule], {
 		this.items = [];
 		// init widget
 		this.initWidget();
-		// clone originate items
-		this.saveOrigin();
-		// initialize rule action list
-		this.initActionMap();
-		// parse widget rule
-		this.initWidgetRule();
-		// bind default event to inputs inside the widget
-		this._initEvent();
+		if (this.addLogic) {
+			this._addLogic();
+		} else {
+			// clone originate items
+			this.saveOrigin();
+			// initialize rule action list
+			this.initActionMap();
+			// parse widget rule
+			this.initWidgetRule();
+			// bind default event to inputs inside the widget
+			this._initEvent();
+		}
+
+	},
+
+	_addLogic: function() {
+		var captionNode = this._getCaption();
+		if(captionNode) {
+			var widgetLogicButton = domConstruct.create('span',{ innerHTML: "<button>添加问题规则</button>", class:'addQuestionRule' }, captionNode, 'after');
+			on(widgetLogicButton, 'click', lang.hitch(this, function(e){
+					console.log('this', this);
+				e.preventDefault();
+			}));
+		}
 	},
 
 	initActionMap: function(){
@@ -139,6 +156,10 @@ return declare([_BaseClass, _Rule], {
 				}
 			);
 		}, this);
+	},
+
+	_getCaption: function() {
+		return query('label.description', this.domNode)[0];
 	},
 
 	// parse widget rule, not item rule

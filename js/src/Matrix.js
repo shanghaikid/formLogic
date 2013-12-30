@@ -43,7 +43,7 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	_getCaption: function() {
-		return query('caption', this.domNode)[0].innerText;
+		return query('caption', this.domNode)[0];
 	},
 
 	_getType: function() {
