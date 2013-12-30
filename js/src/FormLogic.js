@@ -33,8 +33,16 @@ return declare([_BaseClass, _Rule], {
 		formLogic._Rule = _Rule;
 		formLogic.Reg = Reg;
 		// get elments to init widgets
-		this.initFormWidget();
+		if (this.addLogic) {
+			this.initLogicPanel();
+		} else {
+			this.initFormWidget();
+		}
 
+	},
+
+	initLogicPanel: function() {
+		
 	},
 
 	initFormWidget: function() {
