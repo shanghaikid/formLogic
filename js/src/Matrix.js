@@ -8,6 +8,7 @@ define([
 		'dojo/on',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/dom-construct',
 		'src/_FormWidgetBase',
 		'src/Checkboxes',
 		'src/MultipleChoice',
@@ -15,7 +16,7 @@ define([
 		'dojo/NodeList-traverse'
 		], 
 
-function(declare, lang, array, query, on, domClass, domAttr, _FormWidgetBase, Checkboxes, MultipleChoice, Reg){
+function(declare, lang, array, query, on, domClass, domAttr, domConstruct ,_FormWidgetBase, Checkboxes, MultipleChoice, Reg){
 
 return declare('Matrix', [_FormWidgetBase], {
 
@@ -43,7 +44,7 @@ return declare('Matrix', [_FormWidgetBase], {
 	},
 
 	_getCaption: function() {
-		return query('caption', this.domNode)[0].innerText;
+		return query('caption', this.domNode)[0];
 	},
 
 	_getType: function() {
@@ -52,10 +53,14 @@ return declare('Matrix', [_FormWidgetBase], {
 		return single || multi;
 	},
 
+	buttonPos: 'last',
+
 	_params: {
 		'MultipleChoice': 'input[type=radio]',
 		'Checkboxes': 'input[type=checkbox]'
 	},
+
+	addItemLogic: function(){},
 
 	_initMatrixItmes: function() {
 		this.items = [];

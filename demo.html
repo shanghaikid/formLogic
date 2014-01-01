@@ -7,20 +7,31 @@
 <link rel="stylesheet" type="text/css" href="./cbr/data/form_12864/css/view.css" media="all" />
 <link rel="stylesheet" type="text/css" href="./cbr/view.mobile.css" media="all" />
 
+<link rel="stylesheet" href="./js/lib/dijit/themes/soria/soria.css" />
+
+
 
 <script type="text/javascript" src="./cbr/js/jquery.min.js"></script>
 <script type="text/javascript" src="./cbr/js/jquery-ui/ui/jquery.effects.core.js"></script>
-
+<!--
 <script type="text/javascript" src="./cbr/view.js"></script>
+-->
 <style>
 .hidden{display: none !important;}
+.addQuestionRule{float: left;}
+.addQuestionRule button{color:#FFF; background: #C30; border: none; cursor: point}
+.addRule button{color:#FFF; border: none; background: #06C; cursor:pointer;}
+.dijitDialogPaneContent {
+    width: 300px !important;
+    height: 200px !important;
+}
 </style>
 
 
 
 
 </head>
-<body id="main_body" class="">
+<body id="main_body" class="soria">
 	
 	<div id="form_container" class="WarpShadow WLarge WNormal">
 	
@@ -457,6 +468,7 @@
 		baseUrl: './js/',
 		packages: [
 			{ name: "dojo", location: "lib/dojo" },
+			{ name: "dijit", location: "lib/dijit"},
 			{ name: "src", location: "src"}
 		]
        

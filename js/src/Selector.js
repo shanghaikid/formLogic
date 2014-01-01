@@ -141,6 +141,8 @@ return declare('Selector', [_FormWidgetBase], {
 
 	},
 
+	disable: function(){},
+
 	subDropdowns: [this.domNode],
 
 	initActionMap: function(){

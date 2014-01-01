@@ -4,13 +4,15 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/array',
 		'dojo/_base/lang',
+		'dojo/query',
 		'dojo/dom',
+		'dojo/dom-construct',
 		'dojo/on',
 		'src/_FormWidgetBase',
 		'src/Reg'
 		], 
 
-function(declare, array, lang, dom, on, _FormWidgetBase, Reg){
+function(declare, array, lang, query, dom, domConstruct, on, _FormWidgetBase, Reg){
 
 return declare('MultipleChoice', [_FormWidgetBase], {
 

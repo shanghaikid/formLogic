@@ -42,11 +42,12 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	_initDropdown: function() {
 		var el = query(this.elementClass, this.domNode)[0];
-		console.log(el);
 		this.items = [];
 		this.items.push( new Selector({el: el}));
 		this.originItemLength = this.items[0].items.length;
 	},
+
+	addItemLogic: function(){},
 
 	filterSelect: function() {
 		this.eventhandler = this._filterSelect;
@@ -105,11 +106,10 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 		}, this);
 	},
+	disable: function(){},
 
 	remove: function(id) {
 		this.items.splice(id, 1);
-				console.log('after', this.items);
-
 	},
 
 	initActionMap: function(){

@@ -8,6 +8,7 @@ define([
 		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/dom-construct',
 		'dojo/dom',
 		'dojo/on',
 		'src/_Rule',
@@ -15,7 +16,7 @@ define([
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, dom, on, _Rule, Reg, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, domConstruct, dom, on, _Rule, Reg, _BaseClass){
 
 return declare([_BaseClass, _Rule], {
 
@@ -52,6 +53,35 @@ return declare([_BaseClass, _Rule], {
 		this.initWidgetRule();
 		// bind default event to inputs inside the widget
 		this._initEvent();
+
+		if (this.addLogic) {
+			this.disable();
+			this._addLogic();
+		} 
+
+	},
+
+	_addLogic: function() {
+		var captionNode = this._getCaption();
+		if(captionNode) {
+			if (this.rule) {
+				this.createWidgetRemoveRuleButton(captionNode);
+			} else {
+				this.createWidgetLogicButton(captionNode); 
+			}
+		}
+		this.addItemLogic();
+	},
+
+	addItemLogic: function(){
+		array.forEach(this.items, function(item, i) {
+			var labels = query('label.choice', this.domNode);
+			if (item.rule) {
+				this.createItemRuleButton(labels[i], item);
+			} else {
+				this.createItemRemoveRuleButton(labels[i], item);
+			}
+		}, this);
 	},
 
 	initActionMap: function(){
@@ -139,6 +169,10 @@ return declare([_BaseClass, _Rule], {
 				}
 			);
 		}, this);
+	},
+
+	_getCaption: function() {
+		return query('label.description', this.domNode)[0];
 	},
 
 	// parse widget rule, not item rule

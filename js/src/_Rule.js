@@ -4,12 +4,87 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/lang',
 		'dojo/_base/array',
-		'dojo/string'
+		'dojo/string',
+		'dojo/query',
+		'dojo/on',
+		'dojo/dom-construct',
+		'src/OptionPanel'
 
 		], 
-function(declare, lang, array, string){
+function(declare, lang, array, string, query, on, domConstruct, OptionPanel){
 
 return declare(null, {
+
+	_createButton: function(labelNode, isAdd) {
+		var htmlstr = isAdd ? "<button>+规则" + labelNode.innerHTML + "</button>" : "<button>-规则</button>";
+		var className = isAdd ? "addRule" : "removeRule";
+		return domConstruct.create('div',{ innerHTML:htmlstr, class:className }, labelNode, this.buttonPos);
+	},
+
+	createItemRuleButton: function(labelNode, item) {
+		var questionButton = this._createButton(labelNode, true);
+		var it = item;
+		on(questionButton, 'click', lang.hitch(this, function(e){
+			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerHTML,
+				onOk: lang.hitch(this, function(){this.onAddItemRule(questionButton, labelNode, it);}),
+				a: this
+			}).show();
+			
+			
+		}));
+	},
+
+	onAddItemRule: function(btn, labelNode, item){
+		domConstruct.destroy(btn);
+		this.createItemRemoveRuleButton(labelNode, item);
+	},
+
+	createItemRemoveRuleButton: function(labelNode, item) {
+		var it = item;
+		var questionButton = this._createButton(labelNode);
+		on(questionButton, 'click', lang.hitch(this, function(e){
+			this.onRemoveItemRule(questionButton, labelNode, it);
+			e.preventDefault();
+		}));
+	},
+
+	onRemoveItemRule: function(btn, labelNode, item){
+		domConstruct.destroy(btn);
+		if (item.rule) item.rule = null;
+		this.createItemRuleButton(labelNode, item);
+	},
+
+	buttonPos: 'after',
+
+	createWidgetLogicButton: function(captionNode) {
+		var widgetLogicButton = this._createButton(captionNode, true);
+		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
+			this.onAddWidgetRule(widgetLogicButton);
+			e.preventDefault();
+		}));
+	},
+
+	onAddWidgetRule: function(btn){
+		domConstruct.destroy(btn);
+		this.createWidgetRemoveRuleButton(this._getCaption());
+	},
+
+	createWidgetRemoveRuleButton: function(captionNode) {
+		var widgetLogicButton = this._createButton(captionNode);
+		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
+			this.onRemoveWidgeRule(widgetLogicButton);
+			e.preventDefault();
+		}));
+	},
+
+	onRemoveWidgeRule: function(btn){
+		domConstruct.destroy(btn);
+		this.rule = null;
+		this.createWidgetLogicButton(this._getCaption());
+	},
+
 // {target:'li_4', status: 'checked', action:'check', param:'all'} 
 // ["target:'li_4'", " status: 'checked'", " action:'check'", " param:'all'"] 
 

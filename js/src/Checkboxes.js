@@ -4,11 +4,13 @@ define([
 		'dojo/_base/declare',
 		'dojo/_base/lang',
 		'dojo/_base/array',
+		'dojo/query',
 		'dojo/on',
+		'dojo/dom-construct',
 		'src/_FormWidgetBase'
 		], 
 
-function(declare, lang, array, on, _FormWidgetBase){
+function(declare, lang, array, query, on, domConstruct,_FormWidgetBase){
 
 return declare('Checkboxes', [_FormWidgetBase], {
 
@@ -20,6 +22,7 @@ return declare('Checkboxes', [_FormWidgetBase], {
 		}, this);
 
 	},
+
 
 	defaultStatusKey: 'checked',
 
