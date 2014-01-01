@@ -20,7 +20,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	templateString: template,
 
 	postMixInProperties: function(){
-		this.title = '为' + this.title + '添加规则';
+		this.title = '为选项 ' + this.title + ' 添加规则';
 
 		this.inherited(arguments);
 	},
