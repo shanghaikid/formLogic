@@ -15,7 +15,7 @@ define([
 		], 
 function(declare, lang, query, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, template){
 
-return declare([Dialog], {
+return declare([Dialog, _WidgetsInTemplateMixin], {
 
 	templateString: template,
 
@@ -38,6 +38,14 @@ return declare([Dialog], {
 		this.inherited(arguments);
 		this.onOk();
 		this.hide();
+	},
+
+	destroy: function() {
+		this.okBtn.destroy();
+		this.cancelBtn.destroy();
+		this.inherited(arguments);
+		
+
 	}
 
 

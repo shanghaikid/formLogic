@@ -134,7 +134,7 @@ return declare(null, {
 	},
 
 	// for action not in the list
-	a: function(){console.log('none action executed');},
+	a: function(){console.warn('none action executed');},
 
 	// not implement, undo function
 	undoAction: function(){
