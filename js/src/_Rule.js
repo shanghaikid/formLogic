@@ -7,10 +7,11 @@ define([
 		'dojo/string',
 		'dojo/query',
 		'dojo/on',
-		'dojo/dom-construct'
+		'dojo/dom-construct',
+		'src/OptionPanel'
 
 		], 
-function(declare, lang, array, string, query, on, domConstruct){
+function(declare, lang, array, string, query, on, domConstruct, OptionPanel){
 
 return declare(null, {
 
@@ -24,8 +25,14 @@ return declare(null, {
 		var questionButton = this._createButton(labelNode, true);
 		var it = item;
 		on(questionButton, 'click', lang.hitch(this, function(e){
-			this.onAddItemRule(questionButton, labelNode, it);
 			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerHTML,
+				onOk: lang.hitch(this, function(){this.onAddItemRule(questionButton, labelNode, it);}),
+				a: this
+			}).show();
+			
+			
 		}));
 	},
 
