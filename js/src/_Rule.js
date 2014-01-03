@@ -20,8 +20,9 @@ return declare(null, {
 		return RulesConfig[this.declaredClass] || null;
 	},
 
-	_createButton: function(labelNode, isAdd) {
-		var htmlstr = isAdd ? "<button>+规则" + labelNode.innerHTML + "</button>" : "<button>-规则</button>";
+	_createButton: function(labelNode, isAdd, isWidget) {
+		var text = isWidget ? "题逻辑" : "选项逻辑";
+		var htmlstr = isAdd ? "<button>添加"  + text + "</button>" : "<button>删除"+text+"</button>";
 		var className = isAdd ? "addRule" : "removeRule";
 		return domConstruct.create('div',{ innerHTML:htmlstr, class:className }, labelNode, this.buttonPos);
 	},
@@ -32,11 +33,13 @@ return declare(null, {
 		on(questionButton, 'click', lang.hitch(this, function(e){
 			e.preventDefault();
 			new OptionPanel({
-				title: labelNode.innerHTML,
-				onOk: lang.hitch(this, function(){this.onAddItemRule(questionButton, labelNode, it);}),
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){console.log('rule', rule);this.onAddItemRule(questionButton, labelNode, it);}),
 				ruleDef: this.rulesDef,
 				self: this,
-				page: this.page
+				page: this.page,
+				source: item,
+				type: 'item'
 			}).show();
 			
 			
@@ -65,11 +68,18 @@ return declare(null, {
 
 	buttonPos: 'after',
 
-	createWidgetLogicButton: function(captionNode) {
-		var widgetLogicButton = this._createButton(captionNode, true);
+	createWidgetLogicButton: function(labelNode) {
+		var widgetLogicButton = this._createButton(labelNode, true, true);
 		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
-			this.onAddWidgetRule(widgetLogicButton);
 			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){console.log('rule', rule);this.onAddWidgetRule(widgetLogicButton, labelNode);}),
+				ruleDef: this.rulesDef,
+				self: this,
+				page: this.page,
+				type: 'widget'
+			}).show();
 		}));
 	},
 
@@ -78,8 +88,8 @@ return declare(null, {
 		this.createWidgetRemoveRuleButton(this._getCaption());
 	},
 
-	createWidgetRemoveRuleButton: function(captionNode) {
-		var widgetLogicButton = this._createButton(captionNode);
+	createWidgetRemoveRuleButton: function(labelNode) {
+		var widgetLogicButton = this._createButton(labelNode);
 		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
 			this.onRemoveWidgeRule(widgetLogicButton);
 			e.preventDefault();

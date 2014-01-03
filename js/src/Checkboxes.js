@@ -23,7 +23,6 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	},
 
-
 	defaultStatusKey: 'checked',
 
 	defaultStatusValue: true,
@@ -31,6 +30,16 @@ return declare('Checkboxes', [_FormWidgetBase], {
 	initActionMap: function(){
 		this.inherited(arguments);
 		this.actionMap.mutex = this.mutex;
+	},
+
+	_initActions: function() {
+		this.inherited(arguments);
+		this.actions.push({
+			label: '互斥',
+			action: 'mutex',
+			widgetAction: true
+		});
+
 	},
 
 	eventhandler: function(e){

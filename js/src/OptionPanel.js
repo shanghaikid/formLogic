@@ -44,14 +44,20 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	ruleDef: null,
 
 	postCreate:function() {
-		// get self
-		// get tagets=>action definition object
-		// create the target select
-		// create the action select
-		// connect two selects
-		this._initWidgets();
-		domStyle.set(this.itemSelWrapper, 'display', 'none');
-		domStyle.set(this.actionSelWrapper, 'display', 'none');
+
+		if (this.type === 'widget') {
+			domStyle.set(this.itemSelWrapper, 'display', 'none');
+			domStyle.set(this.actionSelWrapper, 'display', 'block');
+			domStyle.set(this.targetSelWrapper, 'display', 'none');
+			this._initAction(this.self);
+		}
+
+		if (this.type === 'item') {
+			this._initWidgets();
+			domStyle.set(this.itemSelWrapper, 'display', 'none');
+			domStyle.set(this.actionSelWrapper, 'display', 'none');
+		}
+
 		this.okBtn.set('disabled', true);
 
 		this.inherited(arguments);
@@ -114,7 +120,6 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 
 	_initItems: function(widget){
 
-		if (this.canItemLogic(widget)) {
 			this.itemSel.options = [];
 			this.itemSel.addOption({
 				label: '请选择操作的选项',
@@ -122,10 +127,10 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 				disabled: true
 			});
 
-			array.forEach(widget.items, function(item){
+			array.forEach(widget.items, function(item, i){
 				this.itemSel.addOption({
 					label: item.label,
-					value: item.eId
+					value: i+''
 				});
 			}, this);
 
@@ -133,13 +138,10 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 
 			//BIND event
 			on(this.itemSel, 'change', function() {
-				if(this.value != 'first') {
-					domStyle.set(_this.actionSelWrapper, 'display', 'block');
-					_this._initAction(widget);
-				}
+				domStyle.set(_this.actionSelWrapper, 'display', 'block');
+				_this._initAction(widget);
 			});
 
-		}
 	},
 
 	_initAction: function(widget) {
@@ -150,29 +152,37 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			disabled: true
 		});
 
+		console.log('dddd', widget.actions);
 		array.forEach(widget.actions, function(action){
-			this.actionSel.addOption({
-				label: action.label,
-				value: action.action
-			});
+			if (this.type == 'widget' && action.widgetAction) {
+				this.actionSel.addOption({label: action.label, value: action.action});
+			}
+
+			if (this.type == 'item' && !action.widgetAction) {
+				this.actionSel.addOption({label: action.label, value: action.action});
+			}
+
 		}, this);
 
 
 		var _this = this;
 		on(this.actionSel, 'change', function() {
-			if(this.value == 'first') return;
 			_this.okBtn.set('disabled', false);
 		});
 	},
 
-	onOk: function() {
-		console.log('on Ok');
-	},
-
 	_onOk: function() {
-		this.inherited(arguments);
-		this.onOk();
-		this.hide();
+		console.log('on _ok');
+		var isWidget = this.type === 'widget';
+		var res = {
+			source: isWidget ? null : this.source.eId,
+			target : isWidget? 'self' : this.targetSel.get('value'),
+			action: this.actionSel.get('value'),
+			param: this.itemSel.get('value')*1
+		};
+
+		this.onOk(res);
+		//this.inherited(arguments);
 	},
 
 	destroy: function() {

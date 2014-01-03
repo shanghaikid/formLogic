@@ -57,6 +57,7 @@ return declare([_BaseClass, _Rule], {
 		if (this.addLogic) {
 			this.disable();
 			this.rulesDef =  this._initRuleDefinition();
+			this._initActions();
 			this._addLogic();
 		} 
 
@@ -64,7 +65,7 @@ return declare([_BaseClass, _Rule], {
 
 	_addLogic: function() {
 		var captionNode = this._getCaption();
-		if(captionNode) {
+		if(captionNode && this.declaredClass != 'MultipleChoice') {
 			if (this.rule) {
 				this.createWidgetRemoveRuleButton(captionNode);
 			} else {
@@ -78,9 +79,9 @@ return declare([_BaseClass, _Rule], {
 		array.forEach(this.items, function(item, i) {
 			var labels = query('label.choice', this.domNode);
 			if (item.rule) {
-				this.createItemRuleButton(labels[i], item);
-			} else {
 				this.createItemRemoveRuleButton(labels[i], item);
+			} else {
+				this.createItemRuleButton(labels[i], item);
 			}
 		}, this);
 	},
@@ -316,15 +317,18 @@ return declare([_BaseClass, _Rule], {
 		}
 	},
 
-	// ['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable']
-	actions: [
-		{label: '选中', action: 'check'},
-		{label: '取消选中', action: 'uncheck'},
-		{label: '显示', action: 'show'},
-		{label: '隐藏', action: 'hide'},
-		{label: '禁用', action: 'disable'},
-		{label: '启用', action: 'enable'}
-	]
+	_initActions: function() {
+		this.actions =  [
+			{label: '选中', action: 'check'},
+			{label: '取消选中', action: 'uncheck'},
+			{label: '显示', action: 'show'},
+			{label: '隐藏', action: 'hide'},
+			{label: '禁用', action: 'disable'},
+			{label: '启用', action: 'enable'}
+		];
+	}
+
+
 
 });
 });
