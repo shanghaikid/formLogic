@@ -279,8 +279,17 @@ return declare('Matrix', [_FormWidgetBase], {
 		this.actionMap.contain = this.contain;
 		this.actionMap.mutexOption = this.mutexOption;
 		this.actionMap.compare = this.compare;
+	},
 
-	}
+	actions: [
+		{label: '选中列', action: 'checkCol'},
+		{label: '取消选中列', action: 'uncheckCol'},
+		{label: '禁用列', action: 'disableCol'},
+		{label: '启用列', action: 'enableCol'},
+		{label: '列包含关系', action: 'contain'},
+		{label: '列比较关系', action: 'compare'},
+		{label: '列互斥', action: 'mutexOption'}
+	]
 
 });
 });

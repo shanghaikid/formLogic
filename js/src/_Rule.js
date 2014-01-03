@@ -8,12 +8,17 @@ define([
 		'dojo/query',
 		'dojo/on',
 		'dojo/dom-construct',
-		'src/OptionPanel'
+		'src/OptionPanel',
+		'src/RulesConfig'
 
 		], 
-function(declare, lang, array, string, query, on, domConstruct, OptionPanel){
+function(declare, lang, array, string, query, on, domConstruct, OptionPanel, RulesConfig){
 
 return declare(null, {
+
+	_initRuleDefinition: function() {
+		return RulesConfig[this.declaredClass] || null;
+	},
 
 	_createButton: function(labelNode, isAdd) {
 		var htmlstr = isAdd ? "<button>+规则" + labelNode.innerHTML + "</button>" : "<button>-规则</button>";
@@ -29,7 +34,9 @@ return declare(null, {
 			new OptionPanel({
 				title: labelNode.innerHTML,
 				onOk: lang.hitch(this, function(){this.onAddItemRule(questionButton, labelNode, it);}),
-				a: this
+				ruleDef: this.rulesDef,
+				self: this,
+				page: this.page
 			}).show();
 			
 			

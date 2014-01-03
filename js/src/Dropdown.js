@@ -115,10 +115,11 @@ return declare('Dropdown', [_FormWidgetBase], {
 	initActionMap: function(){
 		this.actionMap = {};
 		this.actionMap.filterSelect = this.filterSelect;
-	}
+	},
 
-
-
+	actions: [
+		{label: '排序过滤', action: 'filterSelect'}
+	]
 
 
 });

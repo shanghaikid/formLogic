@@ -56,6 +56,7 @@ return declare([_BaseClass, _Rule], {
 
 		if (this.addLogic) {
 			this.disable();
+			this.rulesDef =  this._initRuleDefinition();
 			this._addLogic();
 		} 
 
@@ -87,7 +88,7 @@ return declare([_BaseClass, _Rule], {
 	initActionMap: function(){
 		this.actionMap = {};
 		// default action maps. you can add yourselfs in the single widget definition
-		array.forEach(['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable', 'filter'], function(action){
+		array.forEach(['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable'], function(action){
 			this.actionMap[action] = this[action];
 		}, this);
 
@@ -313,9 +314,17 @@ return declare([_BaseClass, _Rule], {
 		for (var i = 0; i < number; i++) {
 			this.enable(i);
 		}
-	}
+	},
 
-
+	// ['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable']
+	actions: [
+		{label: '选中', action: 'check'},
+		{label: '取消选中', action: 'uncheck'},
+		{label: '显示', action: 'show'},
+		{label: '隐藏', action: 'hide'},
+		{label: '禁用', action: 'disable'},
+		{label: '启用', action: 'enable'}
+	]
 
 });
 });
