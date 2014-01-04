@@ -8,6 +8,7 @@ define([
 		'dojo/on',
 		'dojo/dom-attr',
 		'dojo/dom-style',
+		'dojo/dom-construct',
 
 		'dijit/_WidgetBase', 
 		'dijit/_TemplatedMixin',
@@ -24,7 +25,7 @@ define([
 		'dijit/Form/Button'
 
 		], 
-function(declare, lang, array, query, on, domAttr, domStyle,
+function(declare, lang, array, query, on, domAttr, domStyle, domConstruct,
 		_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, 
 		Select, 
 		Reg, RulesConfig,
@@ -37,7 +38,12 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	page: null,
 
 	postMixInProperties: function(){
-		this.title = '选择 ' + this.title + ' 后';
+		var t = this.title;
+		this.title = '选择 ' + t + ' 后';
+
+		if (this.type === 'widget') {
+			this.title = '对' + t + '添加题逻辑';
+		}
 		this.inherited(arguments);
 	},
 
@@ -53,9 +59,9 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 		}
 
 		if (this.type === 'item') {
-			this._initWidgets();
 			domStyle.set(this.itemSelWrapper, 'display', 'none');
 			domStyle.set(this.actionSelWrapper, 'display', 'none');
+			this._initWidgets();
 		}
 
 		this.okBtn.set('disabled', true);
@@ -105,6 +111,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			var canItemLogic = widget && _this.canItemLogic(widget);
 			domStyle.set(_this.itemSelWrapper, 'display', canItemLogic ? 'block': 'none');
 			domStyle.set(_this.actionSelWrapper, 'display', canItemLogic ? 'none': 'block');
+
 			if (canItemLogic) {
 				_this._initItems(widget);
 			} else {
@@ -115,10 +122,10 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	},
 
 	canItemLogic: function(widget) {
-		return widget.declaredClass ==='Checkboxes' || widget.declaredClass === 'MultipleChoice';
+		return widget.declaredClass !== 'Dropdown';
 	},
 
-	_initItems: function(widget){
+	_initItems: function(widget, disableOnchange){
 
 			this.itemSel.options = [];
 			this.itemSel.addOption({
@@ -127,9 +134,11 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 				disabled: true
 			});
 
-			array.forEach(widget.items, function(item, i){
+			var items = widget.declaredClass === 'Matrix' ? widget.valueLabels : widget.items;
+
+			array.forEach(items, function(item, i){
 				this.itemSel.addOption({
-					label: item.label,
+					label: widget.declaredClass === 'Matrix' ?  item: item.label,
 					value: i+''
 				});
 			}, this);
@@ -137,7 +146,11 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			var _this = this;
 
 			//BIND event
-			on(this.itemSel, 'change', function() {
+			if (disableOnchange) {
+				if(this.itemHandler) this.itemHandler.remove();
+				return;
+			}
+			this.itemHandler = on(this.itemSel, 'change', function() {
 				domStyle.set(_this.actionSelWrapper, 'display', 'block');
 				_this._initAction(widget);
 			});
@@ -147,12 +160,11 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	_initAction: function(widget) {
 		this.actionSel.options = [];
 		this.actionSel.addOption({
-			label: '请选择要执行的动作',
+			label: this.type == 'widget' ? '请选择要添加的逻辑' : '请选择要执行的动作',
 			value: 'first',
 			disabled: true
 		});
 
-		console.log('dddd', widget.actions);
 		array.forEach(widget.actions, function(action){
 			if (this.type == 'widget' && action.widgetAction) {
 				this.actionSel.addOption({label: action.label, value: action.action});
@@ -167,18 +179,38 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 
 		var _this = this;
 		on(this.actionSel, 'change', function() {
+			array.some(widget.actions, function(action){
+				var isTheAction = _this.actionSel.get('value') == action.action;
+				if (isTheAction && action.tip) {
+					this.widgetLogicTip.innerText = action.tip;
+					return true;
+				}
+
+				if (isTheAction && action.showItemSel) {
+					this._createExtraParam(widget, action);
+					return true;
+				}
+
+			}, _this);
 			_this.okBtn.set('disabled', false);
 		});
 	},
 
+	_createExtraParam: function(widget, action){
+		this._initItems(widget, true);
+		domConstruct.place(this.itemSel.domNode, this.extraParamWrapper);
+	},
+
 	_onOk: function() {
-		console.log('on _ok');
 		var isWidget = this.type === 'widget';
+		var param = this.itemSel.get('value'),
+			action = this.actionSel.get('value');
+
 		var res = {
 			source: isWidget ? null : this.source.eId,
 			target : isWidget? 'self' : this.targetSel.get('value'),
-			action: this.actionSel.get('value'),
-			param: this.itemSel.get('value')*1
+			action: action,
+			param: param === '' ? null : param*1
 		};
 
 		this.onOk(res);

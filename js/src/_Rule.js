@@ -89,7 +89,7 @@ return declare(null, {
 	},
 
 	createWidgetRemoveRuleButton: function(labelNode) {
-		var widgetLogicButton = this._createButton(labelNode);
+		var widgetLogicButton = this._createButton(labelNode, false, true);
 		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
 			this.onRemoveWidgeRule(widgetLogicButton);
 			e.preventDefault();

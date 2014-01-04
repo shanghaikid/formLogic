@@ -34,12 +34,7 @@ return declare('Checkboxes', [_FormWidgetBase], {
 
 	_initActions: function() {
 		this.inherited(arguments);
-		this.actions.push({
-			label: '互斥',
-			action: 'mutex',
-			widgetAction: true
-		});
-
+		this.actions.push({label: '互斥', action: 'mutex', widgetAction: true, showItemSel: true});
 	},
 
 	eventhandler: function(e){
