@@ -34,8 +34,7 @@ return declare(null, {
 			e.preventDefault();
 			new OptionPanel({
 				title: labelNode.innerText,
-				onOk: lang.hitch(this, function(rule){console.log('rule', rule);this.onAddItemRule(questionButton, labelNode, it);}),
-				ruleDef: this.rulesDef,
+				onOk: lang.hitch(this, function(rule){this.onAddItemRule(questionButton, labelNode, it, rule);}),
 				self: this,
 				page: this.page,
 				source: item,
@@ -46,18 +45,29 @@ return declare(null, {
 		}));
 	},
 
-	onAddItemRule: function(btn, labelNode, item){
-		domConstruct.destroy(btn);
-		this.createItemRemoveRuleButton(labelNode, item);
-	},
 
 	createItemRemoveRuleButton: function(labelNode, item) {
 		var it = item;
 		var questionButton = this._createButton(labelNode);
 		on(questionButton, 'click', lang.hitch(this, function(e){
-			this.onRemoveItemRule(questionButton, labelNode, it);
 			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){this.onRemoveItemRule(questionButton, labelNode, it, rule);}),
+				self: this,
+				page: this.page,
+				rule: item.rule,
+				source: item,
+				type: 'delete'
+			}).show();
 		}));
+	},
+
+	onAddItemRule: function(btn, labelNode, item, rule){
+		console.log('xxx', rule);
+		if (rule) item.rule = rule;
+		domConstruct.destroy(btn);
+		this.createItemRemoveRuleButton(labelNode, item);
 	},
 
 	onRemoveItemRule: function(btn, labelNode, item){
@@ -74,8 +84,7 @@ return declare(null, {
 			e.preventDefault();
 			new OptionPanel({
 				title: labelNode.innerText,
-				onOk: lang.hitch(this, function(rule){console.log('rule', rule);this.onAddWidgetRule(widgetLogicButton, labelNode);}),
-				ruleDef: this.rulesDef,
+				onOk: lang.hitch(this, function(rule){this.onAddWidgetRule(widgetLogicButton, labelNode, rule);}),
 				self: this,
 				page: this.page,
 				type: 'widget'
@@ -83,17 +92,26 @@ return declare(null, {
 		}));
 	},
 
-	onAddWidgetRule: function(btn){
-		domConstruct.destroy(btn);
-		this.createWidgetRemoveRuleButton(this._getCaption());
-	},
-
 	createWidgetRemoveRuleButton: function(labelNode) {
 		var widgetLogicButton = this._createButton(labelNode, false, true);
 		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
-			this.onRemoveWidgeRule(widgetLogicButton);
 			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){this.onRemoveWidgeRule(widgetLogicButton, labelNode, rule);}),
+				self: this,
+				rule: this.rule,
+				page: this.page,
+				type: 'delete'
+			}).show();
 		}));
+	},
+
+	onAddWidgetRule: function(btn, labelNode, rule){
+		console.log('xxx', rule);
+		if(rule) this.rule = rule;
+		domConstruct.destroy(btn);
+		this.createWidgetRemoveRuleButton(this._getCaption());
 	},
 
 	onRemoveWidgeRule: function(btn){

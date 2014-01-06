@@ -25,7 +25,9 @@
 	$form_id				   = (int) $_POST['form_id'];
 	$form_properties		   = mf_sanitize($_POST['fp']);
 	$last_pagebreak_properties = mf_sanitize($_POST['lp']);
-	
+
+	print_r($form_properties);
+	exit();
 	
 	parse_str($_POST['el_pos']); 
 	$element_positions = $el_pos; //contain the positions of the elements
@@ -58,6 +60,8 @@
 
 		$form_input['form_'.$key] = $value;
 	}
+
+
 		
 	//If this is new form, create the form table and form folder+css
    	if($is_new_form){

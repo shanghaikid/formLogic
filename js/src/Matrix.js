@@ -190,10 +190,18 @@ return declare('Matrix', [_FormWidgetBase], {
 		}, this);
 	},
 
-	// col relationship can be 0>1>2
+	// col relationship can be 3>2>1>0
 	// otherwise, disable the col
-	contain: function(rule) {
+	contain: function(r) {
 		//1>0
+
+		var lens = this.valueLabels.length,
+			rule = lens -1;
+		for(var i = lens -2; i>=0; i--) {
+			rule += '>';
+			rule += i;
+		}
+
 		var cols = rule.split('>'),
 			len = cols.length,
 			smallest = cols[len - 1]*1,

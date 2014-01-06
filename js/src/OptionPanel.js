@@ -9,6 +9,8 @@ define([
 		'dojo/dom-attr',
 		'dojo/dom-style',
 		'dojo/dom-construct',
+		"dojo/_base/xhr",
+		'dojo/json',
 
 		'dijit/_WidgetBase', 
 		'dijit/_TemplatedMixin',
@@ -25,7 +27,7 @@ define([
 		'dijit/Form/Button'
 
 		], 
-function(declare, lang, array, query, on, domAttr, domStyle, domConstruct,
+function(declare, lang, array, query, on, domAttr, domStyle, domConstruct, xhr, json,
 		_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, 
 		Select, 
 		Reg, RulesConfig,
@@ -37,12 +39,18 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 
 	page: null,
 
+	rule: null,
+
 	postMixInProperties: function(){
 		var t = this.title;
 		this.title = '选择 ' + t + ' 后';
 
 		if (this.type === 'widget') {
 			this.title = '对' + t + '添加题逻辑';
+		}
+
+		if (this.type ==='delete') {
+			this.title = '确认删除此条规则？';
 		}
 		this.inherited(arguments);
 	},
@@ -65,6 +73,14 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 		}
 
 		this.okBtn.set('disabled', true);
+
+		if (this.type ==='delete') {
+			this.okBtn.set('disabled', false);
+			domStyle.set(this.itemSelWrapper, 'display', 'none');
+			domStyle.set(this.actionSelWrapper, 'display', 'none');
+			domStyle.set(this.targetSelWrapper, 'display', 'none');
+		}
+
 
 		this.inherited(arguments);
 	},
@@ -202,19 +218,68 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	},
 
 	_onOk: function() {
-		var isWidget = this.type === 'widget';
-		var param = this.itemSel.get('value'),
-			action = this.actionSel.get('value');
+		var res,
+			isDel = this.type === 'delete';
+		if (isDel) {
+			res = this.rule;
+		} else {
+			var isWidget = this.type === 'widget';
+			var param = this.itemSel.get('value'),
+				action = this.actionSel.get('value');
 
-		var res = {
-			source: isWidget ? null : this.source.eId,
-			target : isWidget? 'self' : this.targetSel.get('value'),
-			action: action,
-			param: param === '' ? null : param*1
-		};
+			res = {
+				source: isWidget ? this.self.eId : this.source.eId,
+				target : isWidget? 'self' : this.targetSel.get('value'),
+				action: action,
+				param: param === '' ? 'null' : param*1
+			};
+		}
 
-		this.onOk(res);
+		var formId = query('form', this.page)[0].id.split('_')[1];
+
+		var data = this.formatData(res, isDel); //json.stringify(res);
+
+		console.log('data is', data, formId);
+
+		// Using xhr.post, as the amount of data sent could be large
+		xhr.post({
+			// The URL of the request
+			url: "save_form.php",
+
+			content: {form_id: formId, 'fp[logic_data]': data},
+
+			// The success handler
+			load: lang.hitch(this, function(response) {
+				console.log('we done');
+				if (isDel) {
+					delete Reg.data[res.source];
+				} else {
+					Reg.data[res.source] = res;
+				}
+				this.onOk(res);
+			}),
+			// The error handler
+			error: function() {
+				console.warn("Your message could not be sent, please try again.");
+			},
+			// The complete handler
+			handle: lang.hitch(this, function() {
+				console.log('complete handler');
+			})
+		});
+
+		//this.onOk(res);
 		//this.inherited(arguments);
+	},
+
+	formatData: function(res, isDel){
+		var data = lang.clone(Reg.data);
+		if (isDel) {
+			delete data[res.source];
+		} else {
+			data[res.source] = res;
+		}
+		return json.stringify(data);
 	},
 
 	destroy: function() {
@@ -222,8 +287,6 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 		this.cancelBtn.destroy();
 		this.inherited(arguments);
 	}
-
-
 
 
 });

@@ -11,6 +11,8 @@ return {
 
 	_w: {},
 
+	data: null,
+
 	//add widget,
 
 	add: function(widget) {

@@ -46,7 +46,7 @@
 					<li id="li_1"  class="multiple_choice" >
 		<label class="description">1、单选题 （只能选择1个答案） </label>
 		<div>
-			<span><input id="element_1_4"  name="element_1" rule="{target:self, action:disable}" class="element radio" type="radio" value="4"  />
+			<span><input id="element_1_4"  name="element_1"  class="element radio" type="radio" value="4"  />
 <label class="choice" for="element_1_4">上海</label>
 </span>
 <span><input id="element_1_5"  name="element_1" class="element radio" type="radio" value="5"  />
@@ -66,7 +66,7 @@
 		</li>		<li id="li_2"  class="checkboxes">
 		<label class="description">2、复选题 （可以选择很多个答案） </label>
 		<div>
-			<span><input id="element_2_4"  name="element_2_4" class="element checkbox" type="checkbox" value="1"  rule="{target:li_1, status:checked, action:reset, param:all}"/>
+			<span><input id="element_2_4"  name="element_2_4" class="element checkbox" type="checkbox" value="1" />
 <label class="choice" for="element_2_4">电视机</label>
 </span>
 <span><input id="element_2_5"  name="element_2_5" class="element checkbox" type="checkbox" value="1"  />
@@ -101,7 +101,7 @@
 <span><input id="element_4_3"  name="element_4_3" class="element checkbox" type="checkbox" value="1"  />
 <label class="choice" for="element_4_3">33333</label>
 </span>
-<span><input id="element_4_4" rule="{target:self, action:mutex, param:3}" name="element_4_4" class="element checkbox" type="checkbox" value="1"  />
+<span><input id="element_4_4" name="element_4_4" class="element checkbox" type="checkbox" value="1"  />
 <label class="choice" for="element_4_4">44444</label>
 </span>
 
@@ -109,10 +109,10 @@
 		</li>		<li id="li_5"  class="multiple_choice">
 		<label class="description">5、题目之间跳问 （如果A选择1,询问B题，如果A选择2，询问C题） </label>
 		<div>
-			<span><input id="element_5_1"  name="element_5" rule="{target:li_6, action:mutexCol, param:0}" class="element radio" type="radio" value="1"  />
+			<span><input id="element_5_1"  name="element_5" class="element radio" type="radio" value="1"  />
 <label class="choice" for="element_5_1">拥有者 1</label>
 </span>
-<span><input id="element_5_2"  name="element_5" rule="{target:li_6, action:mutexCol, param:1}" class="element radio" type="radio" value="2"  />
+<span><input id="element_5_2"  name="element_5" class="element radio" type="radio" value="2"  />
 <label class="choice" for="element_5_2">非拥有者 2</label>
 </span>
 
@@ -147,7 +147,7 @@
 			    </tbody>
 			</table>
 		
-		</li>		<li id="li_10" class="matrix" rule="{target:self, action:compare, param:4>3>2>1}">
+		</li>		<li id="li_10" class="matrix" >
 			<table>
 				<caption>
 					7、题目之间大于小于关系（A题要大于或者等于B题） 
@@ -213,7 +213,7 @@
 </span>
 
 		</div> 
-		</li>		<li id="li_12" class="matrix" rule="{target:self, action:contain, param:1>0}">
+		</li>		<li id="li_12" class="matrix" >
 			<table>
 				<caption>
 					8、题目之间的包含关系（第一考虑购买的品牌一定是在所有考虑购买的品牌里面） 
@@ -277,7 +277,7 @@
 </span>
 
 		</div> 
-		</li>		<li id="li_16" class="matrix" rule="{target:self, action:mutexOption}">
+		</li>		<li id="li_16" class="matrix">
 			<table>
 				<caption>
 					9、题目之间的互斥关系（第一考虑的和第二考虑的不能相同） 
@@ -341,7 +341,7 @@
 </span>
 
 		</div> 
-		</li>		<li id="li_20"  class="dropdown" rule="{target:self, action:filterSelect}">
+		</li>		<li id="li_20"  class="dropdown" >
 		<label class="description" for="element_20">10、排序题 (1-4个喜好排序，不能重复 不能遗漏) </label>
 		<div>
 		<select class="element select medium" id="element_20" name="element_20"> 
@@ -355,7 +355,7 @@
 		</div> 
 		</li>
 
-		<li id="li_33" class="matrix" rule="{target:self, action:contain, param:3>2>1>0}">
+		<li id="li_33" class="matrix">
 			<table>
 				<caption>
 					11.Please answer the following questions: 
@@ -397,7 +397,7 @@
 		
 		</li>
 
-		<li id="li_32" class="matrix" rule="{target:self, action:mutexOption}">
+		<li id="li_32" class="matrix" >
 			<table>
 				<caption>
 					12.Please answer the following questions: 
@@ -460,6 +460,13 @@
 	</body>
 </html>
 <script>
+var logicData = '{"element_1_6":{"source":"element_1_6","target":"li_1","action":"uncheck","param":2},"element_1_4":{"source":"element_1_4","target":"li_2","action":"check","param":4},"li_12":{"source":"li_12","target":"self","action":"contain","param":"null"}}';
+
+
+
+	</script>
+
+<script>
     dojoConfig = {
         isDebug: true,
 		tlmSiblingOfDojo: false,
@@ -476,7 +483,7 @@
 <script>
 
 require(["src/FormLogic"], function(FormLogic){
-	new FormLogic({el: document.getElementById('form_container'), addLogic: true});
+	new FormLogic({el: document.getElementById('form_container'), logicData: logicData, addLogic: false});
 
 });
 </script>
