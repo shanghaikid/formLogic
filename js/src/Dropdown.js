@@ -59,7 +59,6 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 		var selectedItemId = e.target.selectedIndex;
 		var selector = this._byId(e.target.id);
-		console.log('selectedItemId, lastSelectedItemId', selectedItemId);
 
 		this.resetOthers(selector);
 
@@ -115,11 +114,13 @@ return declare('Dropdown', [_FormWidgetBase], {
 	initActionMap: function(){
 		this.actionMap = {};
 		this.actionMap.filterSelect = this.filterSelect;
+	},
+
+	_initActions: function() {
+		this.actions =[
+			{label: '排序过滤', action: 'filterSelect', widgetAction:true}
+		];
 	}
-
-
-
-
 
 });
 });

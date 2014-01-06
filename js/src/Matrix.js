@@ -53,7 +53,7 @@ return declare('Matrix', [_FormWidgetBase], {
 		return single || multi;
 	},
 
-	buttonPos: 'last',
+	buttonPos: 'after',
 
 	_params: {
 		'MultipleChoice': 'input[type=radio]',
@@ -190,10 +190,18 @@ return declare('Matrix', [_FormWidgetBase], {
 		}, this);
 	},
 
-	// col relationship can be 0>1>2
+	// col relationship can be 3>2>1>0
 	// otherwise, disable the col
-	contain: function(rule) {
+	contain: function(r) {
 		//1>0
+
+		var lens = this.valueLabels.length,
+			rule = lens -1;
+		for(var i = lens -2; i>=0; i--) {
+			rule += '>';
+			rule += i;
+		}
+
 		var cols = rule.split('>'),
 			len = cols.length,
 			smallest = cols[len - 1]*1,
@@ -279,8 +287,22 @@ return declare('Matrix', [_FormWidgetBase], {
 		this.actionMap.contain = this.contain;
 		this.actionMap.mutexOption = this.mutexOption;
 		this.actionMap.compare = this.compare;
+	},
 
+	_initActions: function() {
+		this.actions =[
+			{label: '选中列', action: 'checkCol'},
+			{label: '取消选中列', action: 'uncheckCol'},
+			{label: '禁用列', action: 'disableCol'},
+			{label: '启用列', action: 'enableCol'},
+			{label: '仅允许列', action: 'mutexCol'},
+			{label: '列包含关系', action: 'contain', widgetAction:true, tip: '选择了第一列，才能选第二列，依此类推'},
+			{label: '列比较关系', action: 'compare', widgetAction:true, tip: '第一行的选项大于第二行的选项，依次类推，只有选了第一行的选项，才能选第二行的选项'},
+			{label: '列互斥', action: 'mutexOption', widgetAction:true, tip: '每列的选项只能被选中一次'}
+		];
 	}
+
+	
 
 });
 });

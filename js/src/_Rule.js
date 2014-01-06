@@ -8,15 +8,21 @@ define([
 		'dojo/query',
 		'dojo/on',
 		'dojo/dom-construct',
-		'src/OptionPanel'
+		'src/OptionPanel',
+		'src/RulesConfig'
 
 		], 
-function(declare, lang, array, string, query, on, domConstruct, OptionPanel){
+function(declare, lang, array, string, query, on, domConstruct, OptionPanel, RulesConfig){
 
 return declare(null, {
 
-	_createButton: function(labelNode, isAdd) {
-		var htmlstr = isAdd ? "<button>+规则" + labelNode.innerHTML + "</button>" : "<button>-规则</button>";
+	_initRuleDefinition: function() {
+		return RulesConfig[this.declaredClass] || null;
+	},
+
+	_createButton: function(labelNode, isAdd, isWidget) {
+		var text = isWidget ? "题逻辑" : "选项逻辑";
+		var htmlstr = isAdd ? "<button>添加"  + text + "</button>" : "<button>删除"+text+"</button>";
 		var className = isAdd ? "addRule" : "removeRule";
 		return domConstruct.create('div',{ innerHTML:htmlstr, class:className }, labelNode, this.buttonPos);
 	},
@@ -27,27 +33,41 @@ return declare(null, {
 		on(questionButton, 'click', lang.hitch(this, function(e){
 			e.preventDefault();
 			new OptionPanel({
-				title: labelNode.innerHTML,
-				onOk: lang.hitch(this, function(){this.onAddItemRule(questionButton, labelNode, it);}),
-				a: this
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){this.onAddItemRule(questionButton, labelNode, it, rule);}),
+				self: this,
+				page: this.page,
+				source: item,
+				type: 'item'
 			}).show();
 			
 			
 		}));
 	},
 
-	onAddItemRule: function(btn, labelNode, item){
-		domConstruct.destroy(btn);
-		this.createItemRemoveRuleButton(labelNode, item);
-	},
 
 	createItemRemoveRuleButton: function(labelNode, item) {
 		var it = item;
 		var questionButton = this._createButton(labelNode);
 		on(questionButton, 'click', lang.hitch(this, function(e){
-			this.onRemoveItemRule(questionButton, labelNode, it);
 			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){this.onRemoveItemRule(questionButton, labelNode, it, rule);}),
+				self: this,
+				page: this.page,
+				rule: item.rule,
+				source: item,
+				type: 'delete'
+			}).show();
 		}));
+	},
+
+	onAddItemRule: function(btn, labelNode, item, rule){
+		console.log('xxx', rule);
+		if (rule) item.rule = rule;
+		domConstruct.destroy(btn);
+		this.createItemRemoveRuleButton(labelNode, item);
 	},
 
 	onRemoveItemRule: function(btn, labelNode, item){
@@ -58,25 +78,40 @@ return declare(null, {
 
 	buttonPos: 'after',
 
-	createWidgetLogicButton: function(captionNode) {
-		var widgetLogicButton = this._createButton(captionNode, true);
+	createWidgetLogicButton: function(labelNode) {
+		var widgetLogicButton = this._createButton(labelNode, true, true);
 		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
-			this.onAddWidgetRule(widgetLogicButton);
 			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){this.onAddWidgetRule(widgetLogicButton, labelNode, rule);}),
+				self: this,
+				page: this.page,
+				type: 'widget'
+			}).show();
 		}));
 	},
 
-	onAddWidgetRule: function(btn){
+	createWidgetRemoveRuleButton: function(labelNode) {
+		var widgetLogicButton = this._createButton(labelNode, false, true);
+		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
+			e.preventDefault();
+			new OptionPanel({
+				title: labelNode.innerText,
+				onOk: lang.hitch(this, function(rule){this.onRemoveWidgeRule(widgetLogicButton, labelNode, rule);}),
+				self: this,
+				rule: this.rule,
+				page: this.page,
+				type: 'delete'
+			}).show();
+		}));
+	},
+
+	onAddWidgetRule: function(btn, labelNode, rule){
+		console.log('xxx', rule);
+		if(rule) this.rule = rule;
 		domConstruct.destroy(btn);
 		this.createWidgetRemoveRuleButton(this._getCaption());
-	},
-
-	createWidgetRemoveRuleButton: function(captionNode) {
-		var widgetLogicButton = this._createButton(captionNode);
-		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
-			this.onRemoveWidgeRule(widgetLogicButton);
-			e.preventDefault();
-		}));
 	},
 
 	onRemoveWidgeRule: function(btn){
