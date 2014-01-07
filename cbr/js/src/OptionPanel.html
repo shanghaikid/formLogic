@@ -1,0 +1,29 @@
+<div class="dijitDialog" role="dialog" aria-labelledby="${id}_title" style="text-align:left ">
+	<div data-dojo-attach-point="titleBar" class="dijitDialogTitleBar">
+		<span data-dojo-attach-point="titleNode" class="dijitDialogTitle" id="${id}_title"
+				role="heading" level="1"></span>
+		<span data-dojo-attach-point="closeButtonNode" class="dijitDialogCloseIcon" data-dojo-attach-event="ondijitclick: onCancel" title="${buttonCancel}" role="button" tabindex="0">
+			<span data-dojo-attach-point="closeText" class="closeText" title="${buttonCancel}">x</span>
+		</span>
+	</div>
+	<div data-dojo-attach-point="containerNode" class="dijitDialogPaneContent">
+	<h3>${title}</h3>
+	<div data-dojo-attach-point="targetSelWrapper" class="selector">
+	<select data-dojo-type="dijit/form/Select" data-dojo-attach-point="targetSel" class="s" ></select>
+	</div>
+	<div data-dojo-attach-point="itemSelWrapper"class="selector">
+	<select data-dojo-type="dijit/form/Select" data-dojo-attach-point="itemSel" class="s"></select>
+	</div>
+	<div data-dojo-attach-point="actionSelWrapper" class="selector">
+	<select data-dojo-type="dijit/form/Select" data-dojo-attach-point="actionSel" class="s" ></select>
+	</div>
+	<div data-dojo-attach-point="widgetLogicTip" class="widgetLogicTip"></div>
+	<div data-dojo-attach-point="extraParamWrapper"></div>
+	</div>
+
+	 <div class="dijitDialogPaneActionBar" style="text-align:right">
+        <button data-dojo-type="dijit/form/Button" data-dojo-attach-point="okBtn" type="submit" data-dojo-attach-event="onClick:_onOk">确定</button>
+        <button data-dojo-type="dijit/form/Button" type="button" data-dojo-attach-point="cancelBtn" data-dojo-attach-event="onClick: onCancel" >取消</button>
+    </div>
+</div>
+
