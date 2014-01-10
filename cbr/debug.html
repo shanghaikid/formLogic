@@ -1,18 +1,16 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html  xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>20131219问卷标题问卷标题问卷标题</title>
-<link rel="stylesheet" type="text/css" href="./data/form_12864/css/view.css" media="all" />
-<link rel="stylesheet" type="text/css" href="./view.mobile.css" media="all" />
+<title>［添加逻辑］让我了解你吧</title>
+<link rel="stylesheet" type="text/css" href="view.css" media="all" /><!--./data/form_86451/css/-->
+<link rel="stylesheet" type="text/css" href="view.mobile.css" media="all" />
+<link rel="stylesheet" type="text/css" href="js/lib/dijit/themes/soria/soria.css" media="all" />
 
-<link rel="stylesheet" href="js/lib/dijit/themes/soria/soria.css" />
 
 
-<!--
-<script type="text/javascript" src="./cbr/view.js"></script>
--->
 <style>
 .hidden{display: none !important;}
 .addRule button{color:#080; font-weight: 700; font-size: 14px;}
@@ -22,38 +20,32 @@
 .s{height:32px;}
 .ajaxText{position: fixed; top: 0; right:0; width:150px; color:#C30; text-align: center;}
 </style>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui/ui/jquery.effects.core.js"></script>
 <script>
 	var logicData = '{"element_8_1":{"source":"element_8_1","target":"li_13","action":"show","param":"0","label":"选择没有后 显示请问您最近2年内是否打算购买私家车？ *有"},"element_13_2":{"source":"element_13_2","target":"li_16","action":"appear","param":"first","label":"选择没有后 显示题目请问您家里是否拥有以下数码产品？ *请选择操作的选项"},"element_16_7":{"source":"element_16_7","target":"li_17","action":"show","param":"1","label":"选择平板电脑后 显示请问您会用以下哪些产品拍照？ *平板电脑"},"element_16_9":{"source":"element_16_9","target":"li_17","action":"show","param":"3","label":"选择数码摄像机后 显示请问您会用以下哪些产品拍照？ *数码摄像机"},"element_16_8":{"source":"element_16_8","target":"li_17","action":"show","param":"2","label":"选择数码卡片相机后 显示请问您会用以下哪些产品拍照？ *数码卡片相机"},"element_16_10":{"source":"element_16_10","target":"li_17","action":"show","param":"4","label":"选择数码微单相机（体积小巧 可以更换镜头的数码相机）后，显示请问您会用以下哪些产品拍照？ *数码微单相机（体积小巧，可以更换镜头的数码相机）"},"element_16_11":{"source":"element_16_11","target":"li_17","action":"show","param":"5","label":"选择数码单电相机（外形类似单反相机 但采用电子取景器的可更换镜头相机）后，显示请问您会用以下哪些产品拍照？ *数码单电相机（外形类似单反相机，但采用电子取景器的可更换镜头相机）"},"element_16_12":{"source":"element_16_12","target":"li_17","action":"show","param":"6","label":"选择数码单反相机（数码单镜头反光照相机）后 显示请问您会用以下哪些产品拍照？ *数码单反相机（数码单镜头反光照相机）"},"element_16_13":{"source":"element_16_13","target":"li_17","action":"show","param":"7","label":"选择智能手机（iOS、安卓、windows phone操作系统）后 显示请问您会用以下哪些产品拍照？ *智能手机（iOS、安卓、windows phone操作系统）"},"li_19":{"source":"li_19","target":"self","action":"mutexOption","param":"null","label":"选择以下的这些语句与您的情况是否相符呢？ 对下面的每一点 选择您认为最适合的一个答案。 *后，列互斥"}}';
 	</script>
 
-
-<script src="./config.js"></script>
-<script type="text/javascript" src="./js/lib/dojo/dojo.js"></script>
+<script type="text/javascript" src="./js/src-all/dojo/dojo.js"></script>
 <script>
+	require(["src/FormLogic", "dojo/domReady!"], function(FormLogic){
+		new FormLogic({el: document.getElementById('form_container'), logicData: logicData, addLogic: false});
 
-require(["src/FormLogic", "dojo/domReady!"], function(FormLogic){
-	new FormLogic({el: document.getElementById('form_container'), logicData: logicData, addLogic: true});
-
-});
+	});
 </script>
-
-
 </head>
-<body id="main_body" class="soria">
-	
+<body id="main_body" class="soria ">
 	<div id="form_container" class="WarpShadow WLarge WNormal">
 	
-		<h1><a>20131219问卷标题问卷标题问卷标题</a></h1>
-		<form id="form_12864" class="appnitro top_label"  method="post" data-highlightcolor="#FFF7C0" action="#main_body">
+		<h1><a>让我了解你吧</a></h1>
+		<form id="form_86451" class="appnitro top_label"  method="post" data-highlightcolor="#FFF7C0" action="#main_body">
 					<div class="form_description">
-			<h2>20131219问卷标题问卷标题问卷标题</h2>
-			<p>问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述</p>
-		</div>						
+			<h2>让我了解你吧</h2>
+			<p>基础调查</p>
+		</div>
 			<ul >
 			
-			<li id="li_1"  class="multiple_choice">
+			
+			
+					<li id="li_1"  class="multiple_choice">
 		<label class="description">请问您是？ <span id="required_1" class="required">*</span></label>
 		<div>
 			<span><input id="element_1_1"  name="element_1" class="element radio" type="radio" value="1" checked="checked" />
@@ -504,12 +496,7 @@ require(["src/FormLogic", "dojo/domReady!"], function(FormLogic){
 		
 	</div>
 	<div class="ajaxText"></div>
-</body>
+
+	
+	</body>
 </html>
-	<script>
-	var logicData = '';
-	</script>
-
-
-
-

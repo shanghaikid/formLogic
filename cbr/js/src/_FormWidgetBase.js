@@ -66,7 +66,7 @@ return declare([_BaseClass, _Rule], {
 
 	_addLogic: function() {
 		var captionNode = this._getCaption();
-		if(captionNode && (this.declaredClass != 'MultipleChoice' && this.declaredClass != 'Checkboxes')) {
+		if(captionNode) {
 			if (this.rule) {
 				this.createWidgetRemoveRuleButton(captionNode);
 			} else {
@@ -94,7 +94,7 @@ return declare([_BaseClass, _Rule], {
 			['check', 
 				'uncheck', 'show', 'hide', 'disable', 
 				'reset', 'enable', 'submit', 'redirect', 
-				'disappear'], function(action){
+				'disappear','appear'], function(action){
 			this.actionMap[action] = this[action];
 		}, this);
 
@@ -180,6 +180,11 @@ return declare([_BaseClass, _Rule], {
 
 	_getCaption: function() {
 		return query('label.description', this.domNode)[0];
+	},
+
+	setCaption: function(label) {
+		var cap = this._getCaption();
+		cap.innerText =  label;
 	},
 
 	// parse widget rule, not item rule
@@ -344,14 +349,14 @@ return declare([_BaseClass, _Rule], {
 
 	_initActions: function() {
 		this.actions =  [
-			{label: '选中', action: 'check'},
-			{label: '取消选中', action: 'uncheck'},
-			{label: '显示', action: 'show'},
-			{label: '隐藏', action: 'hide'},
-			{label: '禁用', action: 'disable'},
-			{label: '启用', action: 'enable'},
+			{label: '选中选项', action: 'check'},
+			{label: '取消选中选项', action: 'uncheck'},
+			{label: '显示选项', action: 'show'},
+			{label: '隐藏选项', action: 'hide'},
+			{label: '禁用选项', action: 'disable'},
+			{label: '启用选项', action: 'enable'},
 			{label: '显示题目', action: 'appear',  noNeedItem: true},
-			{label: '隐藏题目', action: 'disappear', noNeedItem: true},
+			{label: '隐藏题目', action: 'disappear', widgetAction: true, itemAction:true, noNeedItem: true},
 			{label: '跳转链接', action: 'redirect',noNeedItem: true, newParam: 'input'},
 			{label: '提交表单', action: 'submit',  noNeedItem: true}
 		];

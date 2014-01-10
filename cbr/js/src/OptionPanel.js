@@ -144,11 +144,13 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 		array.forEach(widget.actions, function(action){
 			if (this.type == 'widget' && action.widgetAction) {
 				this.actionSel.addOption({label: action.label, value: action.action});
+				return;
 			}
 
-			if (this.type == 'item' && !action.widgetAction) {
+			if (this.type == 'item' && !action.widgetAction || action.itemAction) {
 				if(action.selfAction && this.targetSel.get('value') !== this.self.eId) return;
 				this.actionSel.addOption({label: action.label, value: action.action});
+				return;
 			}
 
 		}, this);
@@ -160,12 +162,14 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			array.some(widget.actions, function(action){
 				var isTheAction = _this.actionSel.get('value') == action.action;
 				if (isTheAction && action.tip) {
+					domStyle.set(_this.widgetLogicTip, 'display', 'block');
 					this.widgetLogicTip.innerText = action.tip;
 					return true;
 				}
 
 				if (isTheAction && !action.noNeedItem) {
 					_this._initItems(widget);
+					domStyle.set(_this.widgetLogicTip, 'display', 'none');
 					domStyle.set(_this.inputSelWrapper, 'display', 'none');
 					domStyle.set(_this.itemSelWrapper, 'display', 'block');
 					_this.okBtn.set('disabled', true);
@@ -178,6 +182,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 					return true;
 				}
 
+				domStyle.set(_this.widgetLogicTip, 'display', 'none');
 				domStyle.set(_this.inputSelWrapper, 'display', 'none');
 				domStyle.set(_this.itemSelWrapper, 'display', 'none');
 				_this.okBtn.set('disabled', false);

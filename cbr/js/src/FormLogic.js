@@ -26,7 +26,27 @@ return declare([_BaseClass, _Rule], {
 		formLogic.Reg = Reg;
 		this.initLogicData();
 		this.initFormWidget();
+		this._addSequenceNumber();
 
+	},
+
+	questionLabels: null,
+
+	_addSequenceNumber: function(){
+		this.questionLabels =[];
+		var lis = query('form>ul>li', this.domNode);
+		array.forEach(lis, function(li, pos) {
+			var id = domAttr.get(li, 'id'),
+				cls = domAttr.get(li, 'class'),
+				widget = Reg.byId(id);
+
+			if (id && widget) {
+				var label = widget._getCaption() && widget._getCaption().innerText || 'none Caption';
+				label = pos + 1 + '. ' + label;
+				widget.setCaption(label);
+				this.questionLabels.push(label);
+			}
+		}, this);
 	},
 
 	initLogicData: function(){

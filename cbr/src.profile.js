@@ -30,7 +30,7 @@ var profile = (function(){
  
         layers: {
             "dojo/dojo": {
-                include: [ "dojo/dojo"],
+                include: [ "dojo/dojo", "dojo/domReady"],
                 customBase: true,
                 boot: true
             },
