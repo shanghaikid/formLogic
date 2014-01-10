@@ -64,7 +64,6 @@ return declare(null, {
 	},
 
 	onAddItemRule: function(btn, labelNode, item, rule){
-		console.log('xxx', rule);
 		if (rule) item.rule = rule;
 		domConstruct.destroy(btn);
 		this.createItemRemoveRuleButton(labelNode, item);
@@ -108,7 +107,6 @@ return declare(null, {
 	},
 
 	onAddWidgetRule: function(btn, labelNode, rule){
-		console.log('xxx', rule);
 		if(rule) this.rule = rule;
 		domConstruct.destroy(btn);
 		this.createWidgetRemoveRuleButton(this._getCaption());
@@ -120,9 +118,6 @@ return declare(null, {
 		this.createWidgetLogicButton(this._getCaption());
 	},
 
-// {target:'li_4', status: 'checked', action:'check', param:'all'} 
-// ["target:'li_4'", " status: 'checked'", " action:'check'", " param:'all'"] 
-
 	// parse rule from the string
 	parseRule : function(rule) {
 		var result = null,
@@ -130,6 +125,7 @@ return declare(null, {
 		if(rule !== null) {
 			result = {};
 			tmp = rule.substring(1, rule.length -1).split(',');
+			console.log(tmp);
 			array.forEach(tmp, function(rule) {
 				var keypair = this._parseSingleRule(rule);
 				result[keypair[0]] = keypair[1];

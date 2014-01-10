@@ -23,12 +23,13 @@ define([
 		'dojo/text!./OptionPanel.html',
 
 		'dijit/form/Select',
-		'dijit/form/Button'
+		'dijit/form/Button',
+		'dijit/form/ValidationTextBox'
 		], 
 function(declare, lang, array, query, on, domAttr, domStyle, domConstruct, xhr, json,
 		_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Dialog, 
 		Reg, RulesConfig,
-		template, Select, Button){
+		template, Select, Button, ValidationTextBox){
 
 return declare([Dialog, _WidgetsInTemplateMixin], {
 
@@ -39,7 +40,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	rule: null,
 
 	postMixInProperties: function(){
-		var t = this.title;
+		var t = this.t = this.title;
 		this.title = '选择 ' + t + ' 后';
 
 		if (this.type === 'widget') {
@@ -57,28 +58,25 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	postCreate:function() {
 
 		if (this.type === 'widget') {
-			domStyle.set(this.itemSelWrapper, 'display', 'none');
+			console.log('widget');
 			domStyle.set(this.actionSelWrapper, 'display', 'block');
-			domStyle.set(this.targetSelWrapper, 'display', 'none');
 			this._initAction(this.self);
 		}
 
 		if (this.type === 'item') {
-			domStyle.set(this.itemSelWrapper, 'display', 'none');
-			domStyle.set(this.actionSelWrapper, 'display', 'none');
+			console.log('item');
+			domStyle.set(this.targetSelWrapper, 'display', 'block');
 			this._initWidgets();
 		}
 
 		this.okBtn.set('disabled', true);
 
 		if (this.type ==='delete') {
+			this.ruleLabel.innerText = this.rule.label ? this.rule.label :'';
 			this.okBtn.set('disabled', false);
-			domStyle.set(this.itemSelWrapper, 'display', 'none');
-			domStyle.set(this.actionSelWrapper, 'display', 'none');
-			domStyle.set(this.targetSelWrapper, 'display', 'none');
 		}
 
-
+		this.ajaxText = query('.ajaxText')[0];
 		this.inherited(arguments);
 	},
 
@@ -121,15 +119,12 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 		on(this.targetSel, 'change', function(){
 			if (this.value == 'first') return;
 			var widget = this.value == 'self' ? _this.self :  Reg.byId(this.value);
-			var canItemLogic = widget && _this.canItemLogic(widget);
-			domStyle.set(_this.itemSelWrapper, 'display', canItemLogic ? 'block': 'none');
-			domStyle.set(_this.actionSelWrapper, 'display', canItemLogic ? 'none': 'block');
-
-			if (canItemLogic) {
-				_this._initItems(widget);
-			} else {
-				_this._initAction(widget);
-			}
+			//var canItemLogic = widget && _this.canItemLogic(widget);
+			domStyle.set(_this.actionSelWrapper, 'display', 'block');
+			_this._initAction(widget);
+			domStyle.set(_this.itemSelWrapper, 'display', 'none');
+			domStyle.set(_this.inputSelWrapper, 'display', 'none');
+			_this.okBtn.set('disabled', true);
 		});
 
 	},
@@ -137,6 +132,76 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 	canItemLogic: function(widget) {
 		return widget.declaredClass !== 'Dropdown';
 	},
+
+	_initAction: function(widget) {
+		this.actionSel.options = [];
+		this.actionSel.addOption({
+			label: this.type == 'widget' ? '请选择要添加的逻辑' : '请选择要执行的动作',
+			value: 'first',
+			disabled: true
+		});
+
+		array.forEach(widget.actions, function(action){
+			if (this.type == 'widget' && action.widgetAction) {
+				this.actionSel.addOption({label: action.label, value: action.action});
+			}
+
+			if (this.type == 'item' && !action.widgetAction) {
+				if(action.selfAction && this.targetSel.get('value') !== this.self.eId) return;
+				this.actionSel.addOption({label: action.label, value: action.action});
+			}
+
+		}, this);
+
+
+		var _this = this;
+		on(this.actionSel, 'change', function() {
+
+			array.some(widget.actions, function(action){
+				var isTheAction = _this.actionSel.get('value') == action.action;
+				if (isTheAction && action.tip) {
+					this.widgetLogicTip.innerText = action.tip;
+					return true;
+				}
+
+				if (isTheAction && !action.noNeedItem) {
+					_this._initItems(widget);
+					domStyle.set(_this.inputSelWrapper, 'display', 'none');
+					domStyle.set(_this.itemSelWrapper, 'display', 'block');
+					_this.okBtn.set('disabled', true);
+					return true;
+				}
+
+				if (isTheAction && action.newParam === 'input') {
+					_this.okBtn.set('disabled', true);
+					this._createInputParam(widget, action);
+					return true;
+				}
+
+				domStyle.set(_this.inputSelWrapper, 'display', 'none');
+				domStyle.set(_this.itemSelWrapper, 'display', 'none');
+				_this.okBtn.set('disabled', false);
+
+
+			}, _this);
+			
+		});
+	},
+
+
+	_createInputParam: function() {
+		domStyle.set(this.inputSelWrapper, 'display', 'block');
+		var _this = this;
+		on(this.inputSel, 'change', function(){
+			_this.okBtn.set('disabled', _this.inputSel.get('value') === '');
+		});
+	},
+
+	_createExtraParam: function(widget, action){
+		this._initItems(widget, true);
+		domConstruct.place(this.itemSel.domNode, this.extraParamWrapper);
+	},
+
 
 	_initItems: function(widget, disableOnchange){
 
@@ -164,54 +229,21 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 				return;
 			}
 			this.itemHandler = on(this.itemSel, 'change', function() {
-				domStyle.set(_this.actionSelWrapper, 'display', 'block');
-				_this._initAction(widget);
+				if (this.value == 'first') return;
+				_this.okBtn.set('disabled', _this.actionSel.get('value') == 'redirect');
+
 			});
 
 	},
 
-	_initAction: function(widget) {
-		this.actionSel.options = [];
-		this.actionSel.addOption({
-			label: this.type == 'widget' ? '请选择要添加的逻辑' : '请选择要执行的动作',
-			value: 'first',
-			disabled: true
-		});
 
-		array.forEach(widget.actions, function(action){
-			if (this.type == 'widget' && action.widgetAction) {
-				this.actionSel.addOption({label: action.label, value: action.action});
-			}
-
-			if (this.type == 'item' && !action.widgetAction) {
-				this.actionSel.addOption({label: action.label, value: action.action});
-			}
-
-		}, this);
-
-
-		var _this = this;
-		on(this.actionSel, 'change', function() {
-			array.some(widget.actions, function(action){
-				var isTheAction = _this.actionSel.get('value') == action.action;
-				if (isTheAction && action.tip) {
-					this.widgetLogicTip.innerText = action.tip;
-					return true;
-				}
-
-				if (isTheAction && action.showItemSel) {
-					this._createExtraParam(widget, action);
-					return true;
-				}
-
-			}, _this);
-			_this.okBtn.set('disabled', false);
-		});
-	},
-
-	_createExtraParam: function(widget, action){
-		this._initItems(widget, true);
-		domConstruct.place(this.itemSel.domNode, this.extraParamWrapper);
+	_getParam: function() {
+		if(this.actionSel.get('value') == 'redirect') {
+			return this.inputSel.get('value').replace(':', '@');
+		} else {
+			return this.itemSel.get('value');
+		}
+		
 	},
 
 	_onOk: function() {
@@ -221,20 +253,33 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			res = this.rule;
 		} else {
 			var isWidget = this.type === 'widget';
-			var param = this.itemSel.get('value'),
-				action = this.actionSel.get('value');
+			var param = this._getParam(),
+				action = this.actionSel.get('value'),
+				targetLabel = this.targetSel.get('displayedValue'),
+				itemLabel  =  this.itemSel.get('displayedValue'),
+				actionLabel =  this.actionSel.get('displayedValue');
+
+			var label = '选择' + this.t + '后，' +
+						 (actionLabel ? actionLabel: '')  + 
+						 (targetLabel ? targetLabel : '' )  +
+						  (itemLabel ? itemLabel : '');
+
+			label = label.replace(',', ' ');
+			label = label.replace('，', ' ');
+
 
 			res = {
 				source: isWidget ? this.self.eId : this.source.eId,
 				target : isWidget? 'self' : this.targetSel.get('value'),
 				action: action,
-				param: param === '' ? 'null' : param*1
+				param: param === '' ? 'null' : param,
+				label: label
 			};
 		}
+		console.log('res ', res);
 
 		var formId = query('form', this.page)[0].id.split('_')[1];
-
-		var data = this.formatData(res, isDel); //json.stringify(res);
+		var data = this.formatData(res, isDel); 
 
 		console.log('data is', data, formId);
 
@@ -253,14 +298,22 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 				} else {
 					Reg.data[res.source] = res;
 				}
+
+				this.ajaxText.innerText = '操作成功';
 				this.onOk(res);
 			}),
 			// The error handler
-			error: function() {
-				console.warn("Your message could not be sent, please try again.");
-			},
+			error: lang.hitch(this, function() {
+				console.log('error', this.ajaxText);
+				this.ajaxText.innerText = '操作失败，请重新尝试';
+			}),
 			// The complete handler
 			handle: lang.hitch(this, function() {
+				var a = this.ajaxText;
+				setTimeout(function(){
+					console.log(a);
+					a.innerText = '';
+				}, 2000);
 				console.log('complete handler');
 			})
 		});

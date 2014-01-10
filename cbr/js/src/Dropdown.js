@@ -118,7 +118,7 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	_initActions: function() {
 		this.actions =[
-			{label: '排序过滤', action: 'filterSelect', widgetAction:true}
+			{label: '排序过滤', action: 'filterSelect', widgetAction:true, noNeedItem: true}
 		];
 	}
 

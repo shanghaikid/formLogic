@@ -8,6 +8,7 @@ define([
 		'dojo/aspect',
 		'dojo/dom-class',
 		'dojo/dom-attr',
+		'dojo/dom-style',
 		'dojo/dom-construct',
 		'dojo/dom',
 		'dojo/on',
@@ -16,7 +17,7 @@ define([
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, domConstruct, dom, on, _Rule, Reg, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, domStyle,domConstruct, dom, on, _Rule, Reg, _BaseClass){
 
 return declare([_BaseClass, _Rule], {
 
@@ -65,7 +66,7 @@ return declare([_BaseClass, _Rule], {
 
 	_addLogic: function() {
 		var captionNode = this._getCaption();
-		if(captionNode && this.declaredClass != 'MultipleChoice') {
+		if(captionNode && (this.declaredClass != 'MultipleChoice' && this.declaredClass != 'Checkboxes')) {
 			if (this.rule) {
 				this.createWidgetRemoveRuleButton(captionNode);
 			} else {
@@ -89,7 +90,11 @@ return declare([_BaseClass, _Rule], {
 	initActionMap: function(){
 		this.actionMap = {};
 		// default action maps. you can add yourselfs in the single widget definition
-		array.forEach(['check', 'uncheck', 'show', 'hide', 'disable', 'reset', 'enable'], function(action){
+		array.forEach(
+			['check', 
+				'uncheck', 'show', 'hide', 'disable', 
+				'reset', 'enable', 'submit', 'redirect', 
+				'disappear'], function(action){
 			this.actionMap[action] = this[action];
 		}, this);
 
@@ -307,6 +312,16 @@ return declare([_BaseClass, _Rule], {
 		array.map(this.items, this.uncheck, this);
 	},
 
+	submit: function() {
+		var form = query('form')[0];
+		if (form) form.submit();
+	},
+
+	redirect: function(url){
+		var u = url.replace("@", ":");
+		window.location.href = u;
+	},
+
 	enableItems: function(number) {
 		// enable how many inputs(number)
 		if (typeof number !== 'number' && number < 0) return;
@@ -317,6 +332,16 @@ return declare([_BaseClass, _Rule], {
 		}
 	},
 
+	disappear: function() {
+		domStyle.set(this.domNode, 'display', 'none');
+		console.log('ya, disappear');
+	},
+
+	appear: function(){
+		domStyle.set(this.domNode, 'display', 'block');
+		console.log('ya, come on');
+	},
+
 	_initActions: function() {
 		this.actions =  [
 			{label: '选中', action: 'check'},
@@ -324,7 +349,11 @@ return declare([_BaseClass, _Rule], {
 			{label: '显示', action: 'show'},
 			{label: '隐藏', action: 'hide'},
 			{label: '禁用', action: 'disable'},
-			{label: '启用', action: 'enable'}
+			{label: '启用', action: 'enable'},
+			{label: '显示题目', action: 'appear',  noNeedItem: true},
+			{label: '隐藏题目', action: 'disappear', noNeedItem: true},
+			{label: '跳转链接', action: 'redirect',noNeedItem: true, newParam: 'input'},
+			{label: '提交表单', action: 'submit',  noNeedItem: true}
 		];
 	}
 
