@@ -12,3 +12,12 @@
 * parse rule function for every single form
     - parse to create panel
     - parse to execute form
+
+** new requirement **
+    - design new data structure to support []
+    - _FormWidgetBase.js eventhandler(), add [] support
+    - FormLogic.js initLogicData(), add [] support 
+    - change text to "removeALL"
+    - change OptionPanel formatData function to support []
+    - add addNextFunction in OptionPanel(save and start a new self)
+    - change Selector for extra [] support
