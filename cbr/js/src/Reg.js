@@ -17,6 +17,7 @@ return {
 
 	add: function(widget) {
 		this._w[widget.eId] = widget;
+		return widget;
 	},
 
 	byId: function(id) {

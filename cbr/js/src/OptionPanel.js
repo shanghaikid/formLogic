@@ -220,10 +220,13 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			var items = widget.declaredClass === 'Matrix' ? widget.valueLabels : widget.items;
 
 			array.forEach(items, function(item, i){
-				this.itemSel.addOption({
-					label: widget.declaredClass === 'Matrix' ?  item: item.label,
-					value: i+''
-				});
+				var label = widget.declaredClass === 'Matrix' ?  item: item.label;
+				if(label !== '') {
+					this.itemSel.addOption({
+						label: label,
+						value: i+''
+					});
+				}
 			}, this);
 
 			var _this = this;
@@ -244,7 +247,9 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 
 	_getParam: function() {
 		if(this.actionSel.get('value') == 'redirect') {
-			return this.inputSel.get('value').replace(':', '@');
+			var input = this.inputSel.get('value').replace(':', '@');
+			var tip = this.tipSel.get('value') || 'noTip';
+			return input + '||' + tip;
 		} else {
 			return this.itemSel.get('value');
 		}
@@ -272,13 +277,15 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			label = label.replace(',', ' ');
 			label = label.replace('，', ' ');
 
-
+			var source = isWidget ? this.self.eId : this.source.parent? this.source.parent.eId + '_option' + this.source.id: this.source.eId;
+			console.log('source', source);
 			res = {
-				source: isWidget ? this.self.eId : this.source.eId,
+				source: source,
 				target : isWidget? 'self' : this.targetSel.get('value'),
 				action: action,
 				param: param === '' ? 'null' : param,
-				label: label
+				label: label,
+				type: this.type
 			};
 		}
 		console.log('res ', res);

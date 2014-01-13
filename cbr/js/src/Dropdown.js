@@ -21,12 +21,28 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 	elementClass: '.element.select',
 
-	items: null,
-
 	selectors: null,
+
+	items: null,
 
 	initWidget: function() {
 		this._initDropdown();
+	},
+
+	addItemLogic: function() {
+		//
+		array.forEach(this.items, function(item,i) {
+			if (i>0) {
+				var div = domConstruct.create('div', {'class': 'labelWrapper'}, this.domNode, 'last');
+				var label = domConstruct.create('label', {'class': 'choice', innerHTML: item.label}, div, 'last');
+				if (item.rule) {
+					this.createItemRemoveRuleButton(label, item);
+				} else {
+					this.createItemRuleButton(label, item);
+				}
+			}
+			
+		}, this);
 	},
 
 	_initEvent: function() {
@@ -40,14 +56,17 @@ return declare('Dropdown', [_FormWidgetBase], {
 		this.inherited(arguments);
 	},
 
-	_initDropdown: function() {
-		var el = query(this.elementClass, this.domNode)[0];
-		this.items = [];
-		this.items.push( new Selector({el: el}));
-		this.originItemLength = this.items[0].items.length;
+	_updateStatus: function(target){
+		return this.items[target.selectedIndex];
 	},
 
-	addItemLogic: function(){},
+	_initDropdown: function() {
+		var el = query(this.elementClass, this.domNode)[0];
+		this.selectors = [];
+		this.selectors.push( Reg.add(new Selector({el: el, parent: this})));
+		this.items = this.selectors[0].items;
+		this.originSelectorLength = this.selectors[0].items.length;
+	},
 
 	filterSelect: function() {
 		this.eventhandler = this._filterSelect;
@@ -58,12 +77,16 @@ return declare('Dropdown', [_FormWidgetBase], {
 		// if the selector has been operated, reset rest selectors
 
 		var selectedItemId = e.target.selectedIndex;
-		var selector = this._byId(e.target.id);
-
+		var selector = this._byId(e.target.id, this.selectors);
 		this.resetOthers(selector);
 
-		if (this.items.length  === this.originItemLength -1) return;
+		if (this.selectors.length  === this.originSelectorLength -1) {
+			this._setValue();
+			return;
+		}
 
+		// set the vavlue
+		this._setValue();
 
 		var newSelectorInnerHtml = selector.getFilteredOptionStr(selectedItemId);
 		var wrapper = domConstruct.create('div',null, this.domNode, 'last');
@@ -72,20 +95,34 @@ return declare('Dropdown', [_FormWidgetBase], {
 				{
 					innerHTML: newSelectorInnerHtml,
 					className: 'element select medium',
-					id: this.eId + '_' + (this.items.length),
+					id: this.eId + '_' + (this.selectors.length),
 				}, 
 				wrapper, 'last');
 
 		var nextSelector = new Selector({el: select, wrapper: wrapper});
-		this.items.push(nextSelector);
+		this.selectors.push(nextSelector);
 		Reg.add(nextSelector);
 
 	},
 
+	_setValue: function() {
+		var res = '';
+		array.forEach(this.selectors, function(s, i){
+			var v = s.items[s.domNode.selectedIndex].oValue;
+			if(v !== '') {
+				res += v;
+			}
+		});
+
+		var a = this.selectors[0].domNode.options[this.selectors[0].domNode.selectedIndex];
+		a.value = res;
+		console.log(res, a.value);
+	},
+
 	resetOthers: function(selector) {
-		var latterIdx = this.items.indexOf(selector),
+		var latterIdx = this.selectors.indexOf(selector),
 			idList = [];
-		var resetList = array.filter(this.items, function(s, id) {
+		var resetList = array.filter(this.selectors, function(s, id) {
 
 			if (id > latterIdx ){
 				idList.push(id);
@@ -105,19 +142,42 @@ return declare('Dropdown', [_FormWidgetBase], {
 
 		}, this);
 	},
-	disable: function(){},
+	disable: function(){
+		this.selectors[0].disable();
+	},
 
 	remove: function(id) {
-		this.items.splice(id, 1);
+		this.selectors.splice(id, 1);
+	},
+
+	enableOption: function(id) {
+		domAttr.set(this.items[id].domNode, 'disabled' , false );
+	},
+
+	disableOption: function(id){
+		domAttr.set(this.items[id].domNode, 'disabled' , true );
+		console.log('select, hide, d');
 	},
 
 	initActionMap: function(){
 		this.actionMap = {};
+		this.actionMap.enableOption = this.enableOption;
+		this.actionMap.disableOption = this.disableOption;
+		this.actionMap.appear = this.appear;
+		this.actionMap.disable = this.disappear;
+		this.actionMap.submit = this.submit;
+		this.actionMap.redirect = this.redirect;
 		this.actionMap.filterSelect = this.filterSelect;
 	},
 
 	_initActions: function() {
-		this.actions =[
+		this.actions =  [
+			{label: '禁用选项', action: 'disableOption'},
+			{label: '启用选项', action: 'enableOption'},
+			{label: '显示题目', action: 'appear',  noNeedItem: true},
+			{label: '隐藏题目', action: 'disappear', widgetAction: true, itemAction:true, noNeedItem: true},
+			{label: '跳转链接', action: 'redirect',selfAction:true ,noNeedItem: true, newParam: 'input'},
+			{label: '提交表单', action: 'submit', selfAction:true,  noNeedItem: true},
 			{label: '排序过滤', action: 'filterSelect', widgetAction:true, noNeedItem: true}
 		];
 	}

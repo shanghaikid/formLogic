@@ -174,6 +174,7 @@ return declare(null, {
 
 	// default execute rule function
 	execute: function(rule, e, force) {
+		console.log('executed rule is', rule);
 		// rule status
 		var status = rule.status || null;
 		// rule target

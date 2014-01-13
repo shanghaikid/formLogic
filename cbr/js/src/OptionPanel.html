@@ -22,7 +22,8 @@
 	<select data-dojo-type="dijit/form/Select" data-dojo-attach-point="itemSel" class="s"></select>
 	</div>
 	<div style="display:none" data-dojo-attach-point="inputSelWrapper" class="selector">
-	<select data-dojo-type="dijit/form/ValidationTextBox" intermediateChanges="true" data-dojo-attach-point="inputSel" data-dojo-props="invalidMessage:'请输入链接地址', required: true"></select>
+	<div data-dojo-type="dijit/form/ValidationTextBox" intermediateChanges="true" data-dojo-attach-point="inputSel" data-dojo-props="invalidMessage:'请输入链接地址', placeholder:'请输入跳转URL地址', required: true"></div>
+	<div data-dojo-type="dijit/form/ValidationTextBox" intermediateChanges="true" data-dojo-attach-point="tipSel" data-dojo-props="placeholder:'请输入跳转提示文字'"></div>
 	</div>
 	<div data-dojo-attach-point="widgetLogicTip" class="widgetLogicTip"></div>
 	<div data-dojo-attach-point="extraParamWrapper"></div>

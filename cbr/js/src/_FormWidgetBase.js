@@ -56,12 +56,16 @@ return declare([_BaseClass, _Rule], {
 		this._initEvent();
 
 		if (this.addLogic) {
-			this.disable();
-			this.rulesDef =  this._initRuleDefinition();
-			this._initActions();
-			this._addLogic();
+			this._initLogic();
 		} 
 
+	},
+
+	_initLogic: function() {
+		this.disable();
+		this.rulesDef =  this._initRuleDefinition();
+		this._initActions();
+		this._addLogic();
 	},
 
 	_addLogic: function() {
@@ -111,10 +115,10 @@ return declare([_BaseClass, _Rule], {
 
 	// default event handler for inputs inside the widget
 	eventhandler: function(e){
+		console.log('event handler ');
 		// current target
 		var t = this._updateStatus(e.target);
 		if (!t) return;
-		//console.log('target is', e,t);
 		if (t.rule) this.execute(t.rule, e);
 	},
 
@@ -128,8 +132,8 @@ return declare([_BaseClass, _Rule], {
 	},
 
 	// find the item object by dom id
-	_byId: function(id) {
-		var item = array.filter(this.items, function(item) {
+	_byId: function(id, items) {
+		var item = array.filter(items || this.items, function(item) {
 			return item.eId == id;
 		});
 		return item[0];
@@ -190,7 +194,7 @@ return declare([_BaseClass, _Rule], {
 	// parse widget rule, not item rule
 	initWidgetRule: function(){
 		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
-		if (this.rule) this.execute(this.rule, undefined, true);
+		if (this.rule && this.rule.type === 'widget') this.execute(this.rule, undefined, true);
 
 	},
 
@@ -323,7 +327,10 @@ return declare([_BaseClass, _Rule], {
 	},
 
 	redirect: function(url){
-		var u = url.replace("@", ":");
+		var data = url.split('||');
+		var u = data[0].replace("@", ":");
+		var tip = data[1] === 'noTip' ? '感谢您的参与' : data[1];
+		alert(tip);
 		window.location.href = u;
 	},
 
@@ -356,9 +363,9 @@ return declare([_BaseClass, _Rule], {
 			{label: '禁用选项', action: 'disable'},
 			{label: '启用选项', action: 'enable'},
 			{label: '显示题目', action: 'appear',  noNeedItem: true},
-			{label: '隐藏题目', action: 'disappear', widgetAction: true, itemAction:true, noNeedItem: true},
-			{label: '跳转链接', action: 'redirect',noNeedItem: true, newParam: 'input'},
-			{label: '提交表单', action: 'submit',  noNeedItem: true}
+			{label: '隐藏题目', action: 'disappear',  widgetAction: true, itemAction:true, noNeedItem: true},
+			{label: '跳转链接', action: 'redirect', selfAction:true, noNeedItem: true, newParam: 'input'},
+			{label: '提交表单', action: 'submit', selfAction:true, noNeedItem: true}
 		];
 	}
 

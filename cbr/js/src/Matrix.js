@@ -287,6 +287,8 @@ return declare('Matrix', [_FormWidgetBase], {
 		this.actionMap.contain = this.contain;
 		this.actionMap.mutexOption = this.mutexOption;
 		this.actionMap.compare = this.compare;
+		this.actionMap.disappear = this.disappear;
+		this.actionMap.appear = this.appear;
 	},
 
 	_initActions: function() {
@@ -296,7 +298,8 @@ return declare('Matrix', [_FormWidgetBase], {
 			{label: '禁用列', action: 'disableCol'},
 			{label: '启用列', action: 'enableCol'},
 			{label: '仅允许列', action: 'mutexCol'},
-			{label: '隐藏题目', action: 'disappear', widgetAction: true, noNeedItem: true},
+			{label: '显示题目', action: 'appear', noNeedItem: true},
+			{label: '隐藏题目', action: 'disappear',  widgetAction: true, itemAction:true, noNeedItem: true},
 			{label: '列包含关系', action: 'contain', widgetAction:true, tip: '选择了第一列，才能选第二列，依此类推'},
 			{label: '列比较关系', action: 'compare', widgetAction:true, tip: '第一行的选项大于第二行的选项，依次类推，只有选了第一行的选项，才能选第二行的选项'},
 			{label: '列互斥', action: 'mutexOption', widgetAction:true, tip: '每列的选项只能被选中一次'}

@@ -7,6 +7,7 @@ define([
 		'dojo/query',
 		'dojo/dom-attr',
 		'dojo/json',
+		'dojo/on',
 
 		'src/_BaseClass',
 		'src/RulesConfig',
@@ -14,7 +15,7 @@ define([
 		'src/_Rule',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, domAttr, json,
+function(declare, lang, array, query, domAttr, json, on,
 		_BaseClass, RulesConfig, Reg, _Rule){
 
 return declare([_BaseClass, _Rule], {
@@ -26,8 +27,21 @@ return declare([_BaseClass, _Rule], {
 		formLogic.Reg = Reg;
 		this.initLogicData();
 		this.initFormWidget();
-		this._addSequenceNumber();
+		this._initForm();
+		//this._addSequenceNumber();
 
+	},
+
+	_initForm: function(){
+		var form = query('form', this.domNode);
+		this.form = {
+			domNode: form[0]
+		};
+		console.log('this.form', this.form);
+		on(this.form.domNode, 'submit', function(e){
+			console.log(e);
+			return true;
+		});
 	},
 
 	questionLabels: null,
@@ -56,11 +70,29 @@ return declare([_BaseClass, _Rule], {
 		}
 		var data = Reg.data = json.parse(this.logicData);
 		for (var i in data) {
+			if(/option/.test(i)) {
+				this._initOptionRule(i,data[i]);
+				continue;
+			}
 			var node = query('#'+i, this.domNode)[0];
 			if(node) {
 				domAttr.set(node, 'rule', this.stringfy(data[i]));
 			}
 		}
+	},
+
+	_initOptionRule: function(target, rule){
+		var t = target.match(/([\w_]+)_option(\d+)/);
+		if(t) {
+			var tgt = '#' + t[1],
+				opt = t[2]; //avoid first option zeo
+
+			var node = query(tgt + ' option', this.domNode)[opt];
+			if(node) {
+				domAttr.set(node, 'rule', this.stringfy(rule));
+			}
+		}
+		//console.log('_initOptionRule',target, rule);
 	},
 
 	initFormWidget: function() {
