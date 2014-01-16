@@ -308,13 +308,13 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 				console.log('we done');
 				Reg.data = json.parse(data);
 
-				this.ajaxText.innerText = '操作成功';
+				this.ajaxText.innerHTML ='<span>√ 操作成功</span>';
 				this.onOk(res);
 			}),
 			// The error handler
 			error: lang.hitch(this, function() {
 				console.log('error', this.ajaxText);
-				this.ajaxText.innerText = '操作失败，请重新尝试';
+				this.ajaxText.innerHTML = '<span>× 操作失败，请重新尝试！</span>';
 			}),
 			// The complete handler
 			handle: lang.hitch(this, function() {

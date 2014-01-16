@@ -200,7 +200,7 @@ return declare([_BaseClass, _Rule], {
 	// parse widget rule, not item rule
 	initWidgetRule: function(){
 		this.rule = json.parse (domAttr.get(this.domNode, 'rule') || null);
-		if (this.rule && this.rule.length > 0) {
+		if (this.rule && this.rule.length > 0 && !this.addLogic) {
 			array.forEach(this.rule, function(r){
 				this.execute(r, undefined, true);
 			},this);
