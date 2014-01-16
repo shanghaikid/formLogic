@@ -7,12 +7,14 @@ define([
 		'dojo/string',
 		'dojo/query',
 		'dojo/on',
+		'dojo/json',
 		'dojo/dom-construct',
+		'dojo/dom-attr',
 		'src/OptionPanel',
 		'src/RulesConfig'
 
 		], 
-function(declare, lang, array, string, query, on, domConstruct, OptionPanel, RulesConfig){
+function(declare, lang, array, string, query, on, json, domConstruct, domAttr, OptionPanel, RulesConfig){
 
 return declare(null, {
 
@@ -20,11 +22,11 @@ return declare(null, {
 		return RulesConfig[this.declaredClass] || null;
 	},
 
-	_createButton: function(labelNode, isAdd, isWidget) {
+	_createButton: function(labelNode, isAdd, isWidget, pos) {
 		var text = isWidget ? "题逻辑" : "选项逻辑";
 		var htmlstr = isAdd ? "<button>添加"  + text + "</button>" : "<button>删除"+text+"</button>";
-		var className = isAdd ? "addRule" : "removeRule";
-		return domConstruct.create('div',{ innerHTML:htmlstr, 'class':className }, labelNode, this.buttonPos);
+		var className = isAdd ? "addRule rbtn" : "removeRule rbtn";
+		return domConstruct.create('div',{ innerHTML:htmlstr, 'class':className }, labelNode, pos || this.buttonPos);
 	},
 
 	createItemRuleButton: function(labelNode, item) {
@@ -40,15 +42,14 @@ return declare(null, {
 				source: item,
 				type: 'item'
 			}).show();
-			
-			
 		}));
 	},
 
 
-	createItemRemoveRuleButton: function(labelNode, item) {
+	createItemRemoveRuleButton: function(labelNode, item, rule) {
 		var it = item;
 		var questionButton = this._createButton(labelNode);
+		domAttr.set(questionButton, 'title', rule.label);
 		on(questionButton, 'click', lang.hitch(this, function(e){
 			e.preventDefault();
 			new OptionPanel({
@@ -56,7 +57,7 @@ return declare(null, {
 				onOk: lang.hitch(this, function(rule){this.onRemoveItemRule(questionButton, labelNode, it, rule);}),
 				self: this,
 				page: this.page,
-				rule: item.rule,
+				rule: rule,
 				source: item,
 				type: 'delete'
 			}).show();
@@ -64,15 +65,18 @@ return declare(null, {
 	},
 
 	onAddItemRule: function(btn, labelNode, item, rule){
-		if (rule) item.rule = rule;
+		// remove the button
 		domConstruct.destroy(btn);
-		this.createItemRemoveRuleButton(labelNode, item);
+		// create the remove item rule button
+		this.createItemRemoveRuleButton(labelNode, item, rule);
+		// create an extra add item rule button beside the remove one
+		this.createItemRuleButton(labelNode, item);
 	},
 
-	onRemoveItemRule: function(btn, labelNode, item){
+	onRemoveItemRule: function(btn, labelNode, item, rule){
+		// remove the button
 		domConstruct.destroy(btn);
-		if (item.rule) item.rule = null;
-		this.createItemRuleButton(labelNode, item);
+		//this.createItemRuleButton(labelNode, item);
 	},
 
 	buttonPos: 'after',
@@ -91,15 +95,16 @@ return declare(null, {
 		}));
 	},
 
-	createWidgetRemoveRuleButton: function(labelNode) {
+	createWidgetRemoveRuleButton: function(labelNode, rule) {
 		var widgetLogicButton = this._createButton(labelNode, false, true);
+		domAttr.set(widgetLogicButton, 'title', rule.label);
 		on(widgetLogicButton, 'click', lang.hitch(this, function(e){
 			e.preventDefault();
 			new OptionPanel({
 				title: labelNode.innerText,
 				onOk: lang.hitch(this, function(rule){this.onRemoveWidgeRule(widgetLogicButton, labelNode, rule);}),
 				self: this,
-				rule: this.rule,
+				rule: rule,
 				page: this.page,
 				type: 'delete'
 			}).show();
@@ -107,15 +112,18 @@ return declare(null, {
 	},
 
 	onAddWidgetRule: function(btn, labelNode, rule){
-		if(rule) this.rule = rule;
+		// remove the btn
 		domConstruct.destroy(btn);
-		this.createWidgetRemoveRuleButton(this._getCaption());
+		// create the remove rule btn
+		this.createWidgetRemoveRuleButton(this._getCaption(), rule);
+		// create the add rule btn
+		this.createWidgetLogicButton(this._getCaption());
 	},
 
 	onRemoveWidgeRule: function(btn){
 		domConstruct.destroy(btn);
 		this.rule = null;
-		this.createWidgetLogicButton(this._getCaption());
+		//this.createWidgetLogicButton(this._getCaption());
 	},
 
 	// parse rule from the string

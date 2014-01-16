@@ -3,7 +3,7 @@ var profile = (function(){
         basePath: "./js/",
         releaseDir: "./src-all",
         action: "release",
-        mini: true,
+        mini: false,
         selectorEngine: "lite",
  
         defaultConfig: {

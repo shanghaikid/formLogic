@@ -72,6 +72,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 		this.okBtn.set('disabled', true);
 
 		if (this.type ==='delete') {
+			console.log('this.rule.label', this.rule, this.rule.lable);
 			this.ruleLabel.innerText = this.rule.label ? this.rule.label :'';
 			this.okBtn.set('disabled', false);
 		}
@@ -278,7 +279,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			label = label.replace('，', ' ');
 
 			var source = isWidget ? this.self.eId : this.source.parent? this.source.parent.eId + '_option' + this.source.id: this.source.eId;
-			console.log('source', source);
+			//console.log('source', source);
 			res = {
 				source: source,
 				target : isWidget? 'self' : this.targetSel.get('value'),
@@ -288,14 +289,14 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 				type: this.type
 			};
 		}
-		console.log('res ', res);
+		//console.log('res ', res);
 
 		var formId = query('form', this.page)[0].id.split('_')[1];
 		var data = this.formatData(res, isDel); 
 
 		console.log('data is', data, formId);
 
-		// Using xhr.post, as the amount of data sent could be large
+		//Using xhr.post, as the amount of data sent could be large
 		xhr.post({
 			// The URL of the request
 			url: "save_form.php",
@@ -305,11 +306,7 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			// The success handler
 			load: lang.hitch(this, function(response) {
 				console.log('we done');
-				if (isDel) {
-					delete Reg.data[res.source];
-				} else {
-					Reg.data[res.source] = res;
-				}
+				Reg.data = json.parse(data);
 
 				this.ajaxText.innerText = '操作成功';
 				this.onOk(res);
@@ -330,17 +327,27 @@ return declare([Dialog, _WidgetsInTemplateMixin], {
 			})
 		});
 
-		//this.onOk(res);
-		//this.inherited(arguments);
+		this.inherited(arguments);
 	},
 
 	formatData: function(res, isDel){
 		var data = lang.clone(Reg.data);
+		data[res.source] = data[res.source] ? data[res.source] : [];
+		var actions = data[res.source];
+
 		if (isDel) {
-			delete data[res.source];
+			if (actions.length === 0) console.warn('no saved data, can not delete');
+			data[res.source] = array.filter(actions, function(action){
+				return json.stringify(action) !== json.stringify(res);
+			}, this);
+
+			// if no more rule in the list, delete the rule array
+			if (data[res.source].length === 0) delete data[res.source];
+
 		} else {
-			data[res.source] = res;
+			data[res.source].push(res);
 		}
+
 		return json.stringify(data);
 	},
 

@@ -71,12 +71,12 @@ return declare([_BaseClass, _Rule], {
 		var data = Reg.data = json.parse(this.logicData);
 		for (var i in data) {
 			if(/option/.test(i)) {
-				this._initOptionRule(i,data[i]);
+				this._initOptionRule(i, data[i]);
 				continue;
 			}
 			var node = query('#'+i, this.domNode)[0];
 			if(node) {
-				domAttr.set(node, 'rule', this.stringfy(data[i]));
+				domAttr.set(node, 'rule', json.stringify(data[i]));
 			}
 		}
 	},
@@ -89,7 +89,7 @@ return declare([_BaseClass, _Rule], {
 
 			var node = query(tgt + ' option', this.domNode)[opt];
 			if(node) {
-				domAttr.set(node, 'rule', this.stringfy(rule));
+				domAttr.set(node, 'rule', json.stringify(rule));
 			}
 		}
 		//console.log('_initOptionRule',target, rule);

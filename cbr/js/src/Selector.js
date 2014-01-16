@@ -5,6 +5,7 @@ define([
 		'dojo/_base/lang',
 		'dojo/_base/array',
 		'dojo/on',
+		'dojo/json',
 		'dojo/query',
 		'dojo/dom-attr',
 		'dojo/dom-construct',
@@ -13,7 +14,7 @@ define([
 		'dojo/NodeList-manipulate'
 		], 
 
-function(declare, lang, array, on, query, domAttr, domConstruct, _FormWidgetBase){
+function(declare, lang, array, on, json, query, domAttr, domConstruct, _FormWidgetBase){
 
 return declare('Selector', [_FormWidgetBase], {
 
@@ -49,7 +50,7 @@ return declare('Selector', [_FormWidgetBase], {
 		this.selector = this.domNode;
 		this.items = [];
 		array.forEach(this.selector.options, function(item, i){
-			var rule = this.parseRule(domAttr.get(item, 'rule') || null );
+			var rule = json.parse(domAttr.get(item, 'rule') || null );
 
 			this.items.push({
 				domNode: item,

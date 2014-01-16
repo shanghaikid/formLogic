@@ -35,13 +35,13 @@ return declare('Dropdown', [_FormWidgetBase], {
 			if (i>0) {
 				var div = domConstruct.create('div', {'class': 'labelWrapper'}, this.domNode, 'last');
 				var label = domConstruct.create('label', {'class': 'choice', innerHTML: item.label}, div, 'last');
-				if (item.rule) {
-					this.createItemRemoveRuleButton(label, item);
-				} else {
-					this.createItemRuleButton(label, item);
+				if (item.rule && item.rule.length > 0) {
+					array.forEach(item.rule, function(r){
+						this.createItemRemoveRuleButton(label, item, r);
+					}, this);
 				}
+				this.createItemRuleButton(label, item);
 			}
-			
 		}, this);
 	},
 
@@ -164,6 +164,7 @@ return declare('Dropdown', [_FormWidgetBase], {
 		this.actionMap.enableOption = this.enableOption;
 		this.actionMap.disableOption = this.disableOption;
 		this.actionMap.appear = this.appear;
+		this.actionMap.disappear = this.disappear;
 		this.actionMap.disable = this.disappear;
 		this.actionMap.submit = this.submit;
 		this.actionMap.redirect = this.redirect;

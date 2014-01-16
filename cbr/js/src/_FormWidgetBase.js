@@ -11,13 +11,14 @@ define([
 		'dojo/dom-style',
 		'dojo/dom-construct',
 		'dojo/dom',
+		'dojo/json',
 		'dojo/on',
 		'src/_Rule',
 		'src/Reg',
 		'src/_BaseClass',
 		'dojo/NodeList-traverse'
 		], 
-function(declare, lang, array, query, aspect, domClass, domAttr, domStyle,domConstruct, dom, on, _Rule, Reg, _BaseClass){
+function(declare, lang, array, query, aspect, domClass, domAttr, domStyle,domConstruct, dom, json, on, _Rule, Reg, _BaseClass){
 
 return declare([_BaseClass, _Rule], {
 
@@ -71,11 +72,12 @@ return declare([_BaseClass, _Rule], {
 	_addLogic: function() {
 		var captionNode = this._getCaption();
 		if(captionNode) {
-			if (this.rule) {
-				this.createWidgetRemoveRuleButton(captionNode);
-			} else {
-				this.createWidgetLogicButton(captionNode); 
+			if (this.rule && this.rule.length > 0) {
+				array.forEach(this.rule, function(r){
+					this.createWidgetRemoveRuleButton(captionNode, r);
+				}, this);
 			}
+			this.createWidgetLogicButton(captionNode); 
 		}
 		this.addItemLogic();
 	},
@@ -83,11 +85,12 @@ return declare([_BaseClass, _Rule], {
 	addItemLogic: function(){
 		array.forEach(this.items, function(item, i) {
 			var labels = query('label.choice', this.domNode);
-			if (item.rule) {
-				this.createItemRemoveRuleButton(labels[i], item);
-			} else {
-				this.createItemRuleButton(labels[i], item);
+			if (item.rule && item.rule.length > 0) {
+				array.forEach(item.rule, function(r){
+					this.createItemRemoveRuleButton(labels[i], item, r);
+				}, this);
 			}
+			this.createItemRuleButton(labels[i], item);
 		}, this);
 	},
 
@@ -119,7 +122,10 @@ return declare([_BaseClass, _Rule], {
 		// current target
 		var t = this._updateStatus(e.target);
 		if (!t) return;
-		if (t.rule) this.execute(t.rule, e);
+		if (t.rule && t.rule.length > 0)
+			array.forEach(t.rule, function(rule){
+				this.execute(rule, e);
+			},this);
 	},
 
 	// when event happened, update item's status, return the item.
@@ -162,7 +168,7 @@ return declare([_BaseClass, _Rule], {
 				disabled = item.disabled,
 				checked = item.checked,
 				eId = item.id,
-				rule = this.parseRule( domAttr.get(item, 'rule') || null );
+				rule = json.parse( domAttr.get(item, 'rule') || null );
 				parent = q.parent()[0];
 			this.items.push(
 				{
@@ -193,9 +199,12 @@ return declare([_BaseClass, _Rule], {
 
 	// parse widget rule, not item rule
 	initWidgetRule: function(){
-		this.rule = this.parseRule (domAttr.get(this.domNode, 'rule') || null);
-		if (this.rule && this.rule.type === 'widget') this.execute(this.rule, undefined, true);
-
+		this.rule = json.parse (domAttr.get(this.domNode, 'rule') || null);
+		if (this.rule && this.rule.length > 0) {
+			array.forEach(this.rule, function(r){
+				this.execute(r, undefined, true);
+			},this);
+		} 
 	},
 
 	// Useful method for each widgets

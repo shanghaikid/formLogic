@@ -17,6 +17,7 @@
 .hidden{display: none !important;}
 .addRule button{color:#080; font-weight: 700; font-size: 14px;}
 .removeRule button{color:#C30; font-weight: 700;  font-size: 14px;}
+.rbtn{display: inline-block; margin-right:10px;}
 .dijitDialogPaneContent { width: 550px !important;height: 250px !important;}
 .selector{margin-bottom: 10px}
 .s{height:32px;}
@@ -38,225 +39,194 @@
 			<p>问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述问卷描述</p>
 		</div>						
 			<ul >
-				<li id="li_1" >
-		<label class="description" for="element_1">开题题 <span id="required_1" class="required">*</span></label>
+			
+			
+			
+					<li id="li_1"  class="multiple_choice">
+		<label class="description">1单选题 </label>
 		<div>
-			<input id="element_1" name="element_1"  class="element text medium" type="text" value=""  onkeyup="count_input(1,'c');" onchange="count_input(1,'c');" />
-			<label for="element_1">最少 <var id="range_min_1">5</var> 个字符&nbsp;&nbsp; <em class="currently_entered">已输入：<var id="currently_entered_1">0</var> 个字符.</em></label> 
-		</div> 
-		</li>		<li id="li_2" >
-		<label class="description" for="element_2">开题题 </label>
-		<div>
-			<input id="element_2" name="element_2" maxlength="5" class="element text medium" type="text" value=""  onkeyup="limit_input(2,'c',5);" onchange="limit_input(2,'c',5);" />
-			<label for="element_2">最多 <var id="range_max_2">5</var> 个字符&nbsp;&nbsp; <em class="currently_entered">已输入：<var id="currently_entered_2">0</var> 个字符.</em></label> 
-		</div> 
-		</li>		<li id="li_3" >
-		<label class="description" for="element_3">开题题 </label>
-		<div>
-			<input id="element_3" name="element_3" maxlength="4" class="element text medium" type="text" value=""  onkeyup="limit_input(3,'c',4);" onchange="limit_input(3,'c',4);" />
-			<label for="element_3">必须在 <var id="range_min_3">2</var> - <var id="range_max_3">4</var> 个字符&nbsp;&nbsp; <em class="currently_entered">已输入：<var id="currently_entered_3">0</var> 个字符.</em></label> 
-		</div> 
-		</li>		<li id="li_4" >
-		<label class="description" for="element_4">数字题 </label>
-		<div>
-			<input id="element_4" name="element_4" class="element text medium" type="text"   value=""  /> 
-			<label for="element_4">必须大于或等于 <var id="range_min_4">1</var> 的数字</label>
-		</div> 
-		</li>		<li id="li_5" >
-		<label class="description" for="element_5">数字题 </label>
-		<div>
-			<input id="element_5" name="element_5" class="element text medium" type="text"   value=""  /> 
-			<label for="element_5">必须小于或等于 <var id="range_max_5">3</var> 的数字</label>
-		</div> 
-		</li>		<li id="li_6" >
-		<label class="description" for="element_6">数字题 </label>
-		<div>
-			<input id="element_6" name="element_6" class="element text medium" type="text"   value=""  /> 
-			<label for="element_6">数字必须在 <var id="range_min_6">1</var> 和 <var id="range_max_6">4</var> 范围内</label>
-		</div> 
-		</li>		<li id="li_7" >
-		<label class="description" for="element_7">开题题 </label>
-		<div>
-			<input id="element_7" name="element_7" maxlength="2" class="element text medium" type="text" value=""  onkeyup="limit_input(7,'c',2);" onchange="limit_input(7,'c',2);" />
-			<label for="element_7">最多 <var id="range_max_7">2</var> 个字符&nbsp;&nbsp; <em class="currently_entered">已输入：<var id="currently_entered_7">0</var> 个字符.</em></label> 
-		</div> 
-		</li>		<li id="li_8" >
-		<label class="description" for="element_8">数字题 </label>
-		<div>
-			<input id="element_8" name="element_8" class="element text medium" type="text"   value=""  /> 
-			<label for="element_8">必须小于或等于 <var id="range_max_8">2</var> 的数字</label>
-		</div> 
-		</li>		<li id="li_9"  class="checkboxes">
-		<label class="description">多选题 </label>
-		<div>
-			<span><input id="element_9_1"  name="element_9_1" class="element checkbox" type="checkbox" value="1"  />
-<label class="choice" for="element_9_1">子问题1</label>
+			<span><input id="element_1_1"  name="element_1" class="element radio" type="radio" value="1"  />
+<label class="choice" for="element_1_1">选项1</label>
 </span>
-<span><input id="element_9_2"  name="element_9_2" class="element checkbox" type="checkbox" value="1"  />
-<label class="choice" for="element_9_2">子问题2</label>
+<span><input id="element_1_2"  name="element_1" class="element radio" type="radio" value="2"  />
+<label class="choice" for="element_1_2">选项2</label>
 </span>
-<span><input id="element_9_3"  name="element_9_3" class="element checkbox" type="checkbox" value="1"  />
-<label class="choice" for="element_9_3">子问题3</label>
+<span><input id="element_1_3"  name="element_1" class="element radio" type="radio" value="3"  />
+<label class="choice" for="element_1_3">选项3</label>
 </span>
 
 		</div> 
-		</li>		<li id="li_10"  class="multiple_choice">
-		<label class="description">单选题 </label>
+		</li>		<li id="li_2"  class="checkboxes">
+		<label class="description">2多选题 </label>
 		<div>
-			<span><input id="element_10_1"  name="element_10" class="element radio" type="radio" value="1"  />
-<label class="choice" for="element_10_1">子问题1</label>
+			<span><input id="element_2_1"  name="element_2_1" class="element checkbox" type="checkbox" value="1"  />
+<label class="choice" for="element_2_1">选项1</label>
 </span>
-<span><input id="element_10_2"  name="element_10" class="element radio" type="radio" value="2"  />
-<label class="choice" for="element_10_2">子问题2</label>
+<span><input id="element_2_2"  name="element_2_2" class="element checkbox" type="checkbox" value="1"  />
+<label class="choice" for="element_2_2">选项2</label>
 </span>
-<span><input id="element_10_3"  name="element_10" class="element radio" type="radio" value="3"  />
-<label class="choice" for="element_10_3">子问题3</label>
+<span><input id="element_2_3"  name="element_2_3" class="element checkbox" type="checkbox" value="1"  />
+<label class="choice" for="element_2_3">选项3</label>
 </span>
 
 		</div> 
-		</li>		<li id="li_11"  class="dropdown">
-		<label class="description" for="element_11">下拉列表题 </label>
+		</li>		<li id="li_3"  class="dropdown">
+		<label class="description" for="element_3">3下拉列表题 </label>
 		<div>
-		<select class="element select medium" id="element_11" name="element_11"> 
+		<select class="element select medium" id="element_3" name="element_3"> 
 			<option value="" selected="selected"></option>
-<option value="1"  >子问题1</option>
-<option value="2"  >子问题2</option>
-<option value="3"  >子问题3</option>
+<option value="1"  >选项1</option>
+<option value="2"  >选项2</option>
+<option value="3"  >选项3</option>
 
 		</select>
 		</div> 
-		</li>		<li id="li_12" class="matrix">
+		</li>		<li id="li_4" class="matrix">
 			<table>
 				<caption>
-					距阵题 <span id="required_12" class="required">*</span>
+					4距阵题 
 				</caption>
 			    <thead>
 			    	<tr>
 			        	<th style="width: 40%" scope="col">&nbsp;</th>
-			            <th id="mc_12_1" style="width: 15%" scope="col">选项A</th>
-<th id="mc_12_2" style="width: 15%" scope="col">选项B</th>
-<th id="mc_12_3" style="width: 15%" scope="col">选项C</th>
-<th id="mc_12_4" style="width: 15%" scope="col">选项D</th>
+			            <th id="mc_4_1" style="width: 15%" scope="col">选项A</th>
+<th id="mc_4_2" style="width: 15%" scope="col">选项B</th>
+<th id="mc_4_3" style="width: 15%" scope="col">选项C</th>
+<th id="mc_4_4" style="width: 15%" scope="col">选项D</th>
 
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<tr class="alt" id="mr_12">
+			    	<tr class="alt" id="mr_4">
 			        	<td class="first_col">子问题1</td>
-			            <td><input id="element_12_1" name="element_12" type="radio" value="1"  /></td>
-<td><input id="element_12_2" name="element_12" type="radio" value="2"  /></td>
-<td><input id="element_12_3" name="element_12" type="radio" value="3"  /></td>
-<td><input id="element_12_4" name="element_12" type="radio" value="4"  /></td>
+			            <td><input id="element_4_1" name="element_4" type="radio" value="1"  /></td>
+<td><input id="element_4_2" name="element_4" type="radio" value="2"  /></td>
+<td><input id="element_4_3" name="element_4" type="radio" value="3"  /></td>
+<td><input id="element_4_4" name="element_4" type="radio" value="4"  /></td>
 
 			        </tr>
-			        <tr  id="mr_13"><td class="first_col">子问题2</td><td><input id="element_13_1" name="element_13" type="radio" value="1"  /></td>
-<td><input id="element_13_2" name="element_13" type="radio" value="2"  /></td>
-<td><input id="element_13_3" name="element_13" type="radio" value="3"  /></td>
-<td><input id="element_13_4" name="element_13" type="radio" value="4"  /></td>
-</tr><tr  class="alt"  id="mr_14"><td class="first_col">子问题3</td><td><input id="element_14_1" name="element_14" type="radio" value="1"  /></td>
-<td><input id="element_14_2" name="element_14" type="radio" value="2"  /></td>
-<td><input id="element_14_3" name="element_14" type="radio" value="3"  /></td>
-<td><input id="element_14_4" name="element_14" type="radio" value="4"  /></td>
-</tr><tr  id="mr_15"><td class="first_col">子问题4</td><td><input id="element_15_1" name="element_15" type="radio" value="1"  /></td>
-<td><input id="element_15_2" name="element_15" type="radio" value="2"  /></td>
-<td><input id="element_15_3" name="element_15" type="radio" value="3"  /></td>
-<td><input id="element_15_4" name="element_15" type="radio" value="4"  /></td>
+			        <tr  id="mr_5"><td class="first_col">子问题2</td><td><input id="element_5_1" name="element_5" type="radio" value="1"  /></td>
+<td><input id="element_5_2" name="element_5" type="radio" value="2"  /></td>
+<td><input id="element_5_3" name="element_5" type="radio" value="3"  /></td>
+<td><input id="element_5_4" name="element_5" type="radio" value="4"  /></td>
+</tr><tr  class="alt"  id="mr_6"><td class="first_col">子问题3</td><td><input id="element_6_1" name="element_6" type="radio" value="1"  /></td>
+<td><input id="element_6_2" name="element_6" type="radio" value="2"  /></td>
+<td><input id="element_6_3" name="element_6" type="radio" value="3"  /></td>
+<td><input id="element_6_4" name="element_6" type="radio" value="4"  /></td>
+</tr><tr  id="mr_7"><td class="first_col">子问题4</td><td><input id="element_7_1" name="element_7" type="radio" value="1"  /></td>
+<td><input id="element_7_2" name="element_7" type="radio" value="2"  /></td>
+<td><input id="element_7_3" name="element_7" type="radio" value="3"  /></td>
+<td><input id="element_7_4" name="element_7" type="radio" value="4"  /></td>
 </tr>
 			    </tbody>
 			</table>
 		
-		</li>		<li id="li_16" class="matrix">
+		</li>		<li id="li_8" class="open_li">
+		<label class="description" for="element_8">5开放题 </label>
+		<div>
+			<input id="element_8" name="element_8"  class="element text medium" type="text" value=""   />
+			 
+		</div> 
+		</li>		<li id="li_9" class="tel_li">
+		<label class="description" for="element_9">6数字题 </label>
+		<div>
+			<input id="element_9" name="element_9" class="element text medium" type="tel"   value=""  /> 
+			
+		</div> 
+		</li>		<li id="li_10"  class="checkboxes">
+		<label class="description">7多选题 </label>
+		<div>
+			<span><input id="element_10_1"  name="element_10_1" class="element checkbox" type="checkbox" value="1"  />
+<label class="choice" for="element_10_1">选项1</label>
+</span>
+<span><input id="element_10_2"  name="element_10_2" class="element checkbox" type="checkbox" value="1"  />
+<label class="choice" for="element_10_2">选项2</label>
+</span>
+<span><input id="element_10_3"  name="element_10_3" class="element checkbox" type="checkbox" value="1"  />
+<label class="choice" for="element_10_3">选项3</label>
+</span>
+
+		</div> 
+		</li>		<li id="li_11"  class="multiple_choice">
+		<label class="description">8单选题 </label>
+		<div>
+			<span><input id="element_11_1"  name="element_11" class="element radio" type="radio" value="1"  />
+<label class="choice" for="element_11_1">选项1</label>
+</span>
+<span><input id="element_11_2"  name="element_11" class="element radio" type="radio" value="2"  />
+<label class="choice" for="element_11_2">选项2</label>
+</span>
+<span><input id="element_11_3"  name="element_11" class="element radio" type="radio" value="3"  />
+<label class="choice" for="element_11_3">选项3</label>
+</span>
+
+		</div> 
+		</li>		<li id="li_12"  class="dropdown">
+		<label class="description" for="element_12">9下拉列表题 </label>
+		<div>
+		<select class="element select medium" id="element_12" name="element_12"> 
+			<option value="" selected="selected"></option>
+<option value="1"  >选项1</option>
+<option value="2"  >选项2</option>
+<option value="3"  >选项3</option>
+
+		</select>
+		</div> 
+		</li>		<li id="li_17" class="matrix">
 			<table>
 				<caption>
-					距阵题 <span id="required_16" class="required">*</span>
+					10距阵题 
 				</caption>
 			    <thead>
 			    	<tr>
 			        	<th style="width: 40%" scope="col">&nbsp;</th>
-			            <th id="mc_16_1" style="width: 15%" scope="col">选项A</th>
-<th id="mc_16_2" style="width: 15%" scope="col">选项B</th>
-<th id="mc_16_3" style="width: 15%" scope="col">选项C</th>
-<th id="mc_16_4" style="width: 15%" scope="col">选项D</th>
+			            <th id="mc_17_1" style="width: 15%" scope="col">选项A</th>
+<th id="mc_17_2" style="width: 15%" scope="col">选项B</th>
+<th id="mc_17_3" style="width: 15%" scope="col">选项C</th>
+<th id="mc_17_4" style="width: 15%" scope="col">选项D</th>
 
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<tr class="alt" id="mr_16">
+			    	<tr class="alt" id="mr_17">
 			        	<td class="first_col">子问题1</td>
-			            <td><input id="element_16_1" name="element_16_1" type="checkbox" value="1"  /></td>
-<td><input id="element_16_2" name="element_16_2" type="checkbox" value="2"  /></td>
-<td><input id="element_16_3" name="element_16_3" type="checkbox" value="3"  /></td>
-<td><input id="element_16_4" name="element_16_4" type="checkbox" value="4"  /></td>
-
-			        </tr>
-			        <tr  id="mr_17"><td class="first_col">子问题2</td><td><input id="element_17_1" name="element_17_1" type="checkbox" value="1"  /></td>
+			            <td><input id="element_17_1" name="element_17_1" type="checkbox" value="1"  /></td>
 <td><input id="element_17_2" name="element_17_2" type="checkbox" value="2"  /></td>
 <td><input id="element_17_3" name="element_17_3" type="checkbox" value="3"  /></td>
 <td><input id="element_17_4" name="element_17_4" type="checkbox" value="4"  /></td>
-</tr><tr  class="alt"  id="mr_18"><td class="first_col">子问题3</td><td><input id="element_18_1" name="element_18_1" type="checkbox" value="1"  /></td>
+
+			        </tr>
+			        <tr  id="mr_18"><td class="first_col">子问题2</td><td><input id="element_18_1" name="element_18_1" type="checkbox" value="1"  /></td>
 <td><input id="element_18_2" name="element_18_2" type="checkbox" value="2"  /></td>
 <td><input id="element_18_3" name="element_18_3" type="checkbox" value="3"  /></td>
 <td><input id="element_18_4" name="element_18_4" type="checkbox" value="4"  /></td>
-</tr><tr  id="mr_19"><td class="first_col">子问题4</td><td><input id="element_19_1" name="element_19_1" type="checkbox" value="1"  /></td>
+</tr><tr  class="alt"  id="mr_19"><td class="first_col">子问题3</td><td><input id="element_19_1" name="element_19_1" type="checkbox" value="1"  /></td>
 <td><input id="element_19_2" name="element_19_2" type="checkbox" value="2"  /></td>
 <td><input id="element_19_3" name="element_19_3" type="checkbox" value="3"  /></td>
 <td><input id="element_19_4" name="element_19_4" type="checkbox" value="4"  /></td>
-</tr><tr  class="alt"  id="mr_21"><td class="first_col">32</td><td><input id="element_21_1" name="element_21_1" type="checkbox" value="1"  /></td>
-<td><input id="element_21_2" name="element_21_2" type="checkbox" value="2"  /></td>
-<td><input id="element_21_3" name="element_21_3" type="checkbox" value="3"  /></td>
-<td><input id="element_21_4" name="element_21_4" type="checkbox" value="4"  /></td>
-</tr><tr  id="mr_20"><td class="first_col">32432423</td><td><input id="element_20_1" name="element_20_1" type="checkbox" value="1"  /></td>
+</tr><tr  id="mr_20"><td class="first_col">子问题4</td><td><input id="element_20_1" name="element_20_1" type="checkbox" value="1"  /></td>
 <td><input id="element_20_2" name="element_20_2" type="checkbox" value="2"  /></td>
 <td><input id="element_20_3" name="element_20_3" type="checkbox" value="3"  /></td>
 <td><input id="element_20_4" name="element_20_4" type="checkbox" value="4"  /></td>
-</tr><tr  class="alt"  id="mr_22"><td class="first_col">423424</td><td><input id="element_22_1" name="element_22_1" type="checkbox" value="1"  /></td>
-<td><input id="element_22_2" name="element_22_2" type="checkbox" value="2"  /></td>
-<td><input id="element_22_3" name="element_22_3" type="checkbox" value="3"  /></td>
-<td><input id="element_22_4" name="element_22_4" type="checkbox" value="4"  /></td>
 </tr>
 			    </tbody>
 			</table>
 		
-		</li>		<li id="li_23"  class="checkboxes">
-		<label class="description">多选题 <span id="required_23" class="required">*</span></label>
-		<div>
-			<span><input id="element_23_1"  name="element_23_1" class="element checkbox" type="checkbox" value="1"  />
-<label class="choice" for="element_23_1">选项1</label>
-</span>
-<span><input id="element_23_2"  name="element_23_2" class="element checkbox" type="checkbox" value="1"  />
-<label class="choice" for="element_23_2">选项2</label>
-</span>
-<span><input id="element_23_3"  name="element_23_3" class="element checkbox" type="checkbox" value="1"  />
-<label class="choice" for="element_23_3">选项3</label>
-</span>
-
-		</div> 
-		</li>		<li id="li_24"  class="multiple_choice">
-		<label class="description">单选题 <span id="required_24" class="required">*</span></label>
-		<div>
-			<span><input id="element_24_1"  name="element_24" class="element radio" type="radio" value="1"  />
-<label class="choice" for="element_24_1">选项1</label>
-</span>
-<span><input id="element_24_2"  name="element_24" class="element radio" type="radio" value="2"  />
-<label class="choice" for="element_24_2">选项2</label>
-</span>
-<span><input id="element_24_3"  name="element_24" class="element radio" type="radio" value="3"  />
-<label class="choice" for="element_24_3">选项3</label>
-</span>
-
-		</div> 
 		</li>
 			
 			
 			
 					<li id="li_buttons" class="buttons">
-			    <input type="hidden" name="form_id" value="96365" />
+			    <input type="hidden" name="form_id" value="121309" />
 			    
 			    <input type="hidden" name="submit_form" value="1" />
 			    <input type="hidden" name="page_number" value="1" />
 				<input id="submit_form" class="button_text" type="submit" name="submit_form" value="确认提交" />
 		</li>
 			</ul>
+
+
+
 		</form>	
 		<div id="footer">
 			Powered by <a href="http://www.cbr.com.cn/" target="_blank">www.CBR.com.cn</a>
@@ -266,7 +236,10 @@
 <div class="ajaxText"></div>
 
 	<script>
-var logicData = '{"li_9":{"source":"li_9","target":"self","action":"disappear","param":"null","label":"选择9. 多选题后 隐藏题目"},"li_10":{"source":"li_10","target":"self","action":"disappear","param":"null","label":"选择10. 单选题后 隐藏题目"},"li_11_option1":{"source":"li_11_option1","target":"li_12","action":"checkCol","param":"0","label":"选择子问题1后 选中列距阵题 *选项A","type":"item"},"element_10_3":{"source":"element_10_3","target":"li_11","action":"disableOption","param":"2","label":"选择子问题3后 禁用选项下拉列表题子问题2","type":"item"},"element_10_2":{"source":"element_10_2","target":"li_11","action":"disableOption","param":"1","label":"选择子问题2后 禁用选项下拉列表题子问题1","type":"item"},"li_11":{"source":"li_11","target":"self","action":"filterSelect","param":"null","label":"选择下拉列表题后 排序过滤","type":"widget"}}';
+var logicData = '{"element_2_1":[{"source":"element_2_1","target":"li_10","action":"hide","param":"0","label":"选择选项1后 隐藏选项7多选题选项1","type":"item"}]}';
+
+
+
 
 
 
@@ -274,7 +247,7 @@ var logicData = '{"li_9":{"source":"li_9","target":"self","action":"disappear","
 
 
 <script src="./config.js"></script>
-<script type="text/javascript" src="./js/lib/dojo/dojo.js"></script>
+<script type="text/javascript" src="./js/src-all/dojo/dojo.js"></script>
 <script>
 
 require(["src/FormLogic"], function(FormLogic){
