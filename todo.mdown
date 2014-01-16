@@ -23,5 +23,6 @@
     * change Selector for extra [] support
 
 ### todo list jan 16 ###
-    innerHTML="<span>√ 操作成功</span>
-    innerHTML="<span>× 操作失败，请重新尝试！</span>
+    * innerHTML="<span>√ 操作成功</span>
+    * innerHTML="<span>× 操作失败，请重新尝试！</span>
+    * avoid execute logic on the logic adding page 
