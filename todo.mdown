@@ -1,0 +1,28 @@
+## todo List ##
+* create the rule format(formLogic.mdown)
+* build add rule page
+	- init form input widgets(multiple_choice/checkboxes/matrix/dropdown)
+    - create rule panel
+        + question to question
+        + self choice to choice
+    - save the rule
+        + create mysql field
+        + php update/delete/row handler(ajax)
+
+* parse rule function for every single form
+    - parse to create panel
+    - parse to execute form
+
+### new requirement ###
+    * design new data structure to support []
+    * _FormWidgetBase.js eventhandler(), add [] support
+    * FormLogic.js initLogicData(), add [] support 
+    * change text to "removeALL"
+    * change OptionPanel formatData function to support []
+    * add addNextFunction in OptionPanel(save and start a new self)
+    * change Selector for extra [] support
+
+### todo list jan 16 ###
+    * innerHTML="<span>√ 操作成功</span>
+    * innerHTML="<span>× 操作失败，请重新尝试！</span>
+    * avoid execute logic on the logic adding page 
