@@ -44,3 +44,8 @@ ID：administrator
 PW：330084e5
 
 ref:http://www.diaoyanbao.com/ 
+
+
+## build
+ in buildscripts/  
+ › ./build.sh --profile ../../../../src.profile.js
