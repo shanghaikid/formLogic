@@ -1,5 +1,0 @@
-{
-    "name": "src",
-	"version":"1.0",
-	"dojoBuild": "./../../src.profile.js"
-}
